@@ -27,35 +27,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.listen(3000)
 const url = "mongodb://127.0.0.1:27017/tko";
 
-// mongoose.connect(url)
-//     .then(() => {
-//         console.log("connect to mongo compass");
+mongoose.connect(url)
+    .then(() => {
+        console.log("connect to mongo compass");
         
-//     })
-//     .catch((err) => {
-//         console.error(err)
-//     })
+    })
+    .catch((err) => {
+        console.error(err)
+    })
 
 app.use('/', indexRouter);
-app.get('/addusers', (req, res)=>{
-    const newUser = new User({
-        prefix:"Mr.",
-        fname:"Arinchawut",
-        lname:"Kanlayanam",
-        email:"rakuzanoat@gmail.com",
-        password:"1234",
-        tel:"0898434477",
-        img:"./awdawdaw/",
-    })
-    newUser.save()
-        .then((result)=>{
-            return res.send(result)
-        })
-        .catch((err)=>{
-            console.error(err)
-        })
-})
-// app.use('/users', usersRouter);
+app.use('/users', usersRouter);
 
 
 // catch 404 and forward to error handler

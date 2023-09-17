@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
-const userSchema = new mongoose.Schema({
+const Schema = mongoose.Schema;
+const userSchema = new Schema({
     prefix:{
         type: String,
         required: true
@@ -15,7 +16,9 @@ const userSchema = new mongoose.Schema({
     },
     email:{
         type: String,
-        required: true
+        required: true,
+        unique: true,
+        dropDups: true
     },
     password:{
         type: String,
@@ -23,12 +26,16 @@ const userSchema = new mongoose.Schema({
     },
     tel:{
         type: String,
-        required: true
+        default: null
     },
     img:{
         type: String,
-        required: true
+        default: null
     },
+    role:{
+        type: Number,
+        default: 0
+    }
 }, {timestamps : true})
 
 const User = mongoose.model('users', userSchema)
