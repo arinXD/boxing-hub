@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        TKO
+    </title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        label{
+            margin-bottom: .3em;
+        }
+        .form-group{
+            margin-bottom: .8em;
+        }
+        .form-row{
+            display: flex;
+            flex-direction: row;
+        }
+        .wrap {
+            width: 30%;
+            margin: 0 auto;
+        }
+
+        .password {
+            position: relative;
+        }
+
+        .bi-eye-fill {
+            position: absolute;
+            top: 55%;
+            right: 3%;
+            z-index: 3;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap mt-5">
+        <h1 class="mb-3">Sign In</h1>
+        <ul>
+        <% if(errs != null && errs.length>0) {
+            console.log(errs);
+
+            for(let i=0; i<errs.length; i++){
+                %>
+                <li class="text-danger"><%= errs[i]%></p>
+                <%
+            }
+        }%>
+        </ul>
+        <form method="post" action="/user">
+            <!--
+            <div class="form-group">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="prefix" value="Mr." checked>
+                    <label class="form-check-label">Mr.</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="prefix" value="Mrs.">
+                    <label class="form-check-label">Mrs.</label>
+                </div>
+            </div>
+            -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Firstname</label>
+                    <input type="text" class="form-control" name="fname" value="">
+                </div>
+                <div class="form-group ms-3">
+                    <label>Lastname</label>
+                    <input type="text" class="form-control" name="lname" value="">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>E-mail</label>
+                <input type="email" class="form-control" name="email" value="">
+            </div>
+            <div class="form-group password">
+                <label>Password</label>
+                <input type="password" id="password" class="form-control" name="password" value="">
+                <i class="bi bi-eye-fill" id="eye-password"></i>
+            </div>
+            <div class="form-group password">
+                <label>Confirm Password</label>
+                <input type="password" id="confirm" class="form-control" name="confirm" value="">
+                <i class="bi bi-eye-fill" id="eye-confirm"></i>
+            </div>
+            <div class="my-4 text-center">
+                <button type="submit" class="btn btn-primary px-5">Sign up</button>
+            </div>
+        </form>
+        <div class="text-center">
+            No account yet? <a href="/user/signup">Sign Up</a>
+        </div>
+    </div>
+
+    <script>
+        const eye = document.querySelectorAll(".bi-eye-fill")
+        eye.forEach(e => {
+            e.addEventListener("click", () => {
+                const id = (e.id).split("-")[1]
+                const input = document.querySelector(`#${id}`)
+                if (input.type == "password") {
+                    input.type = "text"
+                } else {
+                    input.type = "password"
+                }
+            })
+        })
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

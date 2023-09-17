@@ -4,25 +4,24 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
     prefix:{
         type: String,
-        required: true
     },
     fname:{
         type: String,
-        required: true
+        required: [true, "Please provide first name"],
     },
     lname:{
         type: String,
-        required: true
+        required: [true, "Please provide last name"],
     },
     email:{
         type: String,
-        required: true,
-        unique: true,
+        required: [true, "Please provide email"],
+        unique: [true, "This email already exists"],
         dropDups: true
     },
     password:{
         type: String,
-        required: true
+        required: [true, "Please provide password"]
     },
     tel:{
         type: String,
