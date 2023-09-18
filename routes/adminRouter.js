@@ -13,6 +13,9 @@ router.get("/", async (req, res)=>{
         })
     }
     res.render('admin/index', { name, role});
+router.get("/", (req, res)=>{
+    return res.render('admin/index')
+
 })
 
 module.exports = router;
