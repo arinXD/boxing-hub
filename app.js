@@ -11,12 +11,11 @@ const session = require("express-session")
 var indexController = require('./routes/indexController');
 var authenRouter = require('./routes/authenRouter');
 
-
-
 // Middleware
 const signInMiddleware = require("./middleware/signInMiddleware")
 
 var app = express();
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -28,7 +27,7 @@ app.use(express.urlencoded({
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(session({
-    secret: 'flashblog',
+    secret: 'tko_project',
     saveUninitialized: true,
     resave: true
 }));
