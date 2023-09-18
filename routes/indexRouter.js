@@ -5,10 +5,15 @@ const User = require("../models/User");
 /* GET home page. */
 router.get('/', async (req, res, next)=>{
     let name = ""
+    let role
     if(signedIn){
         await User.findById(signedIn).then((result)=>{
             console.log(result);
             name = `${result.fname} ${result.lname}`
+            role = result.role
+        })
+    }
+    res.render('index', { name, role});
         })
     }
     res.render('index', { name});
