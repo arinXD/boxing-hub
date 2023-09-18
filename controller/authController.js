@@ -14,17 +14,14 @@ const signInPage = (req, res, next) => {
     })
 }
 const signIn = async (req, res) => {
-    const {
-        email,
-        password
-    } = req.body
+    const {email, password} = req.body
     console.log(email, password);
-    if (email == "" || password == "") {
+    if (!email || !password) {
         req.flash("errorMessage", "email and password is required")
         req.flash('email', {
             email
         })
-        res.redirect('/authen/signin')
+        return res.redirect('/authen/signin')
     }
     User.findOne({
         email: email
@@ -41,7 +38,7 @@ const signIn = async (req, res) => {
                         req.flash('email', {
                             email
                         })
-                        res.redirect('/authen/signin')
+                        return res.redirect('/authen/signin')
                     }
                 })
         } else {
@@ -49,7 +46,7 @@ const signIn = async (req, res) => {
             req.flash('email', {
                 email
             })
-            res.redirect('/authen/signin')
+            return res.redirect('/authen/signin')
         }
     })
 }
