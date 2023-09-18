@@ -8,11 +8,13 @@ const flash = require('connect-flash')
 const session = require("express-session")
 
 // Router
-var indexController = require('./routes/indexController');
+var indexRouter = require('./routes/indexRouter');
 var authenRouter = require('./routes/authenRouter');
+var adminRouter = require('./routes/adminRouter');
 
 // Middleware
 const signInMiddleware = require("./middleware/signInMiddleware")
+const adminMiddleware = require("./middleware/adminMiddleware")
 
 var app = express();
 
@@ -53,7 +55,9 @@ app.use("*", (req, res, next) => {
     next()
 })
 
-app.use('/', indexController);
+app.use('/', indexRouter);
+
+app.use('/admin', adminMiddleware, adminRouter);
 
 app.use('/authen', signInMiddleware, authenRouter);
 
