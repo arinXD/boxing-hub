@@ -15,9 +15,7 @@ router.get('/', async (req, res, next)=>{
     }
     res.render('index', { name, role});
         })
-    }
-    res.render('index', { name});
-});
+    
 
 router.get('/users', async (req, res, next)=>{
     let users
