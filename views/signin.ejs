@@ -39,62 +39,29 @@
 </head>
 
 <body>
-    <div class="wrap mt-5">
+    <div class="wrap my-5">
         <h1 class="mb-3">Sign In</h1>
-        <ul>
-        <% if(errs != null && errs.length>0) {
-            console.log(errs);
-
-            for(let i=0; i<errs.length; i++){
-                %>
-                <li class="text-danger"><%= errs[i]%></p>
-                <%
-            }
+        <% if(errs != null) {
+        %>
+        <p class="text-danger"><%= errs%></p>
+        <%
         }%>
-        </ul>
-        <form method="post" action="/user">
-            <!--
-            <div class="form-group">
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="prefix" value="Mr." checked>
-                    <label class="form-check-label">Mr.</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="prefix" value="Mrs.">
-                    <label class="form-check-label">Mrs.</label>
-                </div>
-            </div>
-            -->
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Firstname</label>
-                    <input type="text" class="form-control" name="fname" value="">
-                </div>
-                <div class="form-group ms-3">
-                    <label>Lastname</label>
-                    <input type="text" class="form-control" name="lname" value="">
-                </div>
-            </div>
+        <form method="post" action="/authen/signin">
             <div class="form-group">
                 <label>E-mail</label>
-                <input type="email" class="form-control" name="email" value="">
+                <input type="email" class="form-control" name="email" value="<%= email%>">
             </div>
             <div class="form-group password">
                 <label>Password</label>
                 <input type="password" id="password" class="form-control" name="password" value="">
                 <i class="bi bi-eye-fill" id="eye-password"></i>
             </div>
-            <div class="form-group password">
-                <label>Confirm Password</label>
-                <input type="password" id="confirm" class="form-control" name="confirm" value="">
-                <i class="bi bi-eye-fill" id="eye-confirm"></i>
-            </div>
             <div class="my-4 text-center">
-                <button type="submit" class="btn btn-primary px-5">Sign up</button>
+                <button type="submit" class="btn btn-primary px-5">Sign In</button>
             </div>
         </form>
         <div class="text-center">
-            No account yet? <a href="/user/signup">Sign Up</a>
+            No account yet? <a href="/authen/signup">Sign Up</a>
         </div>
     </div>
 

@@ -20,10 +20,10 @@
 <body>
     <%- include("./partials/nav.ejs")%>
         <div class="container mt-5">
-            <h1>Welcome </h1>
+            <h1>Welcome <%= name%></h1>
             <ul>
-                <li><a href="/user/signin">Sign In</a></li>
-                <li><a href="/user/signup">Sign un</a></li>
+                <li><a href="/authen/signin">Sign In</a></li>
+                <li><a href="/authen/signup">Sign up</a></li>
             </ul>
         </div>
 </body>

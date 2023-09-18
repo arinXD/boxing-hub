@@ -7,26 +7,26 @@ const mongoose = require('mongoose')
 const flash = require('connect-flash')
 const session = require("express-session")
 
-const User = require('./models/User')
-
-
+// Router
 var indexController = require('./routes/indexController');
-var userController = require('./routes/userController');
-var authenController = require('./routes/authenController');
-var signupController = require('./routes/signupController');
+var authenRouter = require('./routes/authenRouter');
+
+
+
+// Middleware
+const signInMiddleware = require("./middleware/signInMiddleware")
 
 var app = express();
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({
+    extended: true
+}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')))
-
 app.use(session({
     secret: 'flashblog',
     saveUninitialized: true,
@@ -46,15 +46,28 @@ mongoose.connect(url)
         console.error(err)
     })
 
+
+global.signedIn = null
+
+app.use("*", (req, res, next) => {
+    signedIn = req.session.userId
+    next()
+})
+
 app.use('/', indexController);
-app.use('/signin', authenController);
-app.use('/signup', signupController);
-// app.use('/users', userController);
+
+app.use('/authen', signInMiddleware, authenRouter);
+
+app.get("/signout", (req, res, next)=>{
+    req.session.destroy(()=>{
+        return res.redirect('/')
+    })
+})
 
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
-    next(createError(404));
+    return res.render("404")
 });
 
 // error handler

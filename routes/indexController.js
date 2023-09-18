@@ -1,9 +1,17 @@
 var express = require('express');
 var router = express.Router();
+const User = require("../models/User");
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
-    res.render('index', {    });
+router.get('/', async (req, res, next)=>{
+    let name = ""
+    if(signedIn){
+        await User.findById(signedIn).then((result)=>{
+            console.log(result);
+            name = `${result.fname} ${result.lname}`
+        })
+    }
+    res.render('index', { name});
 });
 
 

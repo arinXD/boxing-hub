@@ -39,7 +39,7 @@
 </head>
 
 <body>
-    <div class="wrap mt-5">
+    <div class="wrap my-5">
         <h1 class="mb-1">Sign Up</h1>
         <p class="mb-3">Welcome to TKO Championship</p>
         <ul>
@@ -48,12 +48,12 @@
 
             for(let i=0; i<errs.length; i++){
                 %>
-                <li class="text-danger"><%= errs[i]%></p>
+                <li class="text-danger"><%= errs[i]%></li>
                 <%
             }
         }%>
         </ul>
-        <form method="post" action="/user/signup">
+        <form method="POST" action="/authen/signup">
             <!--
             <div class="form-group">
                 <div class="form-check form-check-inline">
@@ -69,16 +69,16 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Firstname</label>
-                    <input type="text" class="form-control" name="fname" value="">
+                    <input type="text" class="form-control" name="fname" value="<%= fname%>">
                 </div>
                 <div class="form-group ms-3">
                     <label>Lastname</label>
-                    <input type="text" class="form-control" name="lname" value="">
+                    <input type="text" class="form-control" name="lname" value="<%= lname%>">
                 </div>
             </div>
             <div class="form-group">
                 <label>E-mail</label>
-                <input type="email" class="form-control" name="email" value="">
+                <input type="email" class="form-control" name="email" value="<%= email%>">
             </div>
             <div class="form-group password">
                 <label>Password</label>
@@ -95,7 +95,7 @@
             </div>
         </form>
         <div class="text-center">
-            Already have an account? <a href="/user/signin">Sign In</a>
+            Already have an account? <a href="/authen/signin">Sign In</a>
         </div>
     </div>
 

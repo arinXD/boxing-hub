@@ -1,10 +1,14 @@
 
 <nav>
     <ul>
-        <li class="logo"><a href="#">LOGO</a></li>
+        <li class="logo"><a href="/">LOGO</a></li>
         <li><a href="#">ตารางการแข่งขัน</a></li>
         <li><a href="#">นักกีฬา</a></li>
         <li><a href="#">เกี่ยวกับเรา</a></li>
-        <li><a href="user/signin"><button class="btn btn-outline-light">Sign In</button></a></li>
+        <% if(signedIn){%>
+            <li><a href="/signout"><button class="btn btn-outline-danger">Sign Out</button></a></li>
+        <%}%><%if(!signedIn){%>
+            <li><a href="/authen/signin"><button class="btn btn-outline-light">Sign In</button></a></li>
+        <%}%>
     </ul>
 </nav>
