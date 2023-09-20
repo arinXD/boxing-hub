@@ -23,7 +23,7 @@ const signIn = async (req, res) => {
         })
         return res.redirect('/authen/signin')
     }
-    User.findOne({
+    await User.findOne({
         email: email
     }).then((result) => {
         console.log(result);
@@ -32,6 +32,7 @@ const signIn = async (req, res) => {
                 .then((match) => {
                     if (match) {
                         req.session.userId = result._id
+                        req.session.role = result.role
                         res.redirect('/')
                     } else {
                         req.flash("errorMessage", "Incorrect password")
@@ -75,7 +76,7 @@ const signUp = async (req, res) => {
     const prefix = req.body.prefix
     const fname = req.body.fname
     const lname = req.body.lname
-    const email = req.body.email
+    const email = (req.body.email).toLowerCase()
     const password = req.body.password
     const confirm = req.body.confirm
     const data = {
