@@ -2,23 +2,24 @@
 <html>
 
 <head>
-    <title>
-        TKO
-    </title>
+    <title>TKO</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <style>
-        label{
+        label {
             margin-bottom: .3em;
         }
-        .form-group{
+
+        .form-group {
             margin-bottom: .8em;
         }
-        .form-row{
+
+        .form-row {
             display: flex;
             flex-direction: row;
         }
+
         .wrap {
             width: 30%;
             margin: 0 auto;
@@ -43,29 +44,16 @@
         <h1 class="mb-1">Sign Up</h1>
         <p class="mb-3">Welcome to TKO Championship</p>
         <ul>
-        <% if(errs != null && errs.length>0) {
-            console.log(errs);
+            <% if(errs !=null && errs.length>0) {
+                console.log(errs);
 
-            for(let i=0; i<errs.length; i++){
-                %>
-                <li class="text-danger"><%= errs[i]%></li>
-                <%
-            }
-        }%>
+                for(let i=0; i<errs.length; i++){ %>
+                    <li class="text-danger">
+                        <%= errs[i]%>
+                    </li>
+                    <% } }%>
         </ul>
         <form method="POST" action="/authen/signup">
-            <!--
-            <div class="form-group">
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="prefix" value="Mr." checked>
-                    <label class="form-check-label">Mr.</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="prefix" value="Mrs.">
-                    <label class="form-check-label">Mrs.</label>
-                </div>
-            </div>
-            -->
             <div class="form-row">
                 <div class="form-group">
                     <label>Firstname</label>

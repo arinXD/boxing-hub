@@ -6,11 +6,14 @@ var logger = require('morgan');
 const mongoose = require('mongoose')
 const flash = require('connect-flash')
 const session = require("express-session")
+const fetch = require("node-fetch");
+const fs = require('fs');
 
 // Router
-var indexRouter = require('./routes/indexRouter');
-var authenRouter = require('./routes/authenRouter');
-var adminRouter = require('./routes/adminRouter');
+const indexRouter = require('./routes/indexRouter');
+const authenRouter = require('./routes/authenRouter');
+const adminRouter = require('./routes/adminRouter');
+const athleteRouter = require('./routes/athleteRouter');
 
 // Middleware
 const signInMiddleware = require("./middleware/signInMiddleware")
@@ -49,9 +52,10 @@ mongoose.connect(url)
 
 
 global.signedIn = null
-
+global.userRole = null
 app.use("*", (req, res, next) => {
     signedIn = req.session.userId
+    userRole = req.session.role
     next()
 })
 
@@ -60,9 +64,25 @@ app.use('/', indexRouter);
 app.use('/admin', adminMiddleware, adminRouter);
 
 app.use('/authen', signInMiddleware, authenRouter);
+app.use('/athletes', athleteRouter);
 
-app.get("/signout", (req, res, next)=>{
-    req.session.destroy(()=>{
+app.get("/fetch/api", async (req, res) => {
+    const url = 'https://api.sportsdata.io/v3/mma/scores/json/Leagues?key=b3ccef7241c64316a5449c90efb8c1b9';
+    fetch(url)
+        .then((res) => res.json())
+        .then((athletesJson) => {
+            const JSONObject = JSON.parse(JSON.stringify(athletesJson))
+            fs.writeFile('ufcLeagues.json', JSON.stringify(JSONObject), (error) => {
+                if (error) throw error;
+            });
+            return res.send("Fetch done!\nJSON file created successfully: output.csv")
+        }).catch((err) => {
+            return res.send(err)
+        })
+})
+
+app.get("/signout", (req, res, next) => {
+    req.session.destroy(() => {
         return res.redirect('/')
     })
 })
