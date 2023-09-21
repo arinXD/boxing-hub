@@ -54,6 +54,7 @@ nav .nav-profile img {
     object-fit: cover;
     border-radius: 50%;
     cursor: pointer;
+    border: 1px solid #6e6969;
     transition: all .3s ease 0s;
 }
 nav .toggle-profile{

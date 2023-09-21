@@ -44,7 +44,7 @@ const url = "mongodb://127.0.0.1:27017/tko";
 
 mongoose.connect(url)
     .then(() => {
-        app.listen(4000)
+        app.listen(3000)
         console.log("connect to mongo compass");
     })
     .catch((err) => {
@@ -71,6 +71,14 @@ app.use('/admin', adminMiddleware, adminRouter);
 
 app.use('/authen', signInMiddleware.signedIn, authenRouter);
 app.use('/athletes', athleteRouter);
+app.use('/profile', signInMiddleware.insignIn, profileRouter)
+
+app.get("/signout", (req, res, next) => {
+    req.session.destroy(() => {
+        return res.redirect('/')
+    })
+})
+
 
 app.get("/fetch/api", async (req, res) => {
 
@@ -88,12 +96,6 @@ app.get("/fetch/api", async (req, res) => {
         }).catch((err) => {
             return res.send(err)
         })
-})
-
-app.get("/signout", (req, res, next) => {
-    req.session.destroy(() => {
-        return res.redirect('/')
-    })
 })
 
 
