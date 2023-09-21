@@ -44,7 +44,7 @@ const url = "mongodb://127.0.0.1:27017/tko";
 
 mongoose.connect(url)
     .then(() => {
-        app.listen(3000)
+        app.listen(4000)
         console.log("connect to mongo compass");
     })
     .catch((err) => {
@@ -81,7 +81,9 @@ app.get("/signout", (req, res, next) => {
 
 
 app.get("/fetch/api", async (req, res) => {
+
     const url = 'https://api.sportsdata.io/v3/mma/scores/json/Schedule/UFC/2023?key=b3ccef7241c64316a5449c90efb8c1b9';
+
     fetch(url)
         .then((res) => res.json())
         .then((athletesJson) => {
@@ -90,6 +92,7 @@ app.get("/fetch/api", async (req, res) => {
                 if (error) throw error;
             });
             return res.send("Fetch done!\nJSON file created successfully: Event.csv")
+
         }).catch((err) => {
             return res.send(err)
         })
