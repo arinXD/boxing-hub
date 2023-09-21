@@ -5,7 +5,7 @@ const multer  = require('multer')
 const path = require('path');
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, path.join(__dirname, 'images'))
+      cb(null, path.join(__dirname, '../public/images/profile'))
     //   D:\Github\tko_project\public\images
     //   D:\Github\public\images\profile\6507abe54a9ae45d6f7f33da.png
     },

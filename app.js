@@ -44,7 +44,7 @@ const url = "mongodb://127.0.0.1:27017/tko";
 
 mongoose.connect(url)
     .then(() => {
-        app.listen(4000)
+        app.listen(3000)
         console.log("connect to mongo compass");
     })
     .catch((err) => {
