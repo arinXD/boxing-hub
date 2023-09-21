@@ -44,7 +44,7 @@ const url = "mongodb://127.0.0.1:27017/tko";
 
 mongoose.connect(url)
     .then(() => {
-        app.listen(3000)
+        app.listen(4000)
         console.log("connect to mongo compass");
     })
     .catch((err) => {
@@ -71,7 +71,28 @@ app.use('/admin', adminMiddleware, adminRouter);
 
 app.use('/authen', signInMiddleware.signedIn, authenRouter);
 app.use('/athletes', athleteRouter);
+<<<<<<< HEAD
 app.use('/profile', signInMiddleware.insignIn, profileRouter)
+=======
+
+app.get("/fetch/api", async (req, res) => {
+
+    const url = 'https://api.sportsdata.io/v3/mma/scores/json/Schedule/UFC/2023?key=b3ccef7241c64316a5449c90efb8c1b9';
+
+    fetch(url)
+        .then((res) => res.json())
+        .then((athletesJson) => {
+            const JSONObject = JSON.parse(JSON.stringify(athletesJson))
+            fs.writeFile('./UFCdata/ufcEvents.json', JSON.stringify(JSONObject), (error) => {
+                if (error) throw error;
+            });
+            return res.send("Fetch done!\nJSON file created successfully: Event.csv")
+
+        }).catch((err) => {
+            return res.send(err)
+        })
+})
+>>>>>>> 58a0eb00c9673f2cd9cb2e0516838dc0e2742ff7
 
 app.get("/signout", (req, res, next) => {
     req.session.destroy(() => {
