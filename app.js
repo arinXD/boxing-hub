@@ -14,6 +14,7 @@ const indexRouter = require('./routes/indexRouter');
 const authenRouter = require('./routes/authenRouter');
 const adminRouter = require('./routes/adminRouter');
 const athleteRouter = require('./routes/athleteRouter');
+const profileRouter = require('./routes/profileRouter');
 
 // Middleware
 const signInMiddleware = require("./middleware/signInMiddleware")
@@ -27,7 +28,7 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({
-    extended: true
+    extended: false
 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')))
@@ -53,9 +54,14 @@ mongoose.connect(url)
 
 global.signedIn = null
 global.userRole = null
+global.userName = null
+global.userProfile = null
+
 app.use("*", (req, res, next) => {
     signedIn = req.session.userId
     userRole = req.session.role
+    userName = req.session.userName
+    userProfile = req.session.userProfile
     next()
 })
 
@@ -63,8 +69,16 @@ app.use('/', indexRouter);
 
 app.use('/admin', adminMiddleware, adminRouter);
 
-app.use('/authen', signInMiddleware, authenRouter);
+app.use('/authen', signInMiddleware.signedIn, authenRouter);
 app.use('/athletes', athleteRouter);
+app.use('/profile', signInMiddleware.insignIn, profileRouter)
+
+app.get("/signout", (req, res, next) => {
+    req.session.destroy(() => {
+        return res.redirect('/')
+    })
+})
+
 
 app.get("/fetch/api", async (req, res) => {
     const url = 'https://api.sportsdata.io/v3/mma/scores/json/Schedule/UFC/2023?key=b3ccef7241c64316a5449c90efb8c1b9';
@@ -79,12 +93,6 @@ app.get("/fetch/api", async (req, res) => {
         }).catch((err) => {
             return res.send(err)
         })
-})
-
-app.get("/signout", (req, res, next) => {
-    req.session.destroy(() => {
-        return res.redirect('/')
-    })
 })
 
 

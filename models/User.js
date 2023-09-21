@@ -2,16 +2,20 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema;
 const userSchema = new Schema({
-    prefix:{
+    username:{
         type: String,
+        required: [true, "Please provide username"],
     },
+    job:{
+        type:String,
+        // required: [true, "Please provide job"],
+    }
+    ,
     fname:{
         type: String,
-        required: [true, "Please provide first name"],
     },
     lname:{
         type: String,
-        required: [true, "Please provide last name"],
     },
     email:{
         type: String,

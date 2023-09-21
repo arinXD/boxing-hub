@@ -33,6 +33,8 @@ const signIn = async (req, res) => {
                     if (match) {
                         req.session.userId = result._id
                         req.session.role = result.role
+                        req.session.userName = result.username
+                        req.session.userProfile = result.img
                         res.redirect('/')
                     } else {
                         req.flash("errorMessage", "Incorrect password")
@@ -73,13 +75,14 @@ const signUpPage = (req, res, next) => {
 
 const signUp = async (req, res) => {
     let errmes = []
-    const prefix = req.body.prefix
+    const username = req.body.username
     const fname = req.body.fname
     const lname = req.body.lname
     const email = (req.body.email).toLowerCase()
     const password = req.body.password
     const confirm = req.body.confirm
     const data = {
+        username,
         fname,
         lname,
         email
@@ -94,7 +97,7 @@ const signUp = async (req, res) => {
     const hashPass = await bcrypt.hash(password, 10)
 
     const newUser = new User({
-        prefix,
+        username,
         fname,
         lname,
         email,

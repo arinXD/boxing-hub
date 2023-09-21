@@ -3,7 +3,7 @@ const Athlete = require("../models/Athlete")
 const fetchAthletes = async (req, res)=>{
     await Athlete.find().populate('user')
         .then((athletes)=>{
-            // return res.json(athletes)
+
             return res.render("athlete/athletesPage", { athletesData : athletes})
         })
         .catch((err)=>{
@@ -15,7 +15,6 @@ const findAthlete = async (req, res)=>{
     await Athlete.find({_id:req.query.id}).populate('user')
     .then((athlete)=>{
         return res.json(athlete)
-        // return res.render("athlete/athleteProfile", {athlete})
     })
     .catch((err)=>{
         console.error(err)
