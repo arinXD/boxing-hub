@@ -71,9 +71,6 @@ app.use('/admin', adminMiddleware, adminRouter);
 
 app.use('/authen', signInMiddleware.signedIn, authenRouter);
 app.use('/athletes', athleteRouter);
-<<<<<<< HEAD
-app.use('/profile', signInMiddleware.insignIn, profileRouter)
-=======
 
 app.get("/fetch/api", async (req, res) => {
 
@@ -92,7 +89,6 @@ app.get("/fetch/api", async (req, res) => {
             return res.send(err)
         })
 })
->>>>>>> 58a0eb00c9673f2cd9cb2e0516838dc0e2742ff7
 
 app.get("/signout", (req, res, next) => {
     req.session.destroy(() => {
