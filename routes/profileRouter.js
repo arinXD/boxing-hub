@@ -17,6 +17,7 @@ const storage = multer.diskStorage({
 const upload = multer({storage})
 
 router.get('/', profileController.profilePage)
+router.get('/setting', profileController.profileSetting)
 router.post('/upload/image', upload.single('profileImg'), profileController.uploadProfileImages)
 
 
