@@ -4,13 +4,15 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    box-shadow: none !important;
+    /* border: 0 !important; */
 }
 
 nav {
     padding: 1rem 6rem;
     background-color: #181D31;
     position: relative;
-    
+    z-index: 100;
 }
 
 nav ul {

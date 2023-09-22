@@ -26,7 +26,6 @@ const signIn = async (req, res) => {
     await User.findOne({
         email: email
     }).then((result) => {
-        console.log(result);
         if (result) {
             bcrypt.compare(password, result.password)
                 .then((match) => {

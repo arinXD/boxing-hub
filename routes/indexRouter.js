@@ -8,7 +8,7 @@ router.get('/', async (req, res, next) => {
     let role
     if (signedIn) {
         await User.findById(signedIn).then((result) => {
-            console.log(result);
+            // console.log(result);
             name = `${result.fname} ${result.lname}`
         })
     }

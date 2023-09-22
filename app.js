@@ -72,7 +72,6 @@ app.use("*", (req, res, next) => {
     next()
 })
 
-
 app.use('/', indexRouter);
 
 app.use('/admin', adminMiddleware, adminRouter);
@@ -106,24 +105,6 @@ app.get("/fetch/api", async (req, res) => {
         })
 })
 
-
-app.get("/fetch/api", async (req, res) => {
-
-    const url = 'https://api.sportsdata.io/v3/mma/scores/json/Schedule/UFC/2023?key=b3ccef7241c64316a5449c90efb8c1b9';
-
-    fetch(url)
-        .then((res) => res.json())
-        .then((athletesJson) => {
-            const JSONObject = JSON.parse(JSON.stringify(athletesJson))
-            fs.writeFile('./UFCdata/ufcEvents.json', JSON.stringify(JSONObject), (error) => {
-                if (error) throw error;
-            });
-            return res.send("Fetch done!\nJSON file created successfully: Event.csv")
-
-        }).catch((err) => {
-            return res.send(err)
-        })
-})
 
 
 app.get('/add-athlete', async (req, res, next) => {

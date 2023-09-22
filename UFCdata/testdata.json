@@ -1,0 +1,12 @@
+{
+    "province1":[
+        {
+            "amphoe1": ["tambon 1", "tambon 2"],
+            "amphoe2": ["tambon 1", "tambon 2"]
+        },
+        {
+            "amphoe1": ["tambon 1", "tambon 2"],
+            "amphoe2": ["tambon 1", "tambon 2"]
+        }
+    ]
+}
