@@ -9,6 +9,12 @@ const session = require("express-session")
 const fetch = require("node-fetch");
 const fs = require('fs');
 
+const addAthlete = require('./models/Athlete')
+const addEvent = require('./models/Event')
+const addMatch = require('./models/Match')
+
+
+
 // Router
 const indexRouter = require('./routes/indexRouter');
 const authenRouter = require('./routes/authenRouter');
@@ -50,6 +56,7 @@ mongoose.connect(url)
     .catch((err) => {
         console.error(err)
     })
+    
 
 
 global.signedIn = null
@@ -64,6 +71,7 @@ app.use("*", (req, res, next) => {
     userProfile = req.session.userProfile
     next()
 })
+
 
 app.use('/', indexRouter);
 
@@ -118,6 +126,77 @@ app.get("/fetch/api", async (req, res) => {
 })
 
 
+app.get('/add-athlete', async (req, res, next) => {
+    try {
+        // สร้าง Athlete โดยใช้ข้อมูล
+        const addAt = new addAthlete({
+            aka: 'The Ironman',
+            weight: 60,
+            height: 165,
+            country: 'Thailand',
+            weightClass: 'Lightweight',
+            profileImg: 'None',
+            user: '650c6e6e73cfb63052996c48',
+        });
+
+        // บันทึกข้อมูล Athlete
+        const result = await addAt.save();
+
+        // ส่งการตอบกลับเป็นข้อความหรือ JSON
+        res.send('เพิ่มข้อมูลนักกีฬาเรียบร้อย');
+        res.send(result);
+    } catch (error) {
+        next(error);
+    }
+});
+
+app.get('/add-match', async (req, res, next) => {
+    try {
+        // สร้าง Athlete โดยใช้ข้อมูล
+        const addMat = new addMatch({
+            WeightClass:'LightWeight',
+            Description: 'Normal',
+            Rounds: 5
+        });
+
+        // บันทึกข้อมูล Athlete
+        const result = await addMat.save();
+
+        // ส่งการตอบกลับเป็นข้อความหรือ JSON
+        res.send('เพ่ิมแมทช์เรียบร้อย');
+        res.send(result);
+    } catch (error) {
+        next(error);
+    }
+});
+
+app.get('/add-event', async (req, res, next) => {
+    try {
+        // สร้าง Athlete โดยใช้ข้อมูล
+        const addEv = new addEvent({
+            eventName:'One Fight Night 22',
+            eventDate: '22/08/2023',
+            eventTime: '19:30',
+            Status:'Active',
+            // matches:[
+            //     {type: mongoose.Schema.ObjectId,
+            //     ref: 'matches'
+            // }
+                
+            // ]
+        });
+
+        // บันทึกข้อมูล Athlete
+        const eventResult = await addEv.save();
+
+        // ส่งการตอบกลับเป็นข้อความหรือ JSON
+        res.send('เพ่ิมแมทช์เรียบร้อย');
+        res.send(result);
+    } catch (error) {
+        next(error);
+    }
+});
+
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
     return res.render("404")
@@ -133,5 +212,7 @@ app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render('error');
 });
+
+
 
 module.exports = app;
