@@ -11,25 +11,24 @@
 <link href="css/bootstrap-icons.css" rel="stylesheet">
 <link href="css/templatemo-topic-listing.css" rel="stylesheet">
 <!-- nav style -->
-<!-- <link rel="stylesheet" href="/css/nav.css"> -->
+<link rel="stylesheet" href="/css/nav.css">
 <!-- <nav>
     <ul>
         <li class="logo"><a href="/">Combat Federation</a></li>
         <li style="color:#F49D1A;"><a href="/" style="color: #F49D1A;;">หน้าแรก</a></li>
->>>>>>> Stashed changes
         <li><a href="#">ตารางการแข่งขัน</a></li>
         <li><a href="/athletes">นักกีฬา</a></li>
         <li><a href="#">เกี่ยวกับเรา</a></li>
-        <%if(userRole==1){%>
+        <%//if(userRole==1){%>
             <li><a href="/admin">admin</a></li>
-        <%}%>
-        <% if(signedIn){%>
+        <%//}%>
+        <%// if(signedIn){%>
             <div class="nav-profile">
-                <img id="profile-img" src="/images/profile/<%=img%>" alt="user-profile">
+                <img id="profile-img" src="/images/profile/<%=//img%>" alt="user-profile">
             </div>
             <div class="toggle-profile">
                 <div class="toggle-avartar">
-                    <img src="/images/profile/<%=img%>" alt="user-profile"><span class="user-name"><%= userName%></span>
+                    <img src="/images/profile/<%=//img%>" alt="user-profile"><span class="user-name"><%= //userName%></span>
                 </div>
                 <div class="toggle-setting toggle-profile-setting">
                     <div class="font-bg">
@@ -44,39 +43,13 @@
                     <span>ออกจากระบบ</span>
                 </div>
             </div>
-        <%}%>
-        <%if(!signedIn){%>
+        <%//}%>
+        <%//if(!signedIn){%>
             <li><a href="/authen/signin"><button class="btn btn-outline-light">Sign In</button></a></li>
-        <%}%>
+        <%//}%>
     </ul>
-<<<<<<< Updated upstream
 </nav>
-<script>
-    let profileImg =  document.querySelector("#profile-img")
-    profileImg.addEventListener('click',()=>{
-        const toggleProfile = document.querySelector(".toggle-profile")
-        const className = toggleProfile.className
-        setTimeout(()=>{
-            if(className.includes("toggle-on")){
-                toggleProfile.className = "toggle-profile"
-            }else{
-                toggleProfile.className = "toggle-profile toggle-on"
-            }
-        }, 40)
-    })
-
-    document.querySelector(".logout").addEventListener("click", ()=>{
-        window.location.href = "/signout"
-    })
-    document.querySelector(".toggle-avartar").addEventListener("click", ()=>{
-        window.location.href = "/profile"
-    })
-    document.querySelector(".toggle-profile-setting").addEventListener("click", ()=>{
-        window.location.href = "/profile/setting"
-    })
-</script>
-</nav> -->
-
+-->
 <%
 const img = (userProfile)? userProfile:"avartar.png"        
 %>
@@ -107,7 +80,7 @@ const img = (userProfile)? userProfile:"avartar.png"
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link click-scroll" href="athletes">นักกีฬา</a>
+                    <a class="nav-link click-scroll" href="/athletes">นักกีฬา</a>
                 </li>
 
                 <li class="nav-item">
@@ -118,24 +91,64 @@ const img = (userProfile)? userProfile:"avartar.png"
                     <li class="nav-item">
                         <a class="nav-link click-scroll" href="/admin">admin</a>
                     </li>
-                    <%}%>
-                        <% if(signedIn){%>
-                            <li><a href="/signout"><button class="btn btn-outline-danger nav-link click-scroll signoutBtn">Sign Out</button></a></li>
-                    <%}%>
-                        <%if(!signedIn){%>
-                            <li><a href="/authen/signin"><button class="btn btn-outline-light nav-link click-scroll signoutBtn">Sign In</button></a></li>
-                    <%}%>
+                <%}%>
+                
+                <%if(!signedIn){%>
+                    <li><a href="/authen/signin"><button class="btn btn-outline-light nav-link click-scroll signoutBtn">Sign In</button></a></li>
+                <%}%>
             </ul>
-
-            <div class="d-none d-lg-block">
-                <a href="#top" class="navbar-icon bi-person smoothscroll icon11"></a>
-            </div>
+            <% if(signedIn){%>
+                <div class="nav-profile">
+                    <img id="profile-img" src="/images/profile/<%=img%>" alt="user-profile">
+                </div>
+                <div class="toggle-profile">
+                    <div class="toggle-avartar">
+                        <img src="/images/profile/<%=img%>" alt="user-profile"><span class="user-name"><%= userName%></span>
+                    </div>
+                    <div class="toggle-setting toggle-profile-setting">
+                        <div class="font-bg">
+                            <i class="bi bi-gear-fill"></i>
+                        </div>
+                        <span>ตั้งค่าโปรไฟล์</span>
+                    </div>
+                    <div class="toggle-setting logout">
+                        <div class="font-bg">
+                            <i class="bi bi-box-arrow-right"></i></i>
+                        </div>
+                        <span>ออกจากระบบ</span>
+                    </div>
+                </div>
+            <%}%>
         </div>
     </div>
+    <script>
+        let profileImg =  document.querySelector("#profile-img")
+        profileImg.addEventListener('click',()=>{
+            const toggleProfile = document.querySelector(".toggle-profile")
+            const className = toggleProfile.className
+            setTimeout(()=>{
+                if(className.includes("toggle-on")){
+                    toggleProfile.className = "toggle-profile"
+                }else{
+                    toggleProfile.className = "toggle-profile toggle-on"
+                }
+            }, 40)
+        })
+    
+        document.querySelector(".logout").addEventListener("click", ()=>{
+            window.location.href = "/signout"
+        })
+        document.querySelector(".toggle-avartar").addEventListener("click", ()=>{
+            window.location.href = "/profile"
+        })
+        document.querySelector(".toggle-profile-setting").addEventListener("click", ()=>{
+            window.location.href = "/profile/setting"
+        })
+    </script>
 </nav>
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.bundle.min.js"></script>
 <script src="/js/jquery.sticky.js"></script>
 <script src="/js/click-scroll.js"></script>
 <script src="/js/custom.js"></script>
->>>>>>> Stashed changes
+
