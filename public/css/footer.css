@@ -1,8 +1,13 @@
+*{
+    color: #ffffff;
+}
+
 .p_logo_footer{
     text-align: center;
     font-size:2em;
     font-weight: bold;
-    
+    background-color: #181D31;
+    padding: 1em;
     
     
 }
@@ -13,8 +18,9 @@
     display: block;
     width: 15%;
     height: 0.22em;
-    background-color: #181D31;
-    margin: 0.45em auto;
+    margin: 0 auto;
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
 }
 
 .icon_footer{
@@ -29,13 +35,14 @@
 }
 
 .copyright{
-    background-color: #181D31;
+    background-color: #ffffff;
     padding: 0.2em;
     color: white;
 }
 
 .p_copyr{
     text-align: center;
+    color: #181D31;
 }
 
 h1{
@@ -62,9 +69,5 @@ article{
 
 .logo_footer{
     margin-top: 2em;
-}
-
-.copyright{
-    margin-top: 2em;
-
+    
 }

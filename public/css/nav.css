@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 * {
+=======
+/* *{
+>>>>>>> Stashed changes
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -41,6 +45,7 @@ nav ul li a {
     color: white;
 }
 
+<<<<<<< Updated upstream
 nav .nav-profile {
     display: flex;
     align-items: center;
@@ -123,3 +128,26 @@ nav .toggle-avartar .user-name {
     background-color: #212844;
     cursor: pointer;
 }
+=======
+nav ul li a:hover, nav ul li:hover{
+    color: #F49D1A;
+}
+
+.logo:hover{
+    color: #F49D1A;
+    transition: 0.3s;
+    font-weight: bold;
+} */
+
+.nav-link{
+    color: white !important;
+}
+
+.nav-link:hover{
+    color: #F49D1A !important;
+}
+
+.navbar-icon:hover{
+    background-color: #F49D1A !important;
+}
+>>>>>>> Stashed changes
