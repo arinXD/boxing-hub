@@ -125,6 +125,7 @@ app.get("/fetch/api", async (req, res) => {
         })
 })
 
+
 app.get('/add-athlete', async (req, res, next) => {
     try {
         // สร้าง Athlete โดยใช้ข้อมูล
@@ -195,6 +196,7 @@ app.get('/add-event', async (req, res, next) => {
         next(error);
     }
 });
+
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
     return res.render("404")
