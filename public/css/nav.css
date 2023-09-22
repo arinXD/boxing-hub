@@ -1,5 +1,4 @@
-*{
-
+ *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -124,6 +123,7 @@ nav .toggle-avartar .user-name {
     background-color: #212844;
     cursor: pointer;
 }
+
 nav ul li a:hover, nav ul li:hover{
     color: #F49D1A;
 }
@@ -133,7 +133,6 @@ nav ul li a:hover, nav ul li:hover{
     transition: 0.3s;
     font-weight: bold;
 }
-
 .nav-link{
     color: white !important;
 }
@@ -145,8 +144,6 @@ nav ul li a:hover, nav ul li:hover{
 .navbar-icon:hover{
     background-color: #F49D1A !important;
 }
-
 #profile-img:active{
     transform: scale(.92);
 }
-
