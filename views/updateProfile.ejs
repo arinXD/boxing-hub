@@ -26,7 +26,6 @@
     </style>
 
     <script>
-
         const fetProvince = (selectProvince)=>{
             fetch('https://ckartisan.com/api/provinces')
                 .then((response) => response.json())
@@ -81,7 +80,6 @@
             const selectJob = document.querySelector('#select-job')
             let province = null
             let amphoe = null
-
             await fetProvince(selectProvince)
             if(`<%= user.province%>` && `<%= user.amphoe%>`){
                 await fetAmphoe(`<%= user.province%>`, selectAmphoe)
