@@ -12,7 +12,17 @@ const storage = multer.diskStorage({
         return cb(null, `${signedIn}.${postFix}`)
     }
 })
-const upload = multer({storage})
+const fileFilter = (req, file, cb) => {
+  const allowedFileTypes = ['image/jpeg', 'image/png', 'image/jpg',];
+
+  if (allowedFileTypes.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error('Only image files are allowed!'), false);
+  }
+};
+
+const upload = multer({storage, fileFilter})
 
 router.get('/', profileController.profilePage)
 router.get('/setting', profileController.profileSetting)

@@ -1,12 +1,11 @@
 {
-    "province1":[
-        {
-            "amphoe1": ["tambon 1", "tambon 2"],
-            "amphoe2": ["tambon 1", "tambon 2"]
-        },
-        {
-            "amphoe1": ["tambon 1", "tambon 2"],
-            "amphoe2": ["tambon 1", "tambon 2"]
-        }
-    ]
+    "username": "oatza",
+    "fname":"oat",
+    "lname":"arin",
+    "nickname":"oatza arin",
+    "weightClass":"heavy wiehgt",
+    "height":166,
+    "weight":65,
+    "reach":65.89,
+    "status": true
 }

@@ -74,9 +74,9 @@ const signUpPage = (req, res, next) => {
 
 const signUp = async (req, res) => {
     let errmes = []
-    const username = req.body.username
-    const fname = req.body.fname
-    const lname = req.body.lname
+    const username = req.body.username.toLowerCase()
+    const fname = req.body.fname.toLowerCase()
+    const lname = req.body.lname.toLowerCase()
     const email = (req.body.email).toLowerCase()
     const password = req.body.password
     const confirm = req.body.confirm
@@ -105,6 +105,9 @@ const signUp = async (req, res) => {
     newUser.save()
         .then((result) => {
             req.session.userId = result._id
+            req.session.role = result.role
+            req.session.userName = result.username
+            req.session.userProfile = result.img
             res.redirect('/')
         })
         .catch((err) => {

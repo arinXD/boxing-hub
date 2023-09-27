@@ -26,7 +26,6 @@
     </style>
 </head>
 <body>
-    <%- include("../partials/nav.ejs")%>
     <div class="athlete-contain mt-4">
         <h1 class="mb-5">Athletes</h1>
         <div class="athlete-list">
@@ -34,12 +33,13 @@
             <p>ไม่มีข้อมูลนักกีฬา</p>
         <%}else{
             athletesData.forEach(athlete => {%>
+                <%
+                let athleteImg = (athlete.user.img)? athlete.user.img:"avartar.png"
+                %>
                 <div class="athlete-item">
-                    <a href="/athletes/find?id=<%=athlete._id%>">go</a>
-                    <img id="<%=athlete._id%>" class="athlete" src="<%= athlete.profileImg%>" alt="<%= athlete.aka%>">
-                    <h4 class="mt-2"><%= athlete.aka%></h4>
-                    <p class="mt-1"><%= athlete.country%></p>
-                    <p><%= //athlete%></p>
+                    <img id="<%=athlete._id%>" class="athlete" src="/images/profile/<%= athleteImg%>" alt="<%= athlete.nickname%>">
+                    <h4 class="mt-2"><%= athlete.nickname%></h4>
+                    <p class="mt-1"><%= athlete.user.country%></p>
                 </div>
             <%})
         }%>
@@ -52,7 +52,9 @@
         console.log(athlete);
         athlete.forEach(e => {
             e.addEventListener('click', ()=>{
-                window.location.href = `/athletes/info/?id=${e.id}`
+                const encodedId = encodeURIComponent(e.id);
+                console.log("Encoded ID:", encodedId);
+                window.location.href = `/athletes/find/${encodedId}`
             })
         });
     </script>
