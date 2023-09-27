@@ -12,6 +12,12 @@ const athleteSchema = new Schema({
     height:{
         type: Number,
     },
+    reach:{
+        type: Number,
+    },
+    bday:{
+        type: String,
+    },
     country:{type:String},
     weightClass:{type:String},
     profileImg:{type:String},
@@ -19,6 +25,10 @@ const athleteSchema = new Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'users',
         required: [true, "Please provide userId"]
+    },
+    confirmed: {
+        type: Boolean,
+        default: false
     }
     
 }, {timestamps : true})

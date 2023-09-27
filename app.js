@@ -12,7 +12,7 @@ const fs = require('fs');
 const addAthlete = require('./models/Athlete')
 const addEvent = require('./models/Event')
 const addMatch = require('./models/Match')
-
+const addTeam = require('./models/Team')
 
 
 // Router
@@ -21,6 +21,7 @@ const authenRouter = require('./routes/authenRouter');
 const adminRouter = require('./routes/adminRouter');
 const athleteRouter = require('./routes/athleteRouter');
 const profileRouter = require('./routes/profileRouter');
+const teamRouter = require('./routes/TeamRouterTae');
 
 // Middleware
 const signInMiddleware = require("./middleware/signInMiddleware")
@@ -78,7 +79,9 @@ app.use('/admin', adminMiddleware, adminRouter);
 
 app.use('/authen', signInMiddleware.signedIn, authenRouter);
 app.use('/athletes', athleteRouter);
+app.use('/team',teamRouter);
 app.use('/profile', signInMiddleware.insignIn, profileRouter)
+
 
 app.get("/signout", (req, res, next) => {
     req.session.destroy(() => {

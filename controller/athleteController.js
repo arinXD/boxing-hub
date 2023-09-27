@@ -31,8 +31,11 @@ const createAthlete = (req, res)=>{
             console.error(err)
         })
 }
+
+
+
 module.exports = {
     fetchAthletes,
     createAthlete,
-    findAthlete
+    findAthlete,
 }

@@ -28,18 +28,19 @@
 <body>
     <%- include("../partials/nav.ejs")%>
     <div class="athlete-contain mt-4">
-        <h1 class="mb-5">Athletes</h1>
+        <h1 class="mb-5">จัดการ Athletes</h1>
         <div class="athlete-list">
-        <%if(athletesData.length==0){%>
+        <%if(athlete.length==0){%>
             <p>ไม่มีข้อมูลนักกีฬา</p>
         <%}else{
-            athletesData.forEach(athlete => {%>
+            athlete.forEach(athlete => {%>
                 <% if (athlete.confirmed) { %>
                 <div class="athlete-item">
-                    <a href="/athletes/find?id=<%=athlete._id%>"> <img id="<%=athlete._id%>" class="athlete" src="<%= athlete.profileImg%>"></a>
+                    <a href="/athletes/editAthletes/<%=athlete._id%>"> <img id="<%=athlete._id%>" class="athlete" src="<%= athlete.profileImg%>"></a>
                     <h4 class="mt-2"><%= athlete.aka%></h4>
                     <p class="mt-1"><%= athlete.country%></p>
                     <p><%= //athlete%></p>
+                    <a class="btn btn-danger" href="/athletes/deleteAthletes/<%=athlete._id%>" onclick="return confirm('Are you sure you want to delete this Athlete?')">delete</a>
                 </div>
                 <% } %>
             <%})
