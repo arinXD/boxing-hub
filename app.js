@@ -11,17 +11,21 @@ const fs = require('fs');
 
 const addAthlete = require('./models/Athlete')
 const addEvent = require('./models/Event')
-const addMatch = require('./models/Match')
+// const addMatch = require('./models/Match')
 const addTeam = require('./models/Team')
+const addMatch = require('./models/EventOat')
+
 
 
 // Router
 const indexRouter = require('./routes/indexRouter');
 const authenRouter = require('./routes/authenRouter');
 const adminRouter = require('./routes/adminRouter');
-const athleteRouter = require('./routes/athleteRouter');
+const athleteRouter = require('./routes/athleteRouterOat');
 const profileRouter = require('./routes/profileRouter');
 const teamRouter = require('./routes/TeamRouterTae');
+const eventRouter = require('./routes/eventRouter');
+const matchRouter = require('./routes/matchRouter');
 
 // Middleware
 const signInMiddleware = require("./middleware/signInMiddleware")
@@ -51,7 +55,7 @@ const url = "mongodb://127.0.0.1:27017/tko";
 
 mongoose.connect(url)
     .then(() => {
-        app.listen(4000)
+        app.listen(3000)
         console.log("connect to mongo compass");
     })
     .catch((err) => {
@@ -81,6 +85,8 @@ app.use('/authen', signInMiddleware.signedIn, authenRouter);
 app.use('/athletes', athleteRouter);
 app.use('/team',teamRouter);
 app.use('/profile', signInMiddleware.insignIn, profileRouter)
+app.use('/event', eventRouter)
+app.use('/match', matchRouter)
 
 
 app.get("/signout", (req, res, next) => {
@@ -183,7 +189,7 @@ app.get('/add-event', async (req, res, next) => {
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
-    return res.render("404")
+    return res.status(404).render("404")
 });
 
 // error handler

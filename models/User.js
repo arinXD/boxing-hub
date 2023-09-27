@@ -46,7 +46,6 @@ const userSchema = new Schema({
     amphoe:String,
     tambon:String,
     address:String,
-
 }, {timestamps : true})
 
 const User = mongoose.model('users', userSchema)

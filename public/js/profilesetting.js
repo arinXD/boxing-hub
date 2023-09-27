@@ -23,10 +23,6 @@ document.forms['upload-profile-form'].addEventListener('change', () => {
     document.forms['upload-profile-form'].submit()
 })
 
-document.querySelector("#profile-setting").addEventListener('click', () => {
-    window.location.href = "/profile/setting"
-})
-
 const modalProfile = (img)=>{
     Swal.fire({
         imageUrl: `/images/profile/${img}`,

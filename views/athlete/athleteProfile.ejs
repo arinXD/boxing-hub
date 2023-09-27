@@ -1,13 +1,341 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <%- include("../partials/header.ejs")%>
+    <%
+    const callAge=(bday)=>{
+        const birthDate = new Date(bday);
+        const currentDate = new Date();
+        const ageInMilliseconds = currentDate - birthDate;
+        const age = Math.floor(ageInMilliseconds / (1000 * 60 * 60 * 24 * 365.25));
+        return age
+    }
+    const convertSecondsToMin = (seconds) => {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        const formattedTime = `(${minutes}:${remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds})`;
+        return formattedTime;
+    }
+    const convertSecondsToTime = (seconds) => {
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        const remainingSeconds = seconds % 60;
+        let formattedTime = '';
+    
+        if (hours > 0) {
+            formattedTime += `${hours} ชั่วโมง}`;
+        }
+        if (minutes > 0) {
+            if (formattedTime.length > 0) {
+            formattedTime += `${hours > 0 ? ' ' : ''}${minutes < 10 ? '0' + minutes : minutes} นาที`;
+            } else {
+            formattedTime += `${minutes} นาที`;
+            }
+        }
+        if (remainingSeconds > 0) {
+            if (formattedTime.length > 0) {
+            formattedTime += `${minutes > 0 ? ' ' : ''}${remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds} วินาที`;
+            } else {
+            formattedTime += `${remainingSeconds} วินาที`;
+            }
+        }
+        return formattedTime.trim();
+    }
+    
+    const formatDate = (inputDate)=>{
+        const date = new Date(inputDate);
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return date.toLocaleDateString('en-US', options);
+    }
+    const capitalize = (string)=>{
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+    var totalRound = 0
+    var totalTime = 0
+    var totalMatch = 0
+    for(let match of athlete.matches){
+        totalMatch++
+        totalRound += match.resultRound
+        totalTime += (((match.resultRound)-1)*3)*60+match.resultClock
+    }
+    %>
+    <script>
+        window.onload = ()=>{
+            const overAll = document.getElementById('over-all');
+            new Chart(overAll, {
+                type: 'pie',
+                data: {
+                labels: [
+                    'Win',
+                    'Loss',
+                    'Draw'
+                ],
+                datasets: [{
+                    label: `สถิติ <%= athlete.nickname%>`,
+                    data: [`<%= athlete.wins%>`, `<%= athlete.losses%>`, `<%= athlete.draws%>`],
+                    backgroundColor: [
+                    '#C70039',
+                    '#081135',
+                    'rgb(255, 205, 86)'
+                    ],
+                    hoverOffset: 4
+                }]
+                }
+            })
+            
+            let barChartData = {
+                labels: [
+                    "น็อกเอาต์",
+                    "ทีเคโอ",
+                    "คะแนนเอกฉันท์",
+                    "คะแนนเสียงข้างมาก",
+                ],
+                datasets: [
+                    {
+                    label: "ชนะ",
+                    backgroundColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 205, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    ],
+                    borderColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(255, 159, 64)',
+                    'rgb(255, 205, 86)',
+                    'rgb(75, 192, 192)',
+                    ],
+                    borderWidth: 1,
+                    data: [
+                        `<%= athlete.knockouts%>`,
+                        `<%= athlete.technicalKnockouts%>`,
+                        `<%= athlete.overwhelmingScore%>`,
+                        `<%= athlete.majorityVotes%>`,
+                    ]
+                    },
+                    {
+                    label: "แพ้",
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.4)',
+                        'rgba(255, 159, 64, 0.4)',
+                        'rgba(255, 205, 86, 0.4)',
+                        'rgba(75, 192, 192, 0.4)',
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                    ],
+                    borderWidth: 1,
+                    data: [
+                        `<%= athlete.knockoutsLosses%>`,
+                        `<%= athlete.technicalKnockoutsLosses%>`,
+                        `<%= athlete.overwhelmingScoreLosses%>`,
+                        `<%= athlete.majorityVotesLosses%>`,
+                    ]
+                    },
+                ]
+                }
+                var chartOptions = {
+                responsive: true,
+                legend: {
+                    position: "top"
+                },
+                title: {
+                    display: true,
+                    text: "Chart.js Bar Chart"
+                },
+                }
+                
+                let ctx = document.getElementById("canvas").getContext("2d");
+                window.myBar = new Chart(ctx, {
+                    type: "bar",
+                    data: barChartData,
+                    options: chartOptions
+                });
+        }
+    </script>
+    <style>
+        body{
+            background-color: #222946;
+        }
+        .athlete-img{
+            display: block;
+            width: 350px;
+            height: 350px;
+        }
+        .athlete-info{
+            border: 1px solid black;
+            width: 100%;
+            padding: 2rem;
+        }
+        .athlete-info h1{
+            border-bottom: 1px solid #dddddd;
+            padding-bottom: 1.5rem;
+        }
+        .athlete-info p{
+            margin: 0;
+        }
+        .athlete-hero{
+            display: flex;
+            border: 1px solid black;
+            margin-bottom: 4rem;
+            column-gap: .2em;
+        }
+        .athlete-detail{
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+        }
+        .dashboard{
+            display: flex;
+            justify-content: space-around;
+            align-items: start;
+        }
+    </style>
 </head>
 <body>
-    <%- include("../partials/nav.ejs")%>
-    <h1><%= athlete.user.fname%> “<%= athlete.aka%>” <%= athlete.user.lname%></h1>
-    
+   <%- include("../partials/nav.ejs")%>
+   <%= athlete.matches[0].createdAt%>
+    <div class="container my-5">
+        <div class="athlete-hero">
+            <img class="athlete-img" src="/images/profile/<%= athlete.user.img%>" alt="<%= athlete.nickname%>">
+            <div class="athlete-info ">
+                <h1><%= athlete.user.fname%> “<%= capitalize(athlete.nickname)%>“ <%= athlete.user.lname%> </h1>
+                <div class="mt-4 athlete-detail">
+                    <div class="detail-item">
+                        <label>พิกัดน้ำหนัก</label>
+                        <p><%= (athlete.weight*2.2).toFixed(2)%> ปอนด์ / <%= athlete.weight%> กิโลกรัม</p>
+                    </div>
+                    <div class="detail-item">
+                        <label>ส่วนสูง</label>
+                        <p><%= (athlete.height*0.3937).toFixed(2)%> ฟุต / <%= athlete.height%> ซม.</p>
+                    </div>
+                    <div class="detail-item">
+                        <label>ช่วงชก</label>
+                        <p><%= athlete.reach%> ซม.</p>
+                    </div>
+                    <div class="detail-item">
+                        <label>อายุ</label>
+                        <p><%= callAge(athlete.bday)%> ปี</p>
+                    </div>
+                    <div class="detail-item">
+                        <label>ประเทศ</label>
+                        <p><%= athlete.country%></p>
+                    </div>
+                    <div class="detail-item">
+                        <label>ทีม</label>
+                        <p><%= athlete.team%></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard">
+            <div>
+                <div class="mb-5">
+                    <h2>ผลการแข่งขัน</h2>
+                    <div class="d-flex gap-3">
+                        <div>ชนะ - <%= athlete.wins%></div>
+                        <div>แพ้ - <%= athlete.losses%></div>
+                        <div>เสมอ - <%= athlete.draws%></div>
+                    </div>
+                    <div class="d-flex gap-3">
+                        <div><%= athlete.knockouts%></div>
+                        <div>น็อกเอาต์</div>
+                        <div><%= athlete.knockoutsLosses%></div>
+                    </div>
+                    <div class="d-flex gap-3">
+                        <div><%= athlete.technicalKnockouts%></div>
+                        <div>ทีเคโอ</div>
+                        <div><%= athlete.technicalKnockoutsLosses%></div>
+                    </div>
+                    <div class="d-flex gap-3">
+                        <div><%= athlete.overwhelmingScore%></div>
+                        <div>คะแนนเอกฉันท์</div>
+                        <div><%= athlete.overwhelmingScoreLosses%></div>
+                    </div>
+                    <div class="d-flex gap-3">
+                        <div><%= athlete.majorityVotes%></div>
+                        <div>คะแนนเสียงข้างมาก</div>
+                        <div><%= athlete.majorityVotesLosses%></div>
+                    </div>
+                </div>
+                <div>
+                    <h2>ข้อมูลการแข่งขัน</h2>
+                    <div>
+                        จำนวนการทั้งหมด <%= totalRound%> ยก | เวลาในการชกทั้งหมด <%= totalTime%> วินาที
+                    </div>
+                    <div>
+                        อัตราการชนะ <%= (athlete.wins/(athlete.wins+athlete.losses))*100%>%
+                    </div>
+                    <div>
+                        เวลาการแข่งขันทั้งหมด <%= convertSecondsToTime(totalTime)%>
+                    </div>
+                    <div>
+                        เวลาการแข่งขันโดยเฉลี่ยแต่ละยก <%= ((totalTime/60)/totalRound).toFixed(3)%> นาที
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div style="width: 350px; margin: 0 auto 3em;">
+                    <canvas id="over-all" class="mb-4" ></canvas>
+                </div>
+                <div style="width: 450px;">
+                    <canvas id="canvas" width="550px"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4">
+            <h2>สถิติการชก</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ผลการแข่งขัน</th>
+                        <th>การตัดสิน</th>
+                        <th>ยก</th>
+                        <th>คู่แข่ง</th>
+                        <th>อีเวนต์</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%
+                        var totalRound = 0
+                        var totalTime = 0
+                        var totalMatch = 0
+                    %>
+                    <%for(let match of athlete.matches.sort()){
+                        totalMatch++
+                        totalRound += match.resultRound
+                        totalTime += (((match.resultRound)-1)*3)*60+match.resultClock
+                        
+                        
+                        for(var matchDetail of match.athletes){
+                            if(athlete._id==matchDetail._id._id.toString()){
+                                var resultMatch = (matchDetail.winner)? "ชนะ":"แพ้"
+                                var resultClass = (matchDetail.winner)? "text-success":"text-danger"
+                            }else{
+                                var compet = matchDetail._id
+                            }
+                        }%>
+                        <tr>
+                            <td class="<%= resultClass%>"><%= resultMatch%></td>
+                            <td><%= match.resultType%></td>
+                            <td>ยก <%= match.resultRound%> <%= convertSecondsToMin(match.resultClock)%></td>
+                            <%let competImg = (compet.user.img)? compet.user.img:"avartar.png"%>
+                            <td class="d-flex">
+                                <img width="50px" height="50px" src="/images/profile/<%= competImg%>" alt="">
+                                <p class="text-center ms-3">
+                                    <%= compet.nickname%> <%= compet.user.fname%> <br> <%= compet.country%>
+                                </p>
+                            </td>
+                            <td><%= match.event.eventName%> <br> <%= formatDate(match.event.day)%></td>
+                        </tr>
+                    <%}%>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
