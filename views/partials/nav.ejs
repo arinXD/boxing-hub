@@ -3,6 +3,13 @@
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 <!-- icon -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap"
+    rel="stylesheet">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/bootstrap-icons.css" rel="stylesheet">
+<link href="css/templatemo-topic-listing.css" rel="stylesheet">
 <!-- nav style -->
 <link rel="stylesheet" href="/css/nav.css">
 <!-- <nav>
@@ -77,44 +84,8 @@ const img = (userProfile)? userProfile:"avartar.png"
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link click-scroll" href="/team">ทีม</a>
-                </li>
-
-                <li class="nav-item">
                     <a class="nav-link click-scroll" href="#">เกี่ยวกับเรา</a>
                 </li>
-
-
-                <%if(userRole==0){%>
-                    <li class="nav-item">
-                        <a class="nav-link click-scroll" href="/athletes/add">ลงสมัคร</a>
-                    </li>
-                <%}%>
-                <%if(userRole==2){%>
-                    <li class="nav-item">
-                        <a class="nav-link click-scroll text-danger" href="#">รอการยืนยัน</a>
-                    </li>
-                <%}%>
-                <%if(userRole==3){%>
-                    <li class="nav-item">
-                        <a class="nav-link click-scroll text-danger" href="#">ลงทะเบียนเรียบร้อย</a>
-                    </li>
-                <%}%>
-                
-                <%if(userRole==1){%>
-                    
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                          จัดการนักกีฬา
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-dark text-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                            <li><a class="nav-link click-scroll dropdown-item" href="/athletes/confirm">ยืนยัน</a></li>
-                          <li><a class=" nav-link click-scrolldropdown-item" href="/athletes/adminAdd">เพิ่ม</a></li>
-                          <li><a class=" nav-link click-scrolldropdown-item" href="/athletes/editAthlete">แก้ไข</a></li>
-                        </ul>
-                      </li>
-                      
-                <%}%>
 
                 <%if(userRole==1){%>
                     <li class="nav-item">
@@ -175,9 +146,9 @@ const img = (userProfile)? userProfile:"avartar.png"
         })
     </script>
 </nav>
-<!-- <script src="/js/jquery.min.js"></script>
+<script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.bundle.min.js"></script>
 <script src="/js/jquery.sticky.js"></script>
 <script src="/js/click-scroll.js"></script>
-<script src="/js/custom.js"></script> -->
+<script src="/js/custom.js"></script>
 
