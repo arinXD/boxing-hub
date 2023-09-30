@@ -27,7 +27,6 @@ const adminRouter = require('./routes/adminRouter');
 const athleteRouter = require('./routes/athleteRouter');
 const profileRouter = require('./routes/profileRouter');
 const teamRouter = require('./routes/TeamRouterTae');
-const eventRouter = require('./routes/eventRouter');
 const matchRouter = require('./routes/matchRouter');
 
 // Middleware
