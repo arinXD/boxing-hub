@@ -1,29 +1,29 @@
-// const mongoose = require('mongoose')
-// const Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema;
 
-// const eventSchema = new Schema({
-//     eventName:{
-//         type: String
-//     },
-//     shortName:{
-//         type: String
-//     },
-//     season:{
-//         type: Number
-//     }, 
-//     day:{
-//         type: Date
-//     },
-//     dateTime:{
-//         type: String
-//     },
-//     matches:[{
-//         type: mongoose.Schema.ObjectId,
-//         ref: 'matches'
-//     }], 
+const eventSchema = new Schema({
+    eventName:{
+        type: String
+    },
+    shortName:{
+        type: String
+    },
+    season:{
+        type: Number
+    }, 
+    day:{
+        type: Date
+    },
+    dateTime:{
+        type: String
+    },
+    matches:[{
+        type: mongoose.Schema.ObjectId,
+        ref: 'matches'
+    }], 
 
-// }, {timestamps: true})
+}, {timestamps: true})
 
-// const Event = mongoose.model('events', eventSchema)
+const Event = mongoose.model('events', eventSchema)
 
-// module.exports = Event
+module.exports = Event
