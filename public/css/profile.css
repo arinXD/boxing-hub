@@ -89,6 +89,7 @@ input[type="file"] {
     position: absolute;
     top: 60%;
     display: none;
+    z-index: 5;
 }
 .toggle-on{
     display: block;
@@ -96,7 +97,7 @@ input[type="file"] {
 .change-profile
 ,.view-profile{
     font-size: 1.15em;
-    padding: 1rem 1.5rem;
+    padding: .75rem 1.5rem;
     display: flex;
     cursor: pointer;
     border-radius: 10px;
