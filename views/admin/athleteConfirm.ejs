@@ -11,49 +11,59 @@ integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2
 
 <body>
     <h1>Athlete Confirmation Page</h1>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>AKA</th>
-            <th>Weight</th>
-            <th>Height</th>
-            <!-- Add more table headers for other athlete info -->
-            <th>Confirmation</th>
-        </tr>
-    </thead>
-    <table>
-        <% if (athletesData.length == 0) { %>
-            <p>ไม่มีข้อมูลนักกีฬา</p>
-
-        <% } else { 
-            athletesData.forEach(athlete => { %>
-
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>AKA</th>
+                <th>Weight</th>
+                <th>Height</th>
+                <th>Team</th>
+                <th>Confirmation</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+            <% if (athletesData.length == 0) { %>
                 <tr>
-                    <td>
-                        <%= athlete.name %>
-                    </td>
-                    <td>
-                        <%= athlete.aka %>
-                    </td>
-                    <td>
-                        <%= athlete.weight %>
-                    </td>
-                    <td>
-                        <%= athlete.height %>
-                    </td>
-                    <td>
-                        <!-- Create a form or button to confirm the athlete -->
-                        <a class="btn btn-warning" href="/athletes/info/<%=athlete._id%>"class="mr-2">info</a>
-                        <!-- <form method="POST" action="confirmAthlete/<%= athlete._id %>">
-                            <button type="submit">Confirm</button>
-                        </form> -->
-                        
-                    </td>
+                    <th scope="row">ไม่มีข้อมูลนักกีฬา</th>
                 </tr>
-            <% }); 
-        } %>
+    
+            <% }else { 
+                athletesData.forEach(athlete => { %>
+    
+                    <tr>
+                        <td>
+                            <%= athlete.user.fname %>
+                            <%= athlete.user.lname %>
+                        </td>
+                        <td>
+                            <%= athlete.nickname %>
+                        </td>
+                        <td>
+                            <%= athlete.weight %>
+                        </td>
+                        <td>
+                            <%= athlete.height %>
+                        </td>
+                        <td>
+                            <%= athlete.team.teamname %>
+                        </td>
+                        
+                        <td>
+                            <!-- Create a form or button to confirm the athlete -->
+                            <a class="btn btn-warning" href="/athletes/info/<%=athlete._id%>"class="mr-2">info</a>
+                            <!-- <form method="POST" action="confirmAthlete/<%= athlete._id %>">
+                                <button type="submit">Confirm</button>
+                            </form> -->
+                            
+                        </td>
+                    </tr>
+                <% }); 
+            } %>
         </tbody>
-    </table>
+      </table>
 </body>
 
 </html>

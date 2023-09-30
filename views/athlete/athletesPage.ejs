@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <%- include("../partials/header.ejs")%>
+    <%- include("../partials/nav.ejs")%>
     <style>
         .athlete-contain{
             padding: 1em 5em;
@@ -34,19 +35,16 @@
         <%}else{
             athletesData.forEach(athlete => {%>
                 <% if (athlete.confirmed) { %>
+                    <%
+                   let athleteImg = (athlete.user.img)? athlete.user.img:"avartar.png"
+                  // let athleteImg = "avartar.png"
+                    %>
                 <div class="athlete-item">
-                    <a href="/athletes/find?id=<%=athlete._id%>"> <img id="<%=athlete._id%>" class="athlete" src="<%= athlete.profileImg%>"></a>
-                    <h4 class="mt-2"><%= athlete.aka%></h4>
+                    <img id="<%=athlete._id%>" class="athlete" src="/images/profile/<%= athleteImg%>" alt="<%= athlete.nickname%>">
+                    <h4 class="mt-2"><%= athlete.nickname%></h4>
                     <p class="mt-1"><%= athlete.country%></p>
                     <p><%= //athlete%></p>
-                <%
-                //let athleteImg = (athlete.user.img)? athlete.user.img:"avartar.png"
-                %>
-                <!-- <div class="athlete-item">
-                    <img id="<%=athlete._id%>" class="athlete" src="/images/profile/<%= athleteImg%>" alt="<%= athlete.aka%>">
-                    <h4 class="mt-2"><%= athlete.nickname%></h4>
-                    <p class="mt-1"><%= athlete.user.country%></p>
-                </div> -->
+
                 <% } %>
             <%})
         }%>
