@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/header.ejs')%>
+    <style>
+        ul{
+            list-style-type: none;
+        }
+        ul li a{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            border: 1px solid black;
+            width: fit-content;
+        }
+        ul li a img{
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4">Team Page</h1>
+        
+        <ul class="d-grid gap-5" style="grid-template-columns: repeat(4, 1fr);">
+            <% teams.forEach(function(team) { %>
+                <li>
+                    <a href="/team/info/<%= team._id%>"> 
+                        <img src="https://cdn3.f-cdn.com/contestentries/1780275/43949250/5ee5c4e1071ce_thumbCard.jpg" alt="<%= team.teamname %>">
+                        <%= team.teamname %>
+                    </a>
+                </li>
+            <% }); %>
+        </ul>
+    </div>
+</body>
+</html>

@@ -7,6 +7,7 @@ const fetchAthletes = async (req, res) => {
 
     await Athlete.find().populate('user')
         .then((athletes) => {
+            // return res.send(athletes)
             return res.render("athlete/athletesPage", {
                 athletesData: athletes
             })

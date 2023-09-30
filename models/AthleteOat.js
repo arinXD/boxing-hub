@@ -66,7 +66,15 @@ const athleteSchema = new Schema({
         ref: 'users',
         required: [true, "Please provide userId"]
     },
-    
+    team: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'teams', // Reference to the Team model
+    },
+
+    confirmed: {
+        type: Boolean,
+        default: false
+    }  
 }, {timestamps : true})
 
 const Athlete = mongoose.model('athletes', athleteSchema)

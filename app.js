@@ -9,8 +9,12 @@ const session = require("express-session")
 const fetch = require("node-fetch");
 const fs = require('fs');
 
-// const addAthlete = require('./models/Athlete')
+
+const addAthlete = require('./models/AthleteOat')
 const addEvent = require('./models/Event')
+// const addMatch = require('./models/Match')
+const addTeam = require('./models/Team')
+
 const addMatch = require('./models/EventOat')
 
 
@@ -21,6 +25,7 @@ const authenRouter = require('./routes/authenRouter');
 const adminRouter = require('./routes/adminRouter');
 const athleteRouter = require('./routes/athleteRouterOat');
 const profileRouter = require('./routes/profileRouter');
+const teamRouter = require('./routes/TeamRouterTae');
 const eventRouter = require('./routes/eventRouter');
 const matchRouter = require('./routes/matchRouter');
 
@@ -80,9 +85,11 @@ app.use('/admin', adminMiddleware, adminRouter);
 
 app.use('/authen', signInMiddleware.signedIn, authenRouter);
 app.use('/athletes', athleteRouter);
+app.use('/team',teamRouter);
 app.use('/profile', signInMiddleware.insignIn, profileRouter)
 app.use('/event', eventRouter)
 app.use('/match', matchRouter)
+
 
 app.get("/signout", (req, res, next) => {
     req.session.destroy(() => {
