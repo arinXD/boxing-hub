@@ -10,8 +10,7 @@ const bcrypt = require('bcrypt');
 
 
 router.get('/', athleteController.fetchAthletes)
-router.get('/find/:id', athleteController.findAthlete)
-router.get('/find/json/:id', athleteController.findAthleteJson)
+router.get('/find:id', athleteController.findAthlete)
 router.post('/', athleteController.createAthlete)
 
 router.get('/add',async function (req, res, next) {

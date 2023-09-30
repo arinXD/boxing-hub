@@ -2,7 +2,8 @@
 <html lang="en">
 
 <head>
-    <%- include("./partials/header.ejs")%>
+
+    <!-- <%- include("./partials/header.ejs")%> -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
@@ -14,6 +15,12 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap-icons.css" rel="stylesheet">
     <link href="css/templatemo-topic-listing.css" rel="stylesheet">
+    <!-- icon -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+<!-- nav style -->
+<link rel="stylesheet" href="/css/nav.css">
+
+
 </head>
 
 <body>
@@ -213,9 +220,24 @@
                     </div>
                 </div>
 
+                
+
+
+                
+               
+
             </div>
         </div>
     </section>
+        <!-- <div class="container mt-5">
+            <h1>Welcome <%= name%>
+            </h1>
+            <ul>
+                <li><a href="/authen/signin">Sign In</a></li>
+                <li><a href="/authen/signup">Sign up</a></li>
+            </ul>
+        </div> -->
+
         <%- include("./partials/footer.ejs")%>
         <script src="/js/jquery.min.js"></script>
         <script src="/js/bootstrap.bundle.min.js"></script>
