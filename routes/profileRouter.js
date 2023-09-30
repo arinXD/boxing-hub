@@ -6,28 +6,19 @@ const path = require('path');
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, path.join(__dirname, '../public/images/profile'))
+    //   D:\Github\tko_project\public\images
+    //   D:\Github\public\images\profile\6507abe54a9ae45d6f7f33da.png
     },
     filename: function (req, file, cb) {
         const postFix = file.originalname.split(".")[1]
         return cb(null, `${signedIn}.${postFix}`)
     }
 })
-const fileFilter = (req, file, cb) => {
-  const allowedFileTypes = ['image/jpeg', 'image/png', 'image/jpg',];
-
-  if (allowedFileTypes.includes(file.mimetype)) {
-    cb(null, true);
-  } else {
-    cb(new Error('Only image files are allowed!'), false);
-  }
-};
-
-const upload = multer({storage, fileFilter})
+const upload = multer({storage})
 
 router.get('/', profileController.profilePage)
 router.get('/setting', profileController.profileSetting)
 router.post('/upload/image', upload.single('profileImg'), profileController.uploadProfileImages)
-router.post('/update', profileController.profileUpdate)
 
 
 module.exports = router;

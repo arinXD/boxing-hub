@@ -8,6 +8,7 @@ const userSchema = new Schema({
     },
     job:{
         type:String,
+        // required: [true, "Please provide job"],
     }
     ,
     fname:{
@@ -41,11 +42,7 @@ const userSchema = new Schema({
     athlete:{
         type: mongoose.Schema.ObjectId,
         ref: 'athletes'
-    },
-    province:String,
-    amphoe:String,
-    tambon:String,
-    address:String,
+    }
 }, {timestamps : true})
 
 const User = mongoose.model('users', userSchema)
