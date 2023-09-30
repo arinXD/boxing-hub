@@ -74,8 +74,7 @@ const athleteSchema = new Schema({
     confirmed: {
         type: Boolean,
         default: false
-    }
-    
+    }  
 }, {timestamps : true})
 
 const Athlete = mongoose.model('athletes', athleteSchema)

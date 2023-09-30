@@ -14,7 +14,6 @@ router.get('/find/:id', athleteController.findAthlete)
 router.get('/find/json/:id', athleteController.findAthleteJson)
 router.post('/', athleteController.createAthlete)
 
-
 router.get('/add',async function (req, res, next) {
 
     const teams = await Team.find();
@@ -319,4 +318,5 @@ router.get('/deleteAthletes/:_id', (req, res) => {
             res.status(500).send('An error occurred');
         });
 });
+
 module.exports = router;

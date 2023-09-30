@@ -37,14 +37,11 @@
                 <% if (athlete.confirmed) { %>
                     <%
                    let athleteImg = (athlete.user.img)? athlete.user.img:"avartar.png"
-                  // let athleteImg = "avartar.png"
                     %>
                 <div class="athlete-item">
                     <img id="<%=athlete._id%>" class="athlete" src="/images/profile/<%= athleteImg%>" alt="<%= athlete.nickname%>">
                     <h4 class="mt-2"><%= athlete.nickname%></h4>
                     <p class="mt-1"><%= athlete.country%></p>
-                    <p><%= //athlete%></p>
-
                 <% } %>
             <%})
         }%>
