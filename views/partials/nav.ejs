@@ -77,8 +77,44 @@ const img = (userProfile)? userProfile:"avartar.png"
                 </li>
 
                 <li class="nav-item">
+                    <a class="nav-link click-scroll" href="/team">ทีม</a>
+                </li>
+
+                <li class="nav-item">
                     <a class="nav-link click-scroll" href="#">เกี่ยวกับเรา</a>
                 </li>
+
+
+                <%if(userRole==0){%>
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" href="/athletes/add">ลงสมัคร</a>
+                    </li>
+                <%}%>
+                <%if(userRole==2){%>
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll text-danger" href="#">รอการยืนยัน</a>
+                    </li>
+                <%}%>
+                <%if(userRole==3){%>
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll text-danger" href="#">ลงทะเบียนเรียบร้อย</a>
+                    </li>
+                <%}%>
+                
+                <%if(userRole==1){%>
+                    
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          จัดการนักกีฬา
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark text-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                            <li><a class="nav-link click-scroll dropdown-item" href="/athletes/confirm">ยืนยัน</a></li>
+                          <li><a class=" nav-link click-scrolldropdown-item" href="/athletes/adminAdd">เพิ่ม</a></li>
+                          <li><a class=" nav-link click-scrolldropdown-item" href="/athletes/editAthlete">แก้ไข</a></li>
+                        </ul>
+                      </li>
+                      
+                <%}%>
 
                 <%if(userRole==1){%>
                     <li class="nav-item">

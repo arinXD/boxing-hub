@@ -50,6 +50,7 @@
     const capitalize = (string)=>{
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
+
     const judgement = (txt)=>{
         const data = {
             "knockouts":"น็อกเอาท์",
@@ -59,6 +60,7 @@
         }
         return data[txt]
     }
+
     var totalRound = 0
     var totalTime = 0
     var totalMatch = 0
@@ -83,9 +85,11 @@
                     label: `สถิติ <%= athlete.nickname%>`,
                     data: [`<%= athlete.wins%>`, `<%= athlete.losses%>`, `<%= athlete.draws%>`],
                     backgroundColor: [
+
                     '#8C0000',
                     '#19191E;',
                     '#FFAF00'
+
                     ],
                     hoverOffset: 4
                 }]
