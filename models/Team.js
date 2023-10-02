@@ -5,9 +5,11 @@ const teamSchema = new Schema({
     teamname:{
         type: String,
     },
+    desc:String,
     athletes: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'athletes',
+        default: null
     }],
     logo:String,
 }, {timestamps : true})

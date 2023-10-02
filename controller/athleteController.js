@@ -1,8 +1,13 @@
 const Athlete = require("../models/AthleteOat")
 const User = require("../models/User");
+const Team = require("../models/Team");
 const bcrypt = require("bcrypt")
 
-
+const fetchAthletesJson = async(req, res) => {
+    const athletes = await Athlete.find({confirmed:true, team:null}).populate('user')
+    return res.json(athletes)
+    
+}
 const fetchAthletes = async (req, res) => {
 
     await Athlete.find().populate('user')
@@ -146,9 +151,30 @@ const createAthlete = async (req, res) => {
                 })
         })
 }
+const fetchAthletesByNameJson = async(req, res)=>{
+    const searchNickname = req.params.nickname
+    Athlete.find({ nickname: { $regex: new RegExp(searchNickname, 'i') }, confirmed:true, team:null })
+    .populate('user')
+    .then(athletes => {
+        return res.json(athletes)
+    })
+    .catch(error => {
+        console.error('Error querying database:', error);
+    });
+}
+
+const addAthlete = async function (req, res, next) {
+    const teams = await Team.find();
+    res.render('athlete/athleteAdd.ejs', {
+        teams
+    });
+}
 module.exports = {
     fetchAthletes,
     createAthlete,
     findAthlete,
-    findAthleteJson
+    findAthleteJson,
+    fetchAthletesJson,
+    fetchAthletesByNameJson,
+    addAthlete,
 }
