@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("../partials/header.ejs")%>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: 'Kanit', sans-serif;
+            }
+            .hero {
+                padding: 5em 15em 2em;
+                background-color: white;
+                color: #19191E;
+                display: flex;
+                gap: 5em;
+            }
+            .hero img{
+                width: 300px;
+                height: 250px;
+                object-fit: contain;
+                mix-blend-mode: multiply;
+            }
+            .desc h1{
+                word-spacing: .35em;
+                text-transform: uppercase;
+            }
+            ul{
+                list-style-type: none;
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 4em;
+            }
+            li{
+                display: flex;
+                flex-direction: column;
+                width: fit-content;
+                margin: 0 auto;
+            }
+            li img{
+                display: block;
+                object-fit: cover;
+                width: 13em;
+                height: 15em;
+                margin-bottom: .5em;
+            }
+            li a{
+                text-decoration: none;
+                color: #19191E;
+                text-align: center;
+            }
+            li a h2{
+                margin: 0;
+                margin-bottom: .2em;
+            }
+            li a p{
+                margin: 0;
+            }
+        </style>
+</head>
+
+<body>
+    <%- include("../partials/nav.ejs")%>
+        <div class="hero">
+            <img class="d-block" src="/images/teams/<%=team.logo%>" alt="<%=team.teamname%>">
+            <div class="desc">
+                <h1>
+                    <%=team.teamname%>
+                </h1>
+                <p>
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aspernatur consequuntur ex maiores aliquid
+                    nisi saepe recusandae fuga provident molestiae, asperiores ullam deleniti. Ratione dolore vitae ab
+                    quam assumenda, qui ex eveniet odio nulla numquam, minus est. Temporibus laborum labore delectus
+                    minus non mollitia architecto officia odio id, animi sunt consectetur iure. Mollitia, esse vero ab
+                    debitis nobis cupiditate ex harum explicabo, quia voluptatem rem officiis corporis, perspiciatis
+                </p>
+            </div>
+        </div>
+        <div class="container">
+            <hr>
+            <div class="d-flex justify-content-between">
+                <h2 class="m-0">Athletes</h2>
+            </div>
+            <ul class="mt-4 athletes-list">
+                <%
+                for (const ath of team.athletes) {%>
+                    <li>
+                        <a href="/athletes/find/<%= ath._id%>">
+                            <img src="/images/profile/<%=ath.user.img%>" alt="">
+                            <h2>
+                                <%=ath.nickname%>
+                            </h2>
+                            <p>
+                                <%=ath.country%>
+                            </p>
+                        </a>
+                    </li>
+                <%}
+                %>
+            </ul>
+        </div>
+</body>
+
+</html>

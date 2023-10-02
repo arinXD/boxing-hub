@@ -8,23 +8,29 @@ const bcrypt = require('bcrypt');
 router.get('/', async function (req, res, next) {
     try {
         const teams = await Team.find().populate('athletes');
-        // return res.send(teams)
-        res.render('team/teamPage.ejs', { teams }); // Pass the teams data to your EJS template
+        res.render('team/teamPage.ejs', { teams });
     } catch (err) {
         console.error(err);
-        // Handle errors here, such as sending an error response or rendering an error page
         res.status(500).send('Internal Server Error');
     }
 });
 router.get('/info/:id', async function (req, res, next) {
     try {
         const id = req.params.id
-        const team = await Team.findOne({_id:id}).populate('athletes');
-        return res.send(team)
-        res.render('team/teamPage.ejs', { teams }); // Pass the teams data to your EJS template
+        const team = await Team.findOne({_id:id})
+        .populate('athletes')
+        .populate({
+            path: 'athletes',
+            populate: {
+              path: 'user', 
+              model: 'users'
+            }
+        })
+        return res.render('team/teamInfo',{
+            team
+        })
     } catch (err) {
         console.error(err);
-        // Handle errors here, such as sending an error response or rendering an error page
         res.status(500).send('Internal Server Error');
     }
 });
