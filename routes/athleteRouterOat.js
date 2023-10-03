@@ -10,6 +10,9 @@ const bcrypt = require('bcrypt');
 
 
 router.get('/', athleteController.fetchAthletes)
+router.get('/json', athleteController.fetchAthletesJson)
+router.get('/json/:nickname', athleteController.fetchAthletesByNameJson)
+router.get('/search', athleteController.searchAthleteJson)
 router.get('/find/:id', athleteController.findAthlete)
 router.get('/find/json/:id', athleteController.findAthleteJson)
 router.post('/', athleteController.createAthlete)
@@ -17,11 +20,7 @@ router.post('/', athleteController.createAthlete)
 
 // ------------------------------ส่งคำขอลงสมัครนักกีฬา-----------------------------------------------------
 
-router.get('/add', async function (req, res, next) {
-
-    const teams = await Team.find();
-    res.render('athlete/athleteAdd.ejs', { teams });
-});
+router.get('/add', athleteController.addAthlete);
 
 const RegisterAthlete = async (req, res) => {
     try {

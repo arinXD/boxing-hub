@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-
+const adminController = require("../controller/adminController")
 const User = require("../models/User");
 const Athlete = require("../models/AthleteOat")
 const Team = require("../models/Team")
@@ -9,23 +9,14 @@ const athleteController = require("../controller/athleteController")
 const bcrypt = require('bcrypt');
 
 router.get("/", async (req, res) => {
-    let name
-    let role
-    if (signedIn) {
-        await User.findById(signedIn).then((result) => {
-            console.log(result);
-            name = `${result.fname} ${result.lname}`
-            role = result.role
-        })
-    }
-
-    res.render('admin/index', { name, role });
+    const users = await User.find()
+    return res.render('admin/index', {users})
 })
-router.get("/", (req, res) => {
+router.get("/team", adminController.teamPage)
+router.get("/team/:id", adminController.teamInfo)
 
-    return res.render('admin/index')
-
-})
+// ยังไม่เสร็จ
+router.post("/team/athlete", adminController.addAthleteToTeam)
 
 //---------------------------------เพิ่มนักกีฬา----------------------------------------------------
 

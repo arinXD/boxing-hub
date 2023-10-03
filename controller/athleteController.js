@@ -1,13 +1,15 @@
 const Athlete = require("../models/AthleteOat")
 const User = require("../models/User");
+const Team = require("../models/Team");
 const bcrypt = require("bcrypt")
 
-
+const fetchAthletesJson = async(req, res) => {
+    const athletes = await Athlete.find({confirmed:true}).populate('user')
+    return res.json(athletes)
+}
 const fetchAthletes = async (req, res) => {
-
-    await Athlete.find().populate('user')
+    await Athlete.find({confirmed:true}).populate('user')
         .then((athletes) => {
-            // return res.send(athletes)
             return res.render("athlete/athletesPage", {
                 athletesData: athletes
             })
@@ -19,8 +21,9 @@ const fetchAthletes = async (req, res) => {
 const findAthlete = async (req, res) => {
     console.log(req.params.id);
     await Athlete.findOne({
-            _id: req.params.id
-        }).populate(['matches', 'user',])
+            _id: req.params.id,
+            confirmed:true
+        }).populate(['matches', 'user', 'team'])
         .populate({
             path: 'matches',
             populate: {
@@ -146,9 +149,46 @@ const createAthlete = async (req, res) => {
                 })
         })
 }
+const fetchAthletesByNameJson = async(req, res)=>{
+    const searchNickname = req.params.nickname
+    Athlete.find({ nickname: { $regex: new RegExp(searchNickname, 'i') }, confirmed:true, team:null })
+    .populate('user')
+    .then(athletes => {
+        return res.json(athletes)
+    })
+    .catch(error => {
+        console.error('Error querying database:', error);
+    });
+}
+const searchAthleteJson = async(req, res)=>{
+    const searchNickname = req.query.nickname
+    if(!searchNickname){
+        const athletes = await Athlete.find({confirmed:true}).populate('user')
+        return res.json(athletes)
+    }
+    Athlete.find({ nickname: { $regex: new RegExp(searchNickname, 'i') }, confirmed:true})
+    .populate('user')
+    .then(athletes => {
+        return res.json(athletes)
+    })
+    .catch(error => {
+        console.error('Error querying database:', error);
+    });
+}
+
+const addAthlete = async function (req, res, next) {
+    const teams = await Team.find();
+    res.render('athlete/athleteAdd.ejs', {
+        teams
+    });
+}
 module.exports = {
     fetchAthletes,
     createAthlete,
     findAthlete,
-    findAthleteJson
+    findAthleteJson,
+    fetchAthletesJson,
+    fetchAthletesByNameJson,
+    addAthlete,
+    searchAthleteJson,
 }

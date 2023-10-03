@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <%- include("../partials/header.ejs")%>
-    <%- include("../partials/nav.ejs")%>
+    <link rel="stylesheet" href="/css/searchBar.css">
     <style>
         .athlete-contain{
             padding: 1em 5em;
@@ -12,6 +12,7 @@
             grid-template-columns: repeat(4, 1fr);
             align-items: center;
             place-items: center;
+            gap: 4em;
             
         }.athlete-item{
             width: fit-content;
@@ -27,39 +28,85 @@
     </style>
 </head>
 <body>
-    <div class="athlete-contain mt-4">
-        <h1 class="mb-5">Athletes</h1>
+    <%- include("../partials/nav.ejs")%>
+    <div class="container mt-5">
+        <%- include("../partials/searchBar.ejs")%>
         <div class="athlete-list">
-        <%if(athletesData.length==0){%>
-            <p>ไม่มีข้อมูลนักกีฬา</p>
-        <%}else{
-            athletesData.forEach(athlete => {%>
-                <% if (athlete.confirmed) { %>
+            <%if(athletesData.length==0){%>
+                <p class="text-center">ไม่พบข้อมูลนักกีฬา</p>
+            <%}else{
+                athletesData.forEach(athlete => {%>
                     <%
-                   let athleteImg = (athlete.user.img)? athlete.user.img:"avartar.png"
+                        let athleteImg = (athlete.user.img)? athlete.user.img:"avartar.png"
                     %>
-                <div class="athlete-item">
-                    <img id="<%=athlete._id%>" class="athlete" src="/images/profile/<%= athleteImg%>" alt="<%= athlete.nickname%>">
-                    <h4 class="mt-2"><%= athlete.nickname%></h4>
-                    <p class="mt-1"><%= athlete.country%></p>
-                <% } %>
-            <%})
-        }%>
+                    <div class="athlete-item" onclick="openInfo(event)">
+                        <img id="<%=athlete._id%>" class="athlete" src="/images/profile/<%= athleteImg%>" alt="<%= athlete.nickname%>">
+                        <h4 class="mt-2"><%= athlete.nickname%></h4>
+                        <p class="mt-1"><%= athlete.country%></p>
+                    </div>
+                <%})
+            }%>
         </div>
+    
+        
 
     </div>
 
 
     <script>
-        let athlete = document.querySelectorAll('.athlete')
-        console.log(athlete);
-        athlete.forEach(e => {
-            e.addEventListener('click', ()=>{
-                const encodedId = encodeURIComponent(e.id);
-                console.log("Encoded ID:", encodedId);
-                window.location.href = `/athletes/find/${encodedId}`
-            })
-        });
+        const fetchData = async (url) => {
+            const response = await fetch(url)
+            const athletes = await response.json()
+            return athletes
+        }
+        const openInfo =(event)=>{
+            const encodedId = encodeURIComponent(event.target.id);
+            window.location.href = `/athletes/find/${encodedId}`
+        }
+        
+        const athleteList = document.querySelector('.athlete-list')
+        const searchAth = document.querySelector('#search-input')
+
+        searchAth.addEventListener('keydown',async (event)=>{
+            if (event.key === "Enter") {
+                athleteList.innerHTML = ""
+                const nickname = searchAth.value
+                await fetchData(`http://localhost:3000/athletes/search/?nickname=${nickname}`)
+                .then(data => {
+                    if(data.length==0){
+                        const p = document.createElement('p')
+                        p.innerHTML = "ไม่พบข้อมูลนักกีฬา"
+                        p.className = 'text-center'
+                        athleteList.className = 'd-block'
+                        athleteList.appendChild(p)
+                        return
+                    }
+                    for (const obj of data) {
+                        const div = document.createElement('div')
+                        const img = document.createElement('img')
+                        const h4 = document.createElement('h4')
+                        const p = document.createElement('p')
+                        div.className = "athlete-item"
+                        img.setAttribute('id', obj._id)
+                        img.className = "athlete"
+                        img.src = `/images/profile/${obj.user.img}`
+                        img.alt = obj.nickname
+                        h4.className = "mt-2"
+                        h4.innerHTML = obj.nickname
+                        p.className = 'mt-1'
+                        p.innerHTML = obj.country
+                        div.appendChild(img)
+                        div.appendChild(h4)
+                        div.appendChild(p)
+                        div.setAttribute('onClick','openInfo(event)')
+                        athleteList.appendChild(div)
+                    }
+                    athleteList.className = 'athlete-list'
+                }).catch((err)=>{
+                    console.log(err)
+                })
+            }
+        })
     </script>
 </body>
 </html>

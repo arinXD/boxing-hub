@@ -25,11 +25,13 @@
         <input type="date" id="bday" name="bday" required><br>
         <label for="country">Country:</label>
         <input type="text" id="country" name="country" required><br>
-        <select class="form-select" name="team" id="team">
+        <input type="checkbox" id="has-team">has team <br>
+        <select class="form-select" name="team" id="team" disabled> <br>
+            <option value="" selected>เลือกทีม</option>
             <%
-            for (const item of teams) {%>
-                <option value="<%= item._id %>"><%=item.teamname%></option>
-            <%}
+                for (const team of teams) {%>
+                    <option value="<%= team._id%>"><%= team.teamname%></option>
+                <%}
             %>
         </select>
         <label for="weightClass">Weight Class:</label>
@@ -38,6 +40,19 @@
 
         <button type="submit">Register and Add Athlete</button>
     </form>
+
+    <script>
+        const isTeam = document.querySelector('#has-team');
+        const team = document.querySelector('#team');
+        isTeam.addEventListener('click',()=>{
+            if(team.disabled){
+                team.disabled = false
+            }else{
+                team.disabled = true
+            }
+        })
+
+    </script>
 </body>
 
 </html>

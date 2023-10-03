@@ -68,7 +68,8 @@ const athleteSchema = new Schema({
     },
     team: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'teams', // Reference to the Team model
+        ref: 'teams',
+        default: null,
     },
 
     confirmed: {
