@@ -160,6 +160,7 @@ const fetchAthletesByNameJson = async(req, res)=>{
         console.error('Error querying database:', error);
     });
 }
+
 const searchAthleteJson = async(req, res)=>{
     const searchNickname = req.query.nickname
     if(!searchNickname){
@@ -191,4 +192,5 @@ module.exports = {
     fetchAthletesByNameJson,
     addAthlete,
     searchAthleteJson,
+
 }

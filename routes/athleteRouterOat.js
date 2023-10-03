@@ -200,6 +200,7 @@ router.get('/confirm', async (req, res) => {
             status: req.flash("status"),
         });
         return res.send(unconfirmedAthletes)
+
     } catch (error) {
         console.error(error);
     }
