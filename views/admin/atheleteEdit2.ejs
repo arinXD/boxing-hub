@@ -14,7 +14,7 @@
     <h1>EDIT </h1>
     <h2>Athlete Information</h2>
 
-    <form method="POST" action="/athletes/updateAthletes">
+    <form method="POST" action="/admin/updateAthletes">
         <label for="_id">id:</label>
         <input type="text" id="_id" name="_id" value="<%= athlete._id %>" readonly><br>
         <label for="aka">AKA (Athlete's Nickname):</label>
@@ -32,11 +32,10 @@
         <label for="weightClass">Weight Class:</label>
         <input type="text" id="weightClass" name="weightClass" value="<%= athlete.weightClass %>"><br>
         <select class="form-select" name="team" id="team">
-            <option value="65146ec7b4dc114c8e1d99e8" <% if(String(athlete.team) === '65146ec7b4dc114c8e1d99e8') { %>selected<% } %>>team A</option>
-            <option value="65147d6fb4dc114c8e1d9a1a" <% if(String(athlete.team) === '65147d6fb4dc114c8e1d9a1a') { %>selected<% } %>>team B</option>
-            <option value="65147d76b4dc114c8e1d9a1b" <% if(String(athlete.team) === '65147d76b4dc114c8e1d9a1b') { %>selected<% } %>>team C</option>
-            <option value="65147d79b4dc114c8e1d9a1c" <% if(String(athlete.team) === '65147d79b4dc114c8e1d9a1c') { %>selected<% } %>>team D</option>
-        </select>        
+            <% for (const item of teams) { %>
+                <option value="<%= item._id %>"<% if (String(athlete.team) === String(item._id)) { %> selected <% } %>><%= item.teamname %></option>
+            <% } %>
+        </select>         
         <label for="weightClass">wins:</label>
         <input type="number" id="wins" name="wins" value="<%= athlete.wins %>"><br>
         <label for="weightClass">losses:</label>

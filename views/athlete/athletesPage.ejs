@@ -27,7 +27,6 @@
     </style>
 </head>
 <body>
-    <%- include("../partials/nav.ejs")%>
     <div class="athlete-contain mt-4">
         <h1 class="mb-5">Athletes</h1>
         <div class="athlete-list">
@@ -56,7 +55,9 @@
         console.log(athlete);
         athlete.forEach(e => {
             e.addEventListener('click', ()=>{
-                window.location.href = `/athletes/info/?id=${e.id}`
+                const encodedId = encodeURIComponent(e.id);
+                console.log("Encoded ID:", encodedId);
+                window.location.href = `/athletes/find/${encodedId}`
             })
         });
     </script>
