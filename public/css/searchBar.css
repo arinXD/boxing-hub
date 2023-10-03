@@ -1,0 +1,23 @@
+.search-bar{
+    position: relative;
+    width: 50%;
+    margin: 0 auto;
+}
+#search-input{
+    padding: .5em 1.5em;
+    padding-left: 4em;
+    width: 100%;
+    border-radius: 40px;
+    display: inline-block;
+}
+#search-input:focus{
+    outline: 0;
+    border: 1px solid #dee2e6;
+}
+.search-bar .bi-search{
+    position: absolute;
+    top: 25%;
+    left: 5%;
+    font-size: .85em;
+    color: #7d8389;
+}
