@@ -1,9 +1,11 @@
 var express = require('express');
 var router = express.Router();
 const adminController = require("../controller/adminController")
+const User = require("../models/User");
 
-router.get("/", (req, res) => {
-    return res.render('admin/index')
+router.get("/", async (req, res) => {
+    const users = await User.find()
+    return res.render('admin/index', {users})
 })
 router.get("/team", adminController.teamPage)
 router.get("/team/:id", adminController.teamInfo)

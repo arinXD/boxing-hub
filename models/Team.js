@@ -12,6 +12,7 @@ const teamSchema = new Schema({
         default: null
     }],
     logo:String,
+    desc:String,
 }, {timestamps : true})
 
 const Team = mongoose.model('teams', teamSchema)

@@ -12,6 +12,7 @@ const bcrypt = require('bcrypt');
 router.get('/', athleteController.fetchAthletes)
 router.get('/json', athleteController.fetchAthletesJson)
 router.get('/json/:nickname', athleteController.fetchAthletesByNameJson)
+router.get('/search', athleteController.searchAthleteJson)
 router.get('/find/:id', athleteController.findAthlete)
 router.get('/find/json/:id', athleteController.findAthleteJson)
 router.post('/', athleteController.createAthlete)
@@ -134,7 +135,10 @@ const signUpAndAddAthlete = async (req, res) => {
         }
         const userId = signedIn;
         const selectedTeamValue = team;
-        return res.send({signedIn})
+        if(!userId){
+            return res.send({message:"Provide user id"})
+        }
+        // return res.send({team})
 
         const athlete = new Athlete({
             nickname,
@@ -158,8 +162,9 @@ const signUpAndAddAthlete = async (req, res) => {
             }
         );
 
+        let updatedTeam = null
         if(!team){
-            const updatedTeam = await Team.findByIdAndUpdate(
+            updatedTeam = await Team.findByIdAndUpdate(
                 selectedTeamValue, {
                     $push: {
                         athletes: athleteResult._id
@@ -191,9 +196,11 @@ router.get('/confirm', async (req, res) => {
         }).populate('user').populate('team');
 
         res.render('admin/athleteConfirm', {
-            athletesData: unconfirmedAthletes
+            athletesData: unconfirmedAthletes,
+            status: req.flash("status"),
         });
-        // return res.send(unconfirmedAthletes)
+        return res.send(unconfirmedAthletes)
+
     } catch (error) {
         console.error(error);
     }
@@ -239,9 +246,8 @@ router.post('/info/confirmAthlete/:_id', async (req, res) => {
                 new: true
             }
         );
-
-
-        res.redirect('admin/athletes/confirm');
+        req.flash("status", true)
+        return res.redirect('/athletes/confirm');
     } catch (error) {
         console.error(error);
         res.status(500).send('An error occurred');

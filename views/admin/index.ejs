@@ -1,27 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <%- include("../partials/header.ejs")%>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="/css/nav.css">
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body{
+            background-color: #EAEBEF !important;
+        }
+        .manage.container{
+            padding: 2em 3em;
+            background-color: white !important;
+            box-shadow: rgba(153, 153, 153, 0.2) 0px 2px 5px 0px !important;
+            border-radius: 6px;
+        }
+        ul.admin-manage{
+            list-style-type: none;
+            margin: 0 ;
+            padding: 0 ;
+            gap: .5em;
+        }
+        ul.admin-manage li a{
+            display: flex;
+            align-items: center;
+            padding: .5em;
+            background-color: #f7f7f7;
+            border-radius: 10px;
+            border: 1px solid #e6e6e6;
+            box-shadow: rgba(153, 153, 153, 0.2) 0px 2px 5px 0px !important;
+        }
+        ul.admin-manage li a{
+            text-decoration: none;
+        }
+        ul.admin-manage li p{
+            display: inline-block;
+            text-align: center;
+            margin: 0;
+            color: black;
+        }
+        ul.admin-manage li a div{
+            width: 45px;
+            height: 45px;
+            padding: .5em;
+            border-radius: 50%;
+            display: inline-block;
+            background-color: #dfdfdf;
+            position: relative;
+            margin-right: 1em;
+        }
+        ul.admin-manage li i{
+            color: black;
+            font-size: 1.3em;
+            display: inline-block;
+            width: 100%;
+            height: auto;
+            margin: 0 auto .1em;
+            border-radius: 50%;
+        }
+        ul.admin-manage li i::before{
+            position: absolute;
+            top: 50%;  
+            left: 50%; 
+            transform: translate(-50%, -50%);
+        }
+        table{
+            color: black;
+        }
+        tr{
+            border: 1px solid #dee2e6 !important;
+        }
+    </style>
+    <% 
+        const formatID = (id)=>{
+            const str = id.toString()
+            return str.substring(0, 5) + '...';
+        }
+    %>
 </head>
+
 <body>
     <%- include("../partials/nav.ejs")%>
-    <h1>ADMIN</h1>
-    <ul>
-        <li>
-            <a href="/admin">
-                เพิ่มนักกี่ฬา
-            </a>
-        </li>
-        <li>
-            <a href="/admin/team">
-                จัดการทีม
-            </a>
-        </li>
-    </ul>
+    <div class="manage container my-2">
+        <h3>แอดมิน <%= userName%></h3>
+        <div class="d-flex mt-4 gap-5">
+            <ul class="admin-manage w-25 d-grid" style="grid-template-columns: repeat(1, 1fr);">
+                <li>
+                    <a href="/admin">
+                        <div>
+                            <i class="bi bi-calendar2-week-fill"></i>
+                        </div>
+                        <p>จัดการข้อมูลการแข่งขัน</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin">
+                        <div>
+                            <i class="bi bi-person-fill-gear"></i>
+                        </div>
+                        <p>จัดการข้อมูลนักกีฬา</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/team">
+                        <div>
+                            <i class="bi bi-people-fill"></i>
+                        </div>
+                        <p>จัดการข้อมูลทีม</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/">
+                        <div>
+                            <i class="bi bi-newspaper"></i>
+                        </div>
+                        <p>จัดการข้อมูลข่าว</p>
+                    </a>
+                </li>
+            </ul>
+            <table class="w-75 table table-striped">
+                <thead>
+                    <tr>
+                        <th>ไอดี</th>
+                        <th>username</th>
+                        <th>ชื่อ-สกุล</th>
+                        <th>ประเภทผู้ใช้</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%for(const user of users){
+                        if(user.role==1) continue;
+                    %>
+                        <tr>
+                            <td><%= formatID(user._id) %></td>
+                            <td><%= user.username %></td>
+                            <td><%= `${user.fname} ${user.lname}` %></td>
+                            <td><%= (user.role==0)?'ผู้ใช้':(user.role==3)?"นักกีฬา":"นักกีฬา (รอการยืนยัน)" %></td>
+                        </tr>
+                    <%}%>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </body>
+
 </html>
