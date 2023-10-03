@@ -32,7 +32,7 @@ const userSchema = new Schema({
     },
     img:{
         type: String,
-        default: null
+        default: 'avartar.png'
     },
     role:{
         type: Number,

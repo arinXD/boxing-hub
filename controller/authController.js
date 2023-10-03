@@ -34,7 +34,10 @@ const signIn = async (req, res) => {
                         req.session.role = result.role
                         req.session.userName = result.username
                         req.session.userProfile = result.img
-                        res.redirect('/')
+                        if(result.role==1){
+                            return res.redirect('/admin')
+                        }
+                        return res.redirect('/')
                     } else {
                         req.flash("errorMessage", "Incorrect password")
                         req.flash('email', {

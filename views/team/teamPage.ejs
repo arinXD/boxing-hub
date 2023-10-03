@@ -2,40 +2,131 @@
 <html lang="en">
 <head>
     <%- include('../partials/header.ejs')%>
+    <link rel="stylesheet" href="/css/searchBar.css">
     <style>
-        .card img{
-            width: 250px;
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box !important;
+        }
+        body{
+            background-color: #EAEBEF !important;
+        }
+        .team.container{
+            background-color: white;
+            box-shadow: rgba(153, 153, 153, 0.2) 0px 2px 5px 0px !important;
+            padding: 2em 3em;
+            border-radius: 10px;
+        }
+        .team{
+            gap: 4em;
+            width: 50%;
+            margin: 0 auto;
+        }
+        .team img{
+            width: 25%;
             height: 250px;
             object-fit: contain;
         }
-        .card-body{
+        .team-body{
+            width: 75%;
             padding: 1.5em;
         }
-        .card-body h5{
-            margin-bottom: 1em;
+        .team-body h5{
+            margin-bottom: .5em;
             font-size: 1.75em;
+        }
+        .team-desc{
+            text-align: justify;
         }
     </style>
 </head>
 <body>
     <%- include('../partials/nav.ejs')%>
-    <div class="container mt-5">
-        <h1>Athlete's Team</h1>
-        <hr>
-        <%if(teams.length==0){%>
-            <h2>There's no teams</h2>
-        <%}%>
-        <div class="d-gird" style="grid-template-columns: repeat(4, 1fr);">
+    <div class="team container my-2">
+        <%- include("../partials/searchBar.ejs")%>
+        <div class="d-grid team-list" style="grid-template-columns: repeat(1, 1fr);">
+            <%if(teams.length==0){%>
+                <p>ไม่พบข้อมูลทีม</p>
+            <%}%>
             <%for (const team of teams){%>
-                <div class="card" style="width: fit-content;">
+                <div class="d-flex team">
                     <img src="/images/teams/<%= team.logo%>" class="card-img-top" alt="<%= team.teamname%>">
-                    <div class="card-body">
-                      <h5 class="card-title"><%= team.teamname%></h5>
+                    <div class="team-body">
+                      <h5 class="team-title text-uppercase"><%= team.teamname%></h5>
+                      <p class="team-desc text-break"><%= team.desc%></p>
                       <a href="/team/info/<%= team.id%>" class="btn btn-primary d-block">Team Infomation</a>
                     </div>
                 </div>
             <%}%>
         </div>
     </div>
+
+    <script>
+        const fetchData = async (url) => {
+            const response = await fetch(url)
+            const athletes = await response.json()
+            return athletes
+        }
+        const searchInput = document.querySelector('#search-input')
+        const teamList = document.querySelector(".team-list")
+
+        searchInput.addEventListener('keydown',async (event)=>{
+            if (event.key === "Enter") {
+                teamList.innerHTML = ""
+                const searchValue = searchInput.value
+                await fetchData(`http://localhost:3000/team/search/?team=${searchValue}`)
+                .then(data => {
+                    if(data.length==0){
+                        const p = document.createElement('p')
+                        p.innerHTML = "ไม่พบข้อมูลทีม"
+                        p.className = 'text-center'
+                        teamList.className = 'd-block'
+                        teamList.appendChild(p)
+                        return
+                    }
+                    
+                    for (const team  of data) {
+                        const teamDiv = document.createElement('div');
+                        teamDiv.classList.add('d-flex', 'team');
+
+                        const img = document.createElement('img');
+                        img.src = `/images/teams/${team.logo}`;
+                        img.classList.add('card-img-top');
+                        img.alt = team.teamname;
+
+                        const teamBody = document.createElement('div');
+                        teamBody.classList.add('team-body');
+
+                        const h5 = document.createElement('h5');
+                        h5.classList.add('team-title', 'text-uppercase');
+                        h5.innerText = team.teamname;
+
+                        const p = document.createElement('p');
+                        p.classList.add('team-desc', 'text-break');
+                        p.innerText = team.desc;
+
+                        const a = document.createElement('a');
+                        a.href = `/team/info/${team._id}`;
+                        a.classList.add('btn', 'btn-primary', 'd-block');
+                        a.innerText = 'Team Information';
+
+                        teamBody.appendChild(h5);
+                        teamBody.appendChild(p);
+                        teamBody.appendChild(a);
+
+                        teamDiv.appendChild(img);
+                        teamDiv.appendChild(teamBody);
+
+                        teamList.appendChild(teamDiv);
+
+                    }
+                    teamList.className = 'd-grid team-list'
+                }).catch((err)=>{
+                    console.log(err)
+                })
+            }
+        })
+    </script>
 </body>
 </html>
