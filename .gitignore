@@ -1,4 +1,8 @@
-
 node_modules
+node_modules/.bin/mime
+node_modules/.bin/mkdirp
+node_modules/.bin/nopt
+node_modules/.bin/node-pre-gyp
 node_modules/bcrypt/lib/binding/napi-v3/bcrypt_lib.node
-
+node_modules/.bin
+node_modules/multer/
