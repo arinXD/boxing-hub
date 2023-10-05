@@ -35,11 +35,11 @@ const searchTeam = async (req, res)=>{
         const teams = await Team.find()
         return res.json(teams)
     }
-    Team.find({ teamname: { $regex: new RegExp(searchTeam, 'i') }})
-    .then(teams => {
+    await Team.find({ teamname: { $regex: new RegExp(searchTeam, 'i') }})
+    .then((teams) => {
         return res.json(teams)
     })
-    .catch(error => {
+    .catch((error) => {
         console.error('Error querying database:', error);
     });
 }

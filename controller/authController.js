@@ -3,13 +3,16 @@ const User = require("../models/User");
 
 const signInPage = (req, res, next) => {
     const emailData = req.flash("email")[0]
+    const errs = req.flash("errorMessage")
+    req.flash("email",'')
+    req.flash("errorMessage",'')
     let email = ""
     console.log(emailData)
     if (emailData) {
         email = emailData.email
     }
     return res.render('signin', {
-        errs: req.flash("errorMessage"),
+        errs,
         email
     })
 }
@@ -58,6 +61,9 @@ const signIn = async (req, res) => {
 
 const signUpPage = (req, res, next) => {
     let data = req.flash('data')[0]
+    const errs = req.flash("errorMesssage")
+    req.flash("data",'')
+    req.flash("errorMesssage",'')
     let fname = ""
     let lname = ""
     let email = ""
@@ -68,7 +74,7 @@ const signUpPage = (req, res, next) => {
         email = data.email
     }
     res.render('signup', {
-        errs: req.flash("errorMesssage"),
+        errs,
         fname,
         lname,
         email,

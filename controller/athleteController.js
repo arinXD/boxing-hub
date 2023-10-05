@@ -7,8 +7,19 @@ const fetchAthletesJson = async(req, res) => {
     const athletes = await Athlete.find({confirmed:true}).populate('user')
     return res.json(athletes)
 }
-const fetchAthletes = async (req, res) => {
+const athletePage = async (req, res)=>{
     await Athlete.find({confirmed:true}).populate('user')
+        .then((athletes) => {
+            return res.render("athlete/athletesPage", {
+                athletesData: athletes
+            })
+        })
+        .catch((err) => {
+            console.error(err)
+        })
+}
+const fetchAthletes = async (req, res) => {
+    await Athlete.find({confirmed:true, team:null}).populate('user')
         .then((athletes) => {
             return res.render("athlete/athletesPage", {
                 athletesData: athletes
@@ -151,7 +162,11 @@ const createAthlete = async (req, res) => {
 }
 const fetchAthletesByNameJson = async(req, res)=>{
     const searchNickname = req.params.nickname
-    Athlete.find({ nickname: { $regex: new RegExp(searchNickname, 'i') }, confirmed:true, team:null })
+    if(!searchNickname){
+        const athletes = await Athlete.find({confirmed:true}).populate('user')
+        return res.json(athletes)
+    }
+    Athlete.find({ nickname: { $regex: new RegExp(searchNickname, 'i') }, confirmed:true})
     .populate('user')
     .then(athletes => {
         return res.json(athletes)
@@ -163,10 +178,10 @@ const fetchAthletesByNameJson = async(req, res)=>{
 const searchAthleteJson = async(req, res)=>{
     const searchNickname = req.query.nickname
     if(!searchNickname){
-        const athletes = await Athlete.find({confirmed:true}).populate('user')
+        const athletes = await Athlete.find({confirmed:true,team:null}).populate('user')
         return res.json(athletes)
     }
-    Athlete.find({ nickname: { $regex: new RegExp(searchNickname, 'i') }, confirmed:true})
+    Athlete.find({ nickname: { $regex: new RegExp(searchNickname, 'i') }, confirmed:true, team:null})
     .populate('user')
     .then(athletes => {
         return res.json(athletes)
@@ -189,7 +204,8 @@ const RegisterAthlete = async (req, res) => {
         const selectedTeamValue = req.body.team;
 
         // Fetch the team's _id from the database using the selectedTeamValue
-        Team.findOne({ _id: selectedTeamValue })
+        if(selectedTeamValue){
+            const team = Team.findOne({ _id: selectedTeamValue })
             .then(async (result) => {
                 if (!result) {
                     // Handle the case where the team was not found
@@ -230,18 +246,40 @@ const RegisterAthlete = async (req, res) => {
                 );
 
                 if (!updatedTeam) {
-                    // Handle the case where the team was not found during update
                     console.error('Team not found during update');
                     return res.status(404).send('Team not found during update');
                 }
 
                 console.log('Updated Team:', updatedTeam);
-
+                req.session.role = updatedUser.role
                 res.redirect('/');
             })
             .catch((err) => {
                 console.error(err);
             });
+        }else{
+            const athlete = new Athlete({
+                nickname,
+                weight,
+                height,
+                reach,
+                bday,
+                country,
+                weightClass,
+                user: userId,
+                confirmed: false
+            });
+            await athlete.save()
+
+            const updatedUser = await User.findByIdAndUpdate(
+                userId,
+                { role: 2 },
+                { new: true }
+            )
+            req.session.role = updatedUser.role
+            res.redirect('/');
+        }
+        
     } catch (error) {
         console.error(error);
     }
@@ -256,4 +294,5 @@ module.exports = {
     addAthlete,
     searchAthleteJson,
     RegisterAthlete,
+    athletePage
 }

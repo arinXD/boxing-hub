@@ -11,7 +11,10 @@ const teamSchema = new Schema({
         ref: 'athletes',
         default: null
     }],
-    logo:String,
+    logo:{
+        type:String,
+        default: 'logo.png'
+    },
     desc:String,
 }, {timestamps : true})
 

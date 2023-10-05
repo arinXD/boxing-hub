@@ -4,9 +4,31 @@ const adminController = require("../controller/adminController")
 const User = require("../models/User");
 const Athlete = require("../models/AthleteOat")
 const Team = require("../models/Team")
-
-const athleteController = require("../controller/athleteController")
 const bcrypt = require('bcrypt');
+const multer  = require('multer')
+const path = require('path');
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, path.join(__dirname, '../public/images/teams'))
+    },
+    filename: function (req, file, cb) {
+        const postFix = file.originalname.split(".")[1]
+        console.log(req.body.tid)
+        return cb(null, `${req.body.tid}.${postFix}`)
+    }
+})
+const fileFilter = (req, file, cb) => {
+  const allowedFileTypes = ['image/jpeg', 'image/png', 'image/jpg',];
+
+  if (allowedFileTypes.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error('Only image files are allowed!'), false);
+  }
+};
+
+const upload = multer({storage, fileFilter})
 
 router.get("/", async (req, res) => {
     const users = await User.find()
@@ -14,10 +36,13 @@ router.get("/", async (req, res) => {
 })
 router.get("/team", adminController.teamPage)
 router.get("/team/:id", adminController.teamInfo)
-
-// ยังไม่เสร็จ
 router.post("/team/athlete", adminController.addAthleteToTeam)
-
+router.post('/team/insert', adminController.insertTeam)
+router.get('/team/update/:id', adminController.updateTeamPage)
+router.post('/team/update/', upload.single('teamLogo'),adminController.updateTeam)
+router.get('/team/delete/:id', adminController.deleteTeam)
+router.get('/team/del/athlete/:tid/:aid', adminController.deleteAthleteFromTeam)
+// router.get('/athlete/search', athleteController.searchAthleteJson)
 //---------------------------------เพิ่มนักกีฬา----------------------------------------------------
 
 router.get('/adminAdd', async function (req, res, next) {
@@ -121,8 +146,11 @@ router.post('/AdminAddAthlete', RegisterAthleteByAdmin);
 router.get('/confirm', async (req, res) => {
     try {
         const unconfirmedAthletes = await Athlete.find({ confirmed: false }).populate('user').populate('team');
-
-        res.render('admin/athleteConfirm', { athletesData: unconfirmedAthletes });
+        
+        res.render('admin/athleteConfirm', {
+            athletesData: unconfirmedAthletes,
+            status: req.flash("confirm")
+        });
         // return res.send(unconfirmedAthletes)
     } catch (error) {
         console.error(error);
@@ -168,7 +196,7 @@ router.post('/info/confirmAthlete/:_id', async (req, res) => {
 
         console.log('Updated athlete:', updatedAthlete);
         console.log('Updated user:', updatedUser);
-
+        req.flash('confirm', true)
         res.redirect('/admin/confirm');
     } catch (error) {
         console.error(error);

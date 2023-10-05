@@ -1,13 +1,16 @@
 const User = require("../models/User")
-const fetch = require("node-fetch");
 const path = require('path');
 const sharp = require('sharp');
 const fs = require('fs');
 
 const profilePage= async (req, res)=>{
+    const updateUser = req.flash('updateUser')
+    req.flash('updateUser', '')
     await User.findById(signedIn)
     .then((user) => {
-        return res.render('profile',{user})
+        return res.render('profile',{
+            user, updateUser
+        })
     })
 }
 
@@ -40,7 +43,8 @@ const profileUpdate= async (req, res)=>{
         job
     }, { upsert: true })
     .then((result) => {
-        res.redirect('/profile/setting')
+        req.flash('updateUser', true)
+        res.redirect('/profile')
     }).catch(((err)=>{
         console.error(err)
     }))
