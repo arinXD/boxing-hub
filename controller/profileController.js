@@ -66,10 +66,19 @@ const uploadProfileImages = async (req,res)=>{
         console.error(err)
     })
 }
-
+const resetPasswordPage = (req, res)=>{
+    return res.render('reset_password')
+}
+const resetPassword = (req, res)=>{
+    const password = req.body.password
+    const newpassword = req.body.newpassword
+    const confirm = req.body.confirm
+}
 module.exports = {
     profilePage,
     uploadProfileImages,
     profileSetting,
-    profileUpdate
+    profileUpdate,
+    resetPassword,
+    resetPasswordPage,
 }

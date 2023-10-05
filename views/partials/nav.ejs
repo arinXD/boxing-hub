@@ -87,8 +87,11 @@ const img = (userProfile)? userProfile:"avartar.png"
                     <img id="profile-img" src="/images/profile/<%=img%>" alt="user-profile">
                 </div>
                 <div class="toggle-profile">
-                    <div class="toggle-avartar">
-                        <img src="/images/profile/<%=img%>" alt="user-profile"><span class="user-name"><%= userName%></span>
+                    <div>
+                        <div class="text-white-50 mb-1">ดูโปรไฟล์</div>
+                        <div class="toggle-avartar">
+                            <img src="/images/profile/<%=img%>" alt="user-profile"><span class="user-name"><%= userName%></span>
+                        </div>
                     </div>
                     <% 
                         if(userRole==1){%>

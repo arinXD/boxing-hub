@@ -23,6 +23,14 @@
             padding: 2em;
             width: 1140px;
         }
+        #password-reset{
+            border-radius: 10px; width: fit-content;
+            background-color: #212844;
+
+        }
+        #password-reset:active{
+            transform: scale(.95);
+        }
 
     </style>
     <script>
@@ -103,9 +111,14 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="mb-4">  
-                                <div class="border btn" id="profile-setting">
+                                <div class="btn" style="border-radius: 10px;" id="profile-setting">
                                     <span>
                                         <i class="bi bi-pencil-fill"></i> แก้ไขโปรไฟล์
+                                    </span>
+                                </div>
+                                <div class="btn text-white ms-2" id="password-reset">
+                                    <span>
+                                        <i class="bi bi-shield-fill"></i> แก้ไขรหัสผ่าน
                                     </span>
                                 </div>
                             </div>
@@ -169,6 +182,11 @@
         </div>
     </div>
     <script src="/js/profile.js"></script>
+    <script>
+        document.querySelector('#password-reset').addEventListener('click',()=>{
+            window.location.href = "/profile/reset_password"
+        })
+    </script>
 </body>
 
 </html>
