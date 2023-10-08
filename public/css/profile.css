@@ -4,10 +4,6 @@ body {
     background-color: #e2e8f0;
 }
 
-.main-body {
-    padding: 15px;
-}
-
 .card {
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
 }
@@ -114,7 +110,7 @@ input[type="file"] {
 }
 #profile-setting{
     width: fit-content;
-    background-color: #212844;
+    background-color: #1e3a8a;
     
 }
 #profile-setting:active{

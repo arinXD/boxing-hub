@@ -85,7 +85,7 @@ app.use('/admin', adminMiddleware, adminRouter);
 
 app.use('/authen', signInMiddleware.signedIn, authenRouter);
 app.use('/athletes', athleteRouter);
-app.use('/team',teamRouter);
+app.use('/team', teamRouter);
 app.use('/profile', signInMiddleware.insignIn, profileRouter)
 app.use('/event', eventRouter)
 app.use('/match', matchRouter)

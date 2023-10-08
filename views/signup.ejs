@@ -4,12 +4,15 @@
 <head>
 
     <style>
+        body{
+            background-image: linear-gradient(15deg, #181D31 0%, #272829 100%) !important;
+        }
         label {
             margin-bottom: .3em;
         }
 
         .form-group {
-            margin-bottom: .8em;
+            margin-bottom: .5em;
         }
 
         .form-row {
@@ -18,13 +21,37 @@
         }
 
         .wrap {
-            /* padding: 0 5rem; */
-            justify-content: space-between;
             display: flex;
-            margin: 0 auto;
-            width: 70%;
+        }
+        .slider-container {
+            display: flex;
+            overflow: hidden;
+            transition: transform 0.3s ease-in-out;
+        }
+        .slide {
+            flex: 0 0 50%;
         }
 
+        .slide img {
+            max-width: 100% !important;
+            height: 100vh;
+            object-fit: cover;
+        }
+
+        .slide-transition {
+            transition: transform 0.3s ease-in-out;
+        }
+        .sign-in-form{
+            padding: 2em 3em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .sign-in-form input{
+            border: 1px solid white;
+            background-clip: inherit;
+            padding: 0.5rem 0.75rem;
+        }
         .password {
             position: relative;
         }
@@ -36,71 +63,106 @@
             z-index: 3;
             cursor: pointer;
         }
+        .bi-eye-fill.open{
+            opacity: .5;
+        }
+        #progress-bar{
+            display: none;
+            width: 100%;
+            margin-bottom: .5em;
+        }
+        #progress{
+            height: 1px;
+            border: 1px solid white;
+            width: 100%;
+            display: block;
+        }
+        #progress-word{
+            display: block;
+            color: white;
+            margin-top: .3em;
+            font-weight: bold;
+        }
     </style>
     <%- include("./partials/header.ejs")%>
 </head>
 
 <body>
-    <div class="wrap my-5">
-        <div class="w-50">
-            <h1 class="mb-1 text-center">Sign Up</h1>
-            <p class="mb-3 text-center">Welcome to TKO Championship</p>
+    <div class="wrap">
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item">
+                    <img src="/images/sign_in_cover3.jpg" class="d-block w-100">
+                </div>
+                <div class="carousel-item">
+                    <img src="/images/sign_in_cover2.jpg" class="d-block w-100">
+                </div>
+                <div class="carousel-item active">
+                    <img src="/images/sign_in_cover.jpg" class="d-block w-100">
+                </div>
+            </div>
         </div>
-        <div class="w-50">
-            <ul>
-                <% if(errs !=null && errs.length>0) {
-                    console.log(errs);
-
-                    for(let i=0; i<errs.length; i++){ %>
-                        <li class="text-danger">
-                            <%= errs[i]%>
-                        </li>
-                        <% } }%>
-            </ul>
-            <form method="POST" action="/authen/signup">
-                <div class="form-group">
-                    <label>Username</label>
-                    <input type="text" class="form-control" name="username" value="<%= fname%>">
+        <div class="sign-in-form w-50">
+            <div>
+                <div class="mb-4 text-white">
+                    <h1 class="mb-3">Create your new account</h1>
                 </div>
-                <div class="form-row gap-3">
-                    <div class="form-group w-50">
-                        <label>Firstname</label>
-                        <input type="text" class="form-control" name="fname" value="<%= fname%>">
+                <div class="mb-3">
+                    <% if(errs !=null && errs.length>0) {
+                        for(let i=0; i<errs.length; i++){ %>
+                            <p class="text-danger mb-1">
+                                <%= errs[i]%>
+                            </p>
+                            <% } }%>
+                </div>
+                <form method="POST" action="/authen/signup">
+                    <div class="form-group">
+                        <label class="text-secondary">Username</label>
+                        <input type="text" class="form-control" name="username" value="<%= fname%>">
                     </div>
-                    <div class="form-group w-50">
-                        <label>Lastname</label>
-                        <input type="text" class="form-control" name="lname" value="<%= lname%>">
+                    <div class="form-row gap-3">
+                        <div class="form-group w-50">
+                            <label class="text-secondary">Firstname</label>
+                            <input type="text" class="form-control" name="fname" value="<%= fname%>">
+                        </div>
+                        <div class="form-group w-50">
+                            <label class="text-secondary">Lastname</label>
+                            <input type="text" class="form-control" name="lname" value="<%= lname%>">
+                        </div>
                     </div>
+                    <div class="form-group">
+                        <label class="text-secondary">E-mail</label>
+                        <input type="email" class="form-control" name="email" value="<%= email%>">
+                    </div>
+                    <div class="form-group password">
+                        <label class="text-secondary">Password</label>
+                        <input type="password" id="password" class="form-control" name="password" value="">
+                        <i class="bi bi-eye-fill" id="eye-password"></i>
+                    </div>
+                    <div id="progress-bar">
+                        <span id="progress"> </span>
+                        <span id="progress-word"></span>
+                    </div>
+                    <div class="form-group password">
+                        <label class="text-secondary">Confirm Password</label>
+                        <input type="password" id="confirm" class="form-control" name="confirm" value="">
+                        <i class="bi bi-eye-fill" id="eye-confirm"></i>
+                    </div>
+                    <div class="my-4 text-center">
+                        <button type="submit" style="background-color: #2563eb;" class="w-100 btn btn-primary px-5">Sign up</button>
+                    </div>
+                </form>
+                <div class="text-secondary">
+                    Already have an account ? <a class="text-decoration-none" href="/authen/signin">Sign In</a>
                 </div>
-                <div class="form-group">
-                    <label>E-mail</label>
-                    <input type="email" class="form-control" name="email" value="<%= email%>">
-                </div>
-                <div class="form-group password">
-                    <label>Password</label>
-                    <input type="password" id="password" class="form-control" name="password" value="">
-                    <i class="bi bi-eye-fill" id="eye-password"></i>
-                </div>
-                <div class="form-group password">
-                    <label>Confirm Password</label>
-                    <input type="password" id="confirm" class="form-control" name="confirm" value="">
-                    <i class="bi bi-eye-fill" id="eye-confirm"></i>
-                </div>
-                <div class="my-4 text-center">
-                    <button type="submit" class="btn btn-primary px-5">Sign up</button>
-                </div>
-            </form>
-            <div class="text-center">
-                Already have an account? <a href="/authen/signin">Sign In</a>
             </div>
         </div>
     </div>
-
-
     <script>
         const eye = document.querySelectorAll(".bi-eye-fill")
         eye.forEach(e => {
             e.addEventListener("click", () => {
+                e.classList.toggle('open');
                 const id = (e.id).split("-")[1]
                 const input = document.querySelector(`#${id}`)
                 if (input.type == "password") {
@@ -109,6 +171,59 @@
                     input.type = "password"
                 }
             })
+        })
+        const progressBar = document.querySelector("#progress-bar")
+        const progress = document.querySelector("#progress")
+        const progressWord = document.querySelector("#progress-word")
+        const passwordInput = document.querySelector("#password")
+
+        passwordInput.addEventListener('input', (event) => {
+            let strength = 0
+            const passwordValue = event.target.value;
+            if(!passwordValue){
+                progressBar.style.display = "none"
+                progress.style.display = "none"
+                progressWord.innerHTML = ''
+                return
+            }
+            progressBar.style.display = "block"
+            progress.style.display = "block"
+            if (passwordValue.length >= 6) {
+                strength++
+            }
+            if (/[0-9]/.test(passwordValue)) {
+                strength++
+            }
+            if (/[A-Z]/.test(passwordValue)) {
+                strength++
+            }
+            if (/[a-zก-๛]/.test(passwordValue)) {
+                strength++
+            }
+            progress.style.width = `${Math.ceil((strength / 4) * 100)}%`
+            let color
+            switch (strength) {
+                case 1:
+                    progressWord.innerHTML = 'Weak'
+                    color = "danger"
+                    break
+                case 2:
+                    progressWord.innerHTML = 'Normal'
+                    color = "warning"
+                    break
+                case 3:
+                    progressWord.innerHTML = 'Strong'
+                    color = "success"
+                    break
+                case 4:
+                    progressWord.innerHTML = 'Extream'
+                    color = "success"
+                    break
+                default:
+                    break
+            }
+            progressWord.classList = `text-${color}`
+            progress.classList = `border-${color}`
         })
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"

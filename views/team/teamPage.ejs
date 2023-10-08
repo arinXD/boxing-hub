@@ -4,65 +4,113 @@
     <%- include('../partials/header.ejs')%>
     <link rel="stylesheet" href="/css/searchBar.css">
     <style>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loading {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            animation: spin 2s linear infinite;
+        }
         *{
             margin: 0;
             padding: 0;
             box-sizing: border-box !important;
         }
         body{
-            background-color: #EAEBEF !important;
+            background-image: linear-gradient(15deg, #181D31 0%, #272829 100%) !important;
         }
         .team.container{
             background-color: white;
             box-shadow: rgba(153, 153, 153, 0.2) 0px 2px 5px 0px !important;
             padding: 2em 3em;
             border-radius: 10px;
+            width: 1140px;
         }
-        .team{
-            gap: 4em;
-            width: 50%;
+        .team.item{
+            width: 100%;
             margin: 0 auto;
+            border: 1px solid rgb(0, 0, 0, 0.175);
+            border-radius: 10px;
         }
         .team img{
-            width: 25%;
-            height: 250px;
+            width: 100%;
+            height: 140px;
+            padding: 1em 0;
             object-fit: contain;
+            margin: auto 0;
         }
         .team-body{
-            width: 75%;
-            padding: 1.5em;
+            width: 100%;
+            padding: 1em;
+            background-color: #22283B;
+            border-radius: 10px 10px 0 0;
         }
-        .team-body h5{
-            margin-bottom: .5em;
-            font-size: 1.75em;
+        .team-body h6{
+            font-size: 1em;
+            text-align: center;
+            margin: 0;
+            color: rgb(255, 255, 255);
         }
-        .team-desc{
-            text-align: justify;
+        .search-bar{
+            width: 40%;
+            margin-left: auto;
+            margin-right: 0;
+        }
+        #search-input {
+            padding-left: 3.5em;
+        }
+        .search-bar .bi-search {
+            top: 20%;
+            left: 7%;
+        }
+        .team-list{
+            gap: 2em;
         }
     </style>
 </head>
 <body>
     <%- include('../partials/nav.ejs')%>
-    <div class="team container my-2">
-        <%- include("../partials/searchBar.ejs")%>
-        <div class="d-grid team-list" style="grid-template-columns: repeat(1, 1fr);">
+    <div class="team container my-4">
+        <div class="d-flex flex-row ">
+            <div>
+                <h3 class="mb-3">ทีม</h3>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="/" class="text-decoration-none">หน้าหลัก</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">ทีม</li>
+                </ol>
+            </div>
+            <%- include("../partials/searchBar.ejs")%>
+        </div>
+        <div class="d-grid team-list my-5" style="grid-template-columns: repeat(4, 1fr);">
             <%if(teams.length==0){%>
                 <p>ไม่พบข้อมูลทีม</p>
             <%}%>
             <%for (const team of teams){%>
-                <div class="d-flex team">
-                    <img src="/images/teams/<%= team.logo%>" class="card-img-top" alt="<%= team.teamname%>">
+                <div class="d-flex team item flex-column">
                     <div class="team-body">
-                      <h5 class="team-title text-uppercase"><%= team.teamname%></h5>
-                      <p class="team-desc text-break"><%= team.desc%></p>
-                      <a href="/team/info2/<%= team.id%>" class="btn btn-primary d-block">Team Infomation</a>
+                      <h6 class="team-title text-uppercase"><%= team.teamname%></h6>
                     </div>
+                    <a style="width: 100%; margin: 0 auto;" href="/team/info/<%= team.id%>" class="d-block text-decoration-none">
+                        <img src="/images/teams/<%= team.logo%>" class="card-img-top" alt="<%= team.teamname%>">
+                    </a>
                 </div>
             <%}%>
         </div>
     </div>
 
     <script>
+        const loading=()=>{
+            const loadingDiv = document.createElement('div');
+            loadingDiv.id = 'loading';
+            loadingDiv.classList.add('text-center', 'mt-3', 'loading');
+            loadingDiv.style.margin = '0 auto'
+            return loadingDiv
+        }
         const fetchData = async (url) => {
             const response = await fetch(url)
             const athletes = await response.json()
@@ -74,10 +122,13 @@
         searchInput.addEventListener('keydown',async (event)=>{
             if (event.key === "Enter") {
                 teamList.innerHTML = ""
+                teamList.style.display = 'block'
+                teamList.appendChild(loading())
                 const searchValue = searchInput.value
                 await fetchData(`http://localhost:3000/team/search/?team=${searchValue}`)
                 .then(data => {
                     if(data.length==0){
+                        teamList.innerHTML = ""
                         const p = document.createElement('p')
                         p.innerHTML = "ไม่พบข้อมูลทีม"
                         p.className = 'text-center'
@@ -85,43 +136,36 @@
                         teamList.appendChild(p)
                         return
                     }
-                    
+                    teamList.innerHTML = ""
                     for (const team  of data) {
-                        const teamDiv = document.createElement('div');
-                        teamDiv.classList.add('d-flex', 'team');
+                    const teamDiv = document.createElement('div');
+                    teamDiv.classList.add('d-flex', 'team', 'item', 'flex-column');
 
-                        const img = document.createElement('img');
-                        img.src = `/images/teams/${team.logo}`;
-                        img.classList.add('card-img-top');
-                        img.alt = team.teamname;
+                    const img = document.createElement('img');
+                    img.src = `/images/teams/${team.logo}`;
+                    img.classList.add('card-img-top');
+                    img.alt = team.teamname;
 
-                        const teamBody = document.createElement('div');
-                        teamBody.classList.add('team-body');
+                    const teamBody = document.createElement('div');
+                    teamBody.classList.add('team-body');
 
-                        const h5 = document.createElement('h5');
-                        h5.classList.add('team-title', 'text-uppercase');
-                        h5.innerText = team.teamname;
+                    const h6 = document.createElement('h6');
+                    h6.classList.add('team-title', 'text-uppercase');
+                    h6.innerText = team.teamname;
 
-                        const p = document.createElement('p');
-                        p.classList.add('team-desc', 'text-break');
-                        p.innerText = team.desc;
+                    const a = document.createElement('a');
+                    a.href = `/team/info/${team.id}`;
+                    a.classList.add('d-block', 'text-decoration-none');
+                    a.appendChild(img);
 
-                        const a = document.createElement('a');
-                        a.href = `/team/info/${team._id}`;
-                        a.classList.add('btn', 'btn-primary', 'd-block');
-                        a.innerText = 'Team Information';
+                    teamBody.appendChild(h6);
+                    teamDiv.appendChild(teamBody);
+                    teamDiv.appendChild(a);
 
-                        teamBody.appendChild(h5);
-                        teamBody.appendChild(p);
-                        teamBody.appendChild(a);
-
-                        teamDiv.appendChild(img);
-                        teamDiv.appendChild(teamBody);
-
-                        teamList.appendChild(teamDiv);
-
+                    teamList.appendChild(teamDiv);
                     }
-                    teamList.className = 'd-grid team-list'
+                    teamList.style.display = 'grid';
+                    teamList.className = 'd-grid team-list my-4'
                 }).catch((err)=>{
                     console.log(err)
                 })

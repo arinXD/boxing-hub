@@ -1,0 +1,77 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    background-image: linear-gradient(15deg, #181D31 0%, #272829 100%) !important;
+}
+.manage.container{
+    padding: 2em 3em;
+    background-color: white !important;
+    box-shadow: rgba(153, 153, 153, 0.2) 0px 2px 5px 0px !important;
+    border-radius: 10px;
+}
+ul.admin-manage{
+    list-style-type: none;
+    margin: 0 ;
+    padding: 0 ;
+    gap: .5em;
+    width: fit-content;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+ul.admin-manage li{
+    height: fit-content;
+    display: block;
+    margin-bottom: 1em;
+}
+ul.admin-manage li:last-child{
+    margin-bottom: 0;
+}
+ul.admin-manage li a{
+    display: flex;
+    align-items: center;
+    padding: .75em 2em;
+    background-color: #1e3a8a;
+    border-radius: 10px;
+    border: 1px solid #e6e6e6;
+    box-shadow: rgba(153, 153, 153, 0.2) 0px 2px 5px 0px !important;
+    text-decoration: none;
+    transition: all .15s ease 0s;
+}
+ul.admin-manage li a:hover{
+    opacity: 0.85;
+}
+ul.admin-manage li p{
+    display: inline-block;
+    text-align: center;
+    margin: 0;
+    color: rgb(255, 255, 255);
+}
+ul.admin-manage li a div{
+    width: 45px;
+    height: 45px;
+    padding: .5em;
+    border-radius: 50%;
+    display: inline-block;
+    background-color: #0f172a;
+    position: relative;
+    margin-right: 1em;
+}
+ul.admin-manage li i{
+    color: rgb(255, 255, 255);
+    font-size: 1.3em;
+    display: inline-block;
+    width: 100%;
+    height: auto;
+    margin: 0 auto .1em;
+    border-radius: 50%;
+}
+ul.admin-manage li i::before{
+    position: absolute;
+    top: 50%;  
+    left: 50%; 
+    transform: translate(-50%, -50%);
+}

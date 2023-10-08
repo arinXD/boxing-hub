@@ -1,14 +1,24 @@
 var express = require('express');
 var router = express.Router();
 const Event = require("../models/EventOat");
-router.get("/", async (req, res)=>{
-    Event.find()
-    .then((result=>{
-        return res.send(result)
-    }))
-    .catch((err)=>{
-        return res.send(err)
-    })
+router.get("/", async (req, res) => {
+    Event.find().populate('matches')
+        .populate({
+            path: 'matches',
+            populate: {
+                path: 'athletes',
+                populate: {
+                    path: '_id',
+                    model: 'athletes',
+                }
+            }
+        })
+        .then((result => {
+            return res.send(result)
+        }))
+        .catch((err) => {
+            return res.send(err)
+        })
 })
 router.post('/insert', async (req, res, next) => {
     const newEvent = new Event({
@@ -20,12 +30,12 @@ router.post('/insert', async (req, res, next) => {
         matches: req.body.matches,
     })
     newEvent.save()
-    .then((result)=>{
-        return res.send(result)
-    })
-    .catch((err)=>{
-        console.error(err)
-    })
+        .then((result) => {
+            return res.send(result)
+        })
+        .catch((err) => {
+            console.error(err)
+        })
 })
 
 

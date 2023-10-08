@@ -4,8 +4,28 @@
     <%- include("../partials/header.ejs")%>
     <link rel="stylesheet" href="/css/searchBar.css">
     <style>
-        .athlete-contain{
-            padding: 1em 5em;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loading {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            animation: spin 2s linear infinite;
+        }
+        body{
+            background-image: linear-gradient(15deg, #181D31 0%, #272829 100%) !important;
+        }
+        .athlete.contain{
+            background-color: white;
+            box-shadow: rgba(153, 153, 153, 0.2) 0px 2px 5px 0px !important;
+            padding: 2em 3em;
+            border-radius: 10px;
+            width: 1140px;
+            margin: 0 auto;
         }
         .athlete-list{
             display: grid;
@@ -25,13 +45,34 @@
             height: 15em;
             cursor: pointer;
         }
+        .search-bar{
+            width: 40%;
+            margin-left: auto;
+            margin-right: 0;
+        }
+        #search-input {
+            padding-left: 3.5em;
+        }
+        .search-bar .bi-search {
+            top: 20%;
+            left: 7%;
+        }
     </style>
 </head>
 <body>
     <%- include("../partials/nav.ejs")%>
-    <div class="container mt-5">
-        <%- include("../partials/searchBar.ejs")%>
-        <div class="athlete-list">
+    <div class="athlete contain my-4">
+        <div class="d-flex flex-row ">
+            <div>
+                <h3 class="mb-3">นักกีฬา</h3>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="/" class="text-decoration-none">หน้าหลัก</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">นักกีฬา</li>
+                </ol>
+            </div>
+            <%- include("../partials/searchBar.ejs")%>
+        </div>
+        <div class="athlete-list my-5">
             <%if(athletesData.length==0){%>
                 <p class="text-center">ไม่พบข้อมูลนักกีฬา</p>
             <%}else{
@@ -41,8 +82,8 @@
                     %>
                     <div class="athlete-item" onclick="openInfo(event)">
                         <img id="<%=athlete._id%>" class="athlete" src="/images/profile/<%= athleteImg%>" alt="<%= athlete.nickname%>">
-                        <h4 class="mt-2"><%= athlete.nickname%></h4>
-                        <p class="mt-1"><%= athlete.country%></p>
+                        <h4 class="mt-2 mb-0"><%= athlete.nickname%></h4>
+                        <p class="mt-1 mb-0"><%= athlete.country%></p>
                     </div>
                 <%})
             }%>
@@ -54,6 +95,13 @@
 
 
     <script>
+        const loading=()=>{
+            const loadingDiv = document.createElement('div');
+            loadingDiv.id = 'loading';
+            loadingDiv.classList.add('text-center', 'mt-3', 'loading');
+            loadingDiv.style.margin = '0 auto'
+            return loadingDiv
+        }
         const fetchData = async (url) => {
             const response = await fetch(url)
             const athletes = await response.json()
@@ -70,17 +118,20 @@
         searchAth.addEventListener('keydown',async (event)=>{
             if (event.key === "Enter") {
                 athleteList.innerHTML = ""
+                athleteList.style.display = 'block'
+                athleteList.appendChild(loading())
                 const nickname = searchAth.value
-                await fetchData(`http://localhost:3000/athletes/search/?nickname=${nickname}`)
+                await fetchData(`http://localhost:3000/athletes/json/${nickname}`)
                 .then(data => {
                     if(data.length==0){
+                        athleteList.innerHTML = ""
                         const p = document.createElement('p')
                         p.innerHTML = "ไม่พบข้อมูลนักกีฬา"
                         p.className = 'text-center'
-                        athleteList.className = 'd-block'
                         athleteList.appendChild(p)
                         return
                     }
+                    athleteList.innerHTML = ""
                     for (const obj of data) {
                         const div = document.createElement('div')
                         const img = document.createElement('img')
@@ -91,9 +142,9 @@
                         img.className = "athlete"
                         img.src = `/images/profile/${obj.user.img}`
                         img.alt = obj.nickname
-                        h4.className = "mt-2"
+                        h4.className = "mt-2 mb-0"
                         h4.innerHTML = obj.nickname
-                        p.className = 'mt-1'
+                        p.className = 'mt-1 mb-0'
                         p.innerHTML = obj.country
                         div.appendChild(img)
                         div.appendChild(h4)
@@ -101,7 +152,8 @@
                         div.setAttribute('onClick','openInfo(event)')
                         athleteList.appendChild(div)
                     }
-                    athleteList.className = 'athlete-list'
+                    athleteList.style.display = 'grid';
+                    athleteList.className = 'athlete-list my-5'
                 }).catch((err)=>{
                     console.log(err)
                 })

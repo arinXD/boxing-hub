@@ -77,12 +77,6 @@ const img = (userProfile)? userProfile:"avartar.png"
                       </li>
                       
                 <%}%> -->
-
-                <%if(userRole==1){%>
-                    <li class="nav-item">
-                        <a class="nav-link click-scroll" href="/admin">admin</a>
-                    </li>
-                <%}%>
                 
                 <%if(!signedIn){%>
                     <li><a href="/authen/signin"><button class="btn btn-outline-light nav-link click-scroll signoutBtn">Sign In</button></a></li>
@@ -93,9 +87,22 @@ const img = (userProfile)? userProfile:"avartar.png"
                     <img id="profile-img" src="/images/profile/<%=img%>" alt="user-profile">
                 </div>
                 <div class="toggle-profile">
-                    <div class="toggle-avartar">
-                        <img src="/images/profile/<%=img%>" alt="user-profile"><span class="user-name"><%= userName%></span>
+                    <div>
+                        <div class="text-white-50 mb-1">ดูโปรไฟล์</div>
+                        <div class="toggle-avartar">
+                            <img src="/images/profile/<%=img%>" alt="user-profile"><span class="user-name"><%= userName%></span>
+                        </div>
                     </div>
+                    <% 
+                        if(userRole==1){%>
+                            <div class="toggle-setting toggle-admin-setting">
+                                <div class="font-bg">
+                                    <i class="bi bi-wrench"></i>
+                                </div>
+                                <span>จัดการข้อมูลเว็บไซต์</span>
+                            </div>
+                        <%}
+                    %>
                     <div class="toggle-setting toggle-profile-setting">
                         <div class="font-bg">
                             <i class="bi bi-gear-fill"></i>
@@ -133,7 +140,10 @@ const img = (userProfile)? userProfile:"avartar.png"
                 window.location.href = "/profile"
             })
             document.querySelector(".toggle-profile-setting").addEventListener("click", ()=>{
-                window.location.href = "/profile/setting"
+                window.location.href = "/profile"
+            })
+            document.querySelector(".toggle-admin-setting").addEventListener("click", ()=>{
+                window.location.href = "/admin"
             })
         }
     </script>
