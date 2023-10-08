@@ -72,7 +72,8 @@ const findAthlete = async (req, res) => {
 const findAthleteJson = async (req, res) => {
     console.log(req.params.id);
     await Athlete.findOne({
-            _id: req.params.id
+            _id: req.params.id,
+            confirmed:true
         }).populate(['matches', 'user',])
         .populate({
             path: 'matches',
@@ -186,66 +187,76 @@ const RegisterAthlete = async (req, res) => {
     try {
         const { nickname, weight, height, reach, bday, country, weightClass } = req.body;
         const userId = req.session.userId;
-        const selectedTeamValue = req.body.team;
+        let selectedTeamValue = req.body.team;
 
-        // Fetch the team's _id from the database using the selectedTeamValue
-        Team.findOne({ _id: selectedTeamValue })
-            .then(async (result) => {
-                if (!result) {
-                    // Handle the case where the team was not found
-                    console.error('Team not found');
-                    return res.status(404).send('Team not found');
-                }
+        const hasTeamCheckbox = req.body['has-team'];
+        let teamId = null;
 
-                const teamId = result._id;
+        if (hasTeamCheckbox && !selectedTeamValue) {
 
-                // Create a new athlete associated with the user
-                const athlete = new Athlete({
-                    nickname,
-                    weight,
-                    height,
-                    reach,
-                    bday,
-                    country,
-                    weightClass,
-                    team: teamId,
-                    user: userId, // Assign the user's ID to the athlete's user field
-                    confirmed: false
-                });
+            console.error('Team not selected');
+            return res.status(400).send('Team not selected');
+        }
 
-                // Save the athlete
-                const athleteResult = await athlete.save();
+        // If the checkbox is checked and a team is selected, fetch the team's _id
+        if (hasTeamCheckbox && selectedTeamValue) {
+            const result = await Team.findOne({ _id: selectedTeamValue });
 
-                const updatedUser = await User.findByIdAndUpdate(
-                    userId,
-                    { role: 2 },
-                    { new: true }
-                );
+            if (!result) {
+                // Handle the case where the team was not found
+                console.error('Team not found');
+                return res.status(404).send('Team not found');
+            }
 
-                // Add the athlete's ID to the team's "athletes" array
-                const updatedTeam = await Team.findByIdAndUpdate(
-                    teamId,
-                    { $push: { athletes: athleteResult._id } },
-                    { new: true }
-                );
+            teamId = result._id;
+        }
 
-                if (!updatedTeam) {
-                    // Handle the case where the team was not found during update
-                    console.error('Team not found during update');
-                    return res.status(404).send('Team not found during update');
-                }
+        // Create a new athlete associated with the user
+        const athlete = new Athlete({
+            nickname,
+            weight,
+            height,
+            reach,
+            bday,
+            country,
+            weightClass,
+            team: teamId,
+            user: userId, // Assign the user's ID to the athlete's user field
+            confirmed: false
+        });
 
-                console.log('Updated Team:', updatedTeam);
+        // Save the athlete
+        const athleteResult = await athlete.save();
 
-                res.redirect('/');
-            })
-            .catch((err) => {
-                console.error(err);
-            });
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { role: 2 },
+            { new: true }
+        );
+
+        // Add the athlete's ID to the team's "athletes" array if a team is selected
+        if (teamId) {
+            const updatedTeam = await Team.findByIdAndUpdate(
+                teamId,
+                { $push: { athletes: athleteResult._id } },
+                { new: true }
+            );
+
+            if (!updatedTeam) {
+                // Handle the case where the team was not found during update
+                console.error('Team not found during update');
+                return res.status(404).send('Team not found during update');
+            }
+
+            console.log('Updated Team:', updatedTeam);
+        }
+
+        res.redirect('/');
     } catch (error) {
         console.error(error);
     }
 };
+
 module.exports = {
     fetchAthletes,
     createAthlete,

@@ -27,9 +27,15 @@
 </head>
 <body>
     <%- include("../partials/nav.ejs")%>
-    <div class="athlete-contain mt-4">
-        <h1 class="mb-5">จัดการ Athletes</h1>
-        <div class="athlete-list">
+    <div class="container mt-5">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <h1 class="">จัดการ Athletes</h1>
+            <div>
+                <a class="btn btn-primary w-100 px-5"href="/admin/adminAdd">เพิ่ม</a>
+            </div>
+        </div>
+        <div class="athlete-list ">
+
         <%if(athlete.length==0){%>
             <p>ไม่มีข้อมูลนักกีฬา</p>
         <%}else{
@@ -38,11 +44,14 @@
                     <%
                     let athleteImg = (athlete.user.img)? athlete.user.img:"avartar.png"
                     %>
-                <div class="athlete-item">
+                <div class="athlete-item my-4">
                     <a href="/admin/editAthletes/<%=athlete._id%>"> <img id="<%=athlete._id%>" class="athlete" src="/images/profile/<%= athleteImg%>"></a>
                     <h4 class="mt-2"><%= athlete.nickname%></h4>
                     <p class="mt-1"><%= athlete.country%></p>
-                    <a class="btn btn-danger" href="/admin/deleteAthletes/<%=athlete._id%>" onclick="return confirm('Are you sure you want to delete this Athlete?')">delete</a>
+                    <div class="d-grid gap-2 col-12 mx-auto">
+                        <a class="btn btn-danger" href="/admin/deleteAthletes/<%=athlete._id%>" onclick="return confirm('Are you sure you want to delete this Athlete?')">delete</a>
+
+                    </div>
                 </div>
                 <% } %>
             <%})
@@ -60,6 +69,25 @@
                 window.location.href = `/athletes/info/?id=${e.id}`
             })
         });
+
+        document.getElementById('deleteButton').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the default behavior of the link
+          
+            Swal.fire({
+              title: 'Are you sure you want to delete this Athlete?',
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonText: 'Yes, delete it!',
+              cancelButtonText: 'No, cancel',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                // Perform the delete operation here
+                Swal.fire('Deleted!', 'The athlete has been deleted.', 'success');
+              } else if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire('Cancelled', 'The athlete deletion was cancelled.', 'info');
+              }
+            });
+          });
     </script>
 </body>
 </html>

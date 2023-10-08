@@ -181,7 +181,7 @@
                 <%
                 for (const ath of team.athletes) {%>
                     <li>
-                        <a href="/athletes/info/<%=ath._id%>">
+                        <a href="/admin/editAthletes/<%=ath._id%>">
                             <img src="/images/profile/<%=ath.user.img%>" alt="">
                             <h2>
                                 <%=ath.nickname%>
@@ -191,6 +191,7 @@
                             </p>
                         </a>
                     </li>
+                    
                 <%}
                 %>
             </ul>
