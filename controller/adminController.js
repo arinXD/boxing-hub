@@ -5,8 +5,6 @@ const Match = require("../models/Matches");
 const Event = require("../models/Events");
 const bcrypt = require("bcrypt")
 
-const bcrypt = require("bcrypt")
-
 const teamPage = (req, res) => {
     const crudStatus = req.flash('crudStatus')
     req.flash('crudStatus', '')
