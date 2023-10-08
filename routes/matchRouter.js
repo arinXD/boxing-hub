@@ -29,6 +29,11 @@ router.post('/insert', async (req, res, next) => {
     const loserId = '6521b365be956fd19f3e3ad8'
 
     const resultType = "majorityVotes"
+    "1.25".split(".")
+    ([0]*60) + [1]
+
+
+
 
     const newMatch = new Match({
         order: 1,

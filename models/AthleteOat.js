@@ -21,10 +21,10 @@ const athleteSchema = new Schema({
         type:Number,
         default:0
     },
-    draws:  {
-        type:Number,
-        default:0
-    },
+    // draws:  {
+    //     type:Number,
+    //     default:0
+    // },
     knockouts: {
         type:Number,
         default:0

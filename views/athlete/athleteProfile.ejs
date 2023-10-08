@@ -495,7 +495,7 @@
                         </div>
                         <div>
                             <span>อัตราการชนะ</span>
-                            <% const winrate = (athlete.wins>=0&&athlete.losses>=0)?(athlete.wins/(athlete.wins+athlete.losses))*100:0 %>
+                            <% const winrate = (athlete.wins>=0&&athlete.losses>0)?(athlete.wins/(athlete.wins+athlete.losses))*100:0 %>
                             <span><%= winrate%> %</span>       
                         </div>
                         <div>
@@ -545,7 +545,7 @@
                                 </div>
                             </div>
                             <div class="doughChart">
-                                <h2>ชนะคะแนนเสียงข้างมาก</h2>
+                                <h2>ชนะคะแนนไม่เอกฉันท์</h2>
                                 <div class="canvas-wrap">
                                     <h3><%= (athlete.majorityVotes/totalMatch)*100%>%</h3>
                                     <canvas id="doughnutMajor"></canvas>

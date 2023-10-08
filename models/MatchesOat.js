@@ -9,17 +9,18 @@ const matchSchema = new Schema({
     weightClass:{
         type: String
     },
-    rounds:{
+    Rounds:{
         type: Number
+
     },
-    resultType:String,
-    resultClock:{
+    ResultType:String,
+    ResultClock:{
         type: Number,
         default: null
     },
-    resultRound:{
+    ResultRound:{
         type:Number,
-        default: null
+        default: 0
     },
     event:{
         type: mongoose.Schema.ObjectId,

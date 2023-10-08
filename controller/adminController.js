@@ -3,6 +3,7 @@ const Team = require("../models/Team");
 const Athlete = require("../models/AthleteOat");
 const Match = require("../models/MatchesOat");
 const Event = require("../models/EventOat");
+const bcrypt = require("bcrypt")
 
 const teamPage = (req, res) => {
     const crudStatus = req.flash('crudStatus')
@@ -517,7 +518,7 @@ const updateUserPage = async (req, res) => {
     return res.render('admin/user/update_user', { user })
 }
 const adminPage = async (req, res) => {
-    const users = await User.find()
+    const users = await User.find({deleted_at:null})
     const teams = await Team.find()
     const athletes = await Athlete.find()
     const matches = await Match.find()
@@ -558,42 +559,54 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
     try {
         const user = await User.findOne({ _id: req.params.uid })
-        const athlete = await Athlete.findOne({ user: user._id })
-        if (athlete.team) {
-            await Team.findByIdAndUpdate(
-                athlete.team,
-                { $pull: { athletes: athlete._id } },
-                { new: true }
-            )
-        }
-        if ((athlete.matches).length > 0) {
-            for (var match of athlete.matches) {
-                const matchFind = await Match.findOne({ _id: match })
-                for (const ath of matchFind.athletes) {
-                    Athlete.findByIdAndUpdate(
-                        ath,
-                        { $pull: { matches: match } },
-                        { new: true }
-                    )
-                }
-                await Event.findByIdAndUpdate(
-                    matchFind.event,
-                    { $pull: { matches: matchFind._id } },
+        const date = new Date();
+        const timestamp = date.getTime();
+        const oldEmail = user.email
+        if (user) {
+                await User.findByIdAndUpdate(
+                    user._id,
+                    {
+                        email: `deleted_${timestamp}_${oldEmail}`,
+                        deleted_at: date
+                    },
                     { new: true }
                 )
-                await Match.findByIdAndDelete(match)
             }
-        }
-        if (athlete) {
-            await Athlete.findByIdAndDelete(athlete._id)
-            await User.findByIdAndDelete(athlete.user._id)
-        }
+        // const athlete = await Athlete.findOne({ user: user._id })
+        // if (athlete.team) {
+        //     await Team.findByIdAndUpdate(
+        //         athlete.team,
+        //         { $pull: { athletes: athlete._id } },
+        //         { new: true }
+        //     )
+        // }
+        // if ((athlete.matches).length > 0) {
+        //     for (var match of athlete.matches) {
+        //         const matchFind = await Match.findOne({ _id: match })
+        //         for (const ath of matchFind.athletes) {
+        //             Athlete.findByIdAndUpdate(
+        //                 ath,
+        //                 { $pull: { matches: match } },
+        //                 { new: true }
+        //             )
+        //         }
+        //         await Event.findByIdAndUpdate(
+        //             matchFind.event,
+        //             { $pull: { matches: matchFind._id } },
+        //             { new: true }
+        //         )
+        //         await Match.findByIdAndDelete(match)
+        //     }
+        // }
+        // if (athlete) {
+        //     await Athlete.findByIdAndDelete(athlete._id)
+        //     await User.findByIdAndDelete(athlete.user._id)
+        // }
         return res.redirect('/admin')
     } catch (err) {
         console.error(err);
-        return res.redirect('/admin')
+        return res.status(500).json({ error: 'Internal server error.' })
     }
-
 }
 const checkAthlete = (req, res) => {
     const uid = req.params.uid
