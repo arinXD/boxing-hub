@@ -27,7 +27,7 @@ const signIn = async (req, res) => {
         return res.redirect('/authen/signin')
     }
     await User.findOne({
-        email: email
+        email: email.toLowerCase()
     }).then((result) => {
         if (result) {
             bcrypt.compare(password, result.password)
