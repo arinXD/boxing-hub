@@ -67,7 +67,7 @@
     for(let match of athlete.matches){
         totalMatch++
         totalRound += match.ResultRound
-        totalTime += (((match.EesultRound)-1)*3)*60+match.EesultClock
+        totalTime += (((match.ResultRound)-1)*3)*60+match.ResultClock
     }
     %>
     <script>
@@ -495,12 +495,12 @@
                         </div>
                         <div>
                             <span>อัตราการชนะ</span>
-                            <% const winrate = (athlete.wins>=0&&athlete.losses>0)?(athlete.wins/(athlete.wins+athlete.losses))*100:0 %>
+                            <% const winrate = (athlete.wins>0)?(athlete.wins/(athlete.wins+athlete.losses))*100:0 %>
                             <span><%= winrate%> %</span>       
                         </div>
                         <div>
                             <span>เวลาการแข่งขันทั้งหมด</span>
-                            <span><%= (totalTime)? convertSecondsToTime(totalTime):"0 นาที"%></span>
+                            <span><%= (totalTime>0)? convertSecondsToTime(totalTime):"0 นาที"%></span>
                         </div>
                         <div>
                             <span>เวลาเฉลี่ย/ยก</span>

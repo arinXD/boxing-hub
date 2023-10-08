@@ -313,24 +313,118 @@ const updateEvent = async (req, res) => {
                     winner: false,
                     _id: getIdAthlete2
                 }];
-                await Athlete.findByIdAndUpdate(
-                    Athlete1, {
-                        $inc: {
-                            wins: 1
-                        }
-                    }, {
-                        new: true
-                    }
-                );
-                await Athlete.findByIdAndUpdate(
-                    Athlete2, {
-                        $inc: {
-                            losses: 1
-                        }
-                    }, {
-                        new: true
-                    }
-                );
+                var winnerId = Athlete1
+                var loserId = Athlete2
+                // 1
+                if(ResultType=="knockouts"){
+                    // win
+                    await Athlete.findByIdAndUpdate(winnerId, {
+                        $inc : { "wins": 1, 'knockouts': 1},
+                        $push: { matches: getMatchId }
+                    }, { upsert: true })
+                    .then((result) => {
+                        console.log("insert wins to winner")
+                    }).catch(((err)=>{
+                        console.error(err)
+                    }))
+                    // loss
+                    await Athlete.findByIdAndUpdate(loserId, {
+                        $inc : { "losses": 1, 'knockoutsLosses': 1},
+                        $push: { matches: getMatchId }
+                    }, { upsert: true })
+                    .then((result) => {
+                        console.log("insert wins to loser")
+                    }).catch(((err)=>{
+                        console.error(err)
+                    }))
+                }
+                // 2
+                else if(ResultType=="technical knockout"){
+                    // win
+                    await Athlete.findByIdAndUpdate(winnerId, {
+                        $inc : { "wins": 1, 'technicalKnockouts': 1},
+                        $push: { matches: getMatchId }
+                    }, { upsert: true })
+                    .then((result) => {
+                        console.log("insert wins to winner")
+                    }).catch(((err)=>{
+                        console.error(err)
+                    }))
+                    // loss
+                    await Athlete.findByIdAndUpdate(loserId, {
+                        $inc : { "losses": 1, 'technicalKnockoutsLosses': 1},
+                        $push: { matches: getMatchId }
+                    }, { upsert: true })
+                    .then((result) => {
+                        console.log("insert wins to loser")
+                    }).catch(((err)=>{
+                        console.error(err)
+                    }))
+                }
+                // 3
+                else if(ResultType=="overwhelming score"){
+                    // win
+                    await Athlete.findByIdAndUpdate(winnerId, {
+                        $inc : { "wins": 1, 'overwhelmingScore': 1},
+                        $push: { matches: getMatchId }
+                    }, { upsert: true })
+                    .then((result) => {
+                        console.log("insert wins to winner")
+                    }).catch(((err)=>{
+                        console.error(err)
+                    }))
+                    // loss
+                    await Athlete.findByIdAndUpdate(loserId, {
+                        $inc : { "losses": 1, 'overwhelmingScoreLosses': 1},
+                        $push: { matches: getMatchId }
+                    }, { upsert: true })
+                    .then((result) => {
+                        console.log("insert wins to loser")
+                    }).catch(((err)=>{
+                        console.error(err)
+                    }))
+                }
+                // 4
+                else{
+                    // win
+                    await Athlete.findByIdAndUpdate(winnerId, {
+                        $inc : { "wins": 1, 'majorityVotes': 1},
+                        $push: { matches: getMatchId }
+                    }, { upsert: true })
+                    .then((result) => {
+                        console.log("insert wins to winner")
+                    }).catch(((err)=>{
+                        console.error(err)
+                    }))
+                    // loss
+                    await Athlete.findByIdAndUpdate(loserId, {
+                        $inc : { "losses": 1, 'majorityVotesLosses': 1},
+                        $push: { matches: getMatchId }
+                    }, { upsert: true })
+                    .then((result) => {
+                        console.log("insert wins to loser")
+                    }).catch(((err)=>{
+                        console.error(err)
+                    }))
+                }
+                // await Athlete.findByIdAndUpdate(
+                //     Athlete1, {
+                //         $inc: {
+                //             wins: 1
+                //         }
+                //     }, {
+                //         new: true
+                //     }
+                // );
+                // await Athlete.findByIdAndUpdate(
+                //     Athlete2, {
+                //         $inc: {
+                //             losses: 1
+                //         }
+                //     }, {
+                //         new: true
+                //     }
+                // );
             } else if (getWinner === Athlete2) {
                 athletesMatch = [{
                     athlete: Athlete1,
@@ -341,24 +435,118 @@ const updateEvent = async (req, res) => {
                     winner: true,
                     _id: getIdAthlete2
                 }];
-                await Athlete.findByIdAndUpdate(
-                    Athlete1, {
-                        $inc: {
-                            losses: 1
-                        }
-                    }, {
-                        new: true
-                    }
-                );
-                await Athlete.findByIdAndUpdate(
-                    Athlete2, {
-                        $inc: {
-                            wins: 1
-                        }
-                    }, {
-                        new: true
-                    }
-                );
+                var winnerId = Athlete2
+                var loserId = Athlete1
+                
+                if(ResultType=="knockouts"){
+                    // win
+                    await Athlete.findByIdAndUpdate(winnerId, {
+                        $inc : { "wins": 1, 'knockouts': 1},
+                        $push: { matches: getMatchId }
+                    }, { upsert: true })
+                    .then((result) => {
+                        console.log("insert wins to winner")
+                    }).catch(((err)=>{
+                        console.error(err)
+                    }))
+                    // loss
+                    await Athlete.findByIdAndUpdate(loserId, {
+                        $inc : { "losses": 1, 'knockoutsLosses': 1},
+                        $push: { matches: getMatchId }
+                    }, { upsert: true })
+                    .then((result) => {
+                        console.log("insert wins to loser")
+                    }).catch(((err)=>{
+                        console.error(err)
+                    }))
+                }
+                // 2
+                else if(ResultType=="technical knockout"){
+                    // win
+                    await Athlete.findByIdAndUpdate(winnerId, {
+                        $inc : { "wins": 1, 'technicalKnockouts': 1},
+                        $push: { matches: getMatchId }
+                    }, { upsert: true })
+                    .then((result) => {
+                        console.log("insert wins to winner")
+                    }).catch(((err)=>{
+                        console.error(err)
+                    }))
+                    // loss
+                    await Athlete.findByIdAndUpdate(loserId, {
+                        $inc : { "losses": 1, 'technicalKnockoutsLosses': 1},
+                        $push: { matches: getMatchId }
+                    }, { upsert: true })
+                    .then((result) => {
+                        console.log("insert wins to loser")
+                    }).catch(((err)=>{
+                        console.error(err)
+                    }))
+                }
+                // 3
+                else if(ResultType=="overwhelming score"){
+                    // win
+                    await Athlete.findByIdAndUpdate(winnerId, {
+                        $inc : { "wins": 1, 'overwhelmingScore': 1},
+                        $push: { matches: getMatchId }
+                    }, { upsert: true })
+                    .then((result) => {
+                        console.log("insert wins to winner")
+                    }).catch(((err)=>{
+                        console.error(err)
+                    }))
+                    // loss
+                    await Athlete.findByIdAndUpdate(loserId, {
+                        $inc : { "losses": 1, 'overwhelmingScoreLosses': 1},
+                        $push: { matches: getMatchId }
+                    }, { upsert: true })
+                    .then((result) => {
+                        console.log("insert wins to loser")
+                    }).catch(((err)=>{
+                        console.error(err)
+                    }))
+                }
+                // 4
+                else{
+                    // win
+                    await Athlete.findByIdAndUpdate(winnerId, {
+                        $inc : { "wins": 1, 'majorityVotes': 1},
+                        $push: { matches: getMatchId }
+                    }, { upsert: true })
+                    .then((result) => {
+                        console.log("insert wins to winner")
+                    }).catch(((err)=>{
+                        console.error(err)
+                    }))
+                    // loss
+                    await Athlete.findByIdAndUpdate(loserId, {
+                        $inc : { "losses": 1, 'majorityVotesLosses': 1},
+                        $push: { matches: getMatchId }
+                    }, { upsert: true })
+                    .then((result) => {
+                        console.log("insert wins to loser")
+                    }).catch(((err)=>{
+                        console.error(err)
+                    }))
+                }
+                // await Athlete.findByIdAndUpdate(
+                //     Athlete1, {
+                //         $inc: {
+                //             losses: 1
+                //         }
+                //     }, {
+                //         new: true
+                //     }
+                // );
+                // await Athlete.findByIdAndUpdate(
+                //     Athlete2, {
+                //         $inc: {
+                //             wins: 1
+                //         }
+                //     }, {
+                //         new: true
+                //     }
+                // );
             }
 
             var GetIsChampionship = '';
