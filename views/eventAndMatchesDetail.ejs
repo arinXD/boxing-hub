@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TKO Championship</title>
+  <link rel="stylesheet" href="/css/showDetail.css" />
+
+
+</head>
+
+<body>
+  <!-- <div style="background-color: #61677a">
+      <section
+        class="py-5 text-center container"
+        style="background-color: #61677a"
+      >
+        <div class="row py-lg-3">
+          <div class="col-lg-6 col-md-8 mx-auto">
+            <h1 class="fw-light" style="color: white">Event</h1>
+          </div>
+        </div>
+      </section>
+    </div><br><br>-->
+  <%- include("./partials/nav.ejs")%>
+  <% var getMatch = getEvent.matches %>
+
+  
+  <div class="container marketing p-5 shadow-lg">
+    <div class="text-primary bg-danger">
+        <h1><%getEvent.eventName%></h1>
+    </div>
+    <!-- Three columns of text below the carousel -->
+    <% getMatch.forEach(match => { %>
+    <% getAthlete = match.athletes %>
+    <% getAthleteNo0 = getAthlete[0].athlete%>
+    <% getAthleteNo1 = getAthlete[1].athlete%>
+
+    <section class="py-5 container shadow-lg mb-5" style="border-radius: 0.25em;">
+
+      <div class="row py-lg-3 text-center" style="border-radius: 0.25em; margin: 0 auto;">
+        <div class="col-lg-4 col-md-4">
+          <!-- <svg class="bd-placeholder-img rounded-circle " width="250" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false"> -->
+          <title>Placeholder</title>
+          <rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect>
+          </svg>
+          <p>
+          <h2 class="text-center"><%=getAthleteNo0.nickname %></h2>
+          </p>
+          <p class="text-center"><span class="fw-semibold">พิกัดน้ำหนัก:</span><%=getAthleteNo0.weightClass %></p>
+          <p class="text-center"><span class="fw-semibold">ส่วนสูง:</span><%=getAthleteNo0.height %></p>
+          <p class="text-center"><span class="fw-semibold">ประเทศ:</span><%=getAthleteNo0.country %></p>
+          <!-- <p><span class="fw-semibold">อายุ:</span><%=getAthleteNo0.height %> ปี</p> -->
+          <!-- <p><span class="fw-semibold">ทีม:</span><%=getAthleteNo0.team.teamname %></p> -->
+        </div>
+        <div class="col-lg-2 col-md-4" style="margin: 0 auto;" id="vs">
+          <br><br><br>
+          <div class="text-center " style="margin: 0 auto;">
+            <h1 class="text-center" style="margin: 0 auto;">VS</h1>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-4">
+          <!-- <svg class="bd-placeholder-img rounded-circle " width="250" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false"> -->
+          <title>Placeholder</title>
+          <rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect>
+          </svg>
+          <p>
+          <h2><%=getAthleteNo1.nickname %></h2>
+          </p>
+          <p><span class="fw-semibold">พิกัดน้ำหนัก:</span><%=getAthleteNo1.weightClass %></p>
+          <p><span class="fw-semibold">ส่วนสูง:</span><%=getAthleteNo1.height %></p>
+          <p><span class="fw-semibold">ประเทศ:</span><%=getAthleteNo1.country %></p>
+          <!-- <p><span class="fw-semibold">อายุ:</span><%=getAthleteNo1.height %> ปี</p> -->
+          <!-- <p><span class="fw-semibold">ทีม:</span><%=getAthleteNo1.team.teamname %></p> -->
+        </div>
+      </div>
+      <p class="text-center">รายละเอียดการแข่งขัน</p>
+      <div class="row p-3">
+        <div class="col-4 mb-5">
+          <label for="">พิกัดน้ำหนักที่แข่งขัน: </label>
+          <input type="text" class="form-control" value="<%= match.WeightClass %>" readonly>
+        </div>
+
+        <div class="col-4 mb-5">
+          <label for="">เวลาที่ใช้ไปทั้งหมด: </label>
+          <input type="text" class="form-control" value="<%= match.ResultClock%>" readonly>
+
+        </div>
+        <div class="col-4 mb-5">
+          <label for="">จำนวนยกทั้งหมดที่ใช้ไป: </label>
+          <input type="text" class="form-control" value="<%= match.ResultRound%>" readonly>
+
+        </div>
+
+        <div class="col-4 mb-5">
+          <label for="">นักกีฬาที่ชนะการแข่งขัน: </label>
+          <% if (getAthlete[0].winner === true) {%>
+          <input type="text" class="form-control" value="<%= getAthlete[0].athlete.nickname%>" readonly>
+          <% } else if (getAthlete[1].winner === true) { %>
+          <input type="text" class="form-control" value="<%= getAthlete[1].athlete.nickname%>" readonly>
+          <% } else {%>
+          <input type="text" class="form-control" value="ยังไม่มีผลการตัดสิน" readonly>
+          <% } %>
+
+
+        </div>
+        <div class="col-4 mb-5">
+          <label for="">ชนะการแข่งขันอย่างไร: </label>
+          <input type="text" class="form-control" value="<%= match.ResultType%>" readonly>
+
+        </div>
+
+      </div>
+    </section>
+    <%})%>
+  </div>
+
+
+
+</body>
+<%- include("./partials/footer.ejs")%>
+
+</html>

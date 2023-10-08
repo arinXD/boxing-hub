@@ -625,7 +625,30 @@ const deleteEvent = async (req, res) => {
     res.redirect('/event');
 
 }
+const showDetail = async (req, res) => {
+    const eventFind = req.params.id;
+    
+    try {
+        var getEvent = await Event.findById(eventFind).populate("matches").populate({
+            path: 'matches',
+            populate: {
+                path: 'athletes',
+                populate: {
+                    path: 'athlete',
+                    model: 'athletes',
+                }
+            }
+        });
 
+        // ส่งข้อมูลทั้งสองไปยังหน้า eventIndex
+        res.render("eventAndMatchesDetail", {mytitle: "MatchDetail", getEvent});
+        // return res.json(getEvent);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("เกิดข้อผิดพลาดในการดึงข้อมูล");
+    }
+
+}
 
 
 
@@ -636,6 +659,7 @@ module.exports = {
     addEvent,
     editEvent,
     updateEvent,
-    deleteEvent
+    deleteEvent,
+    showDetail
 
 }
