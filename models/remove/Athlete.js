@@ -1,6 +1,6 @@
-const mongoose = require('mongoose')
+// const mongoose = require('mongoose')
 
-const Schema = mongoose.Schema;
+// const Schema = mongoose.Schema;
 const athleteSchema = new Schema({
     aka:{
         type: String,
@@ -31,6 +31,6 @@ const athleteSchema = new Schema({
     
 }, {timestamps : true})
 
-const Athlete = mongoose.model('athletes', athleteSchema)
+// const Athlete = mongoose.model('athletes', athleteSchema)
 
-module.exports = Athlete
+// module.exports = Athlete

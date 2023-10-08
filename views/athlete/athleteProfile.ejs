@@ -66,8 +66,8 @@
     var totalMatch = 0
     for(let match of athlete.matches){
         totalMatch++
-        totalRound += match.resultRound
-        totalTime += (((match.resultRound)-1)*3)*60+match.resultClock
+        totalRound += match.ResultRound
+        totalTime += (((match.EesultRound)-1)*3)*60+match.EesultClock
     }
     %>
     <script>
@@ -280,7 +280,7 @@
         }
         .score .rate{
             display: flex;
-            justify-content: space-between;
+            justify-content: space-around;
             margin-bottom: 1.5em;
         }
         .score .rate > hr{
@@ -294,7 +294,7 @@
             justify-content: center;
             padding: 0 3em;
         }
-        .score .rate div:nth-of-type(2){
+        .score .rate div{
             border-left: 1px solid rgba(250,251,253,.15);
             border-right: 1px solid rgba(250,251,253,.15);
         }
@@ -415,9 +415,9 @@
                 <div>
                     <span class="score-count loss"><%= athlete.losses%></span><span>แพ้</span>
                 </div>
-                <div>
+                <!-- <div>
                     <span class="score-count draw"><%= athlete.draws%></span><span>เสมอ</span>
-                </div>
+                </div> -->
             </div>
         </div>
         <img class="athlete-img" src="/images/profile/<%= athlete.user.img%>" alt="<%= athlete.nickname%>">
@@ -577,22 +577,22 @@
                     %>
                     <%for(let match of athlete.matches.sort()){
                         totalMatch++
-                        totalRound += match.resultRound
-                        totalTime += (((match.resultRound)-1)*3)*60+match.resultClock
+                        totalRound += match.ResultRound
+                        totalTime += (((match.ResultRound)-1)*3)*60+match.ResultClock
                         
                         
-                        for(var matchDetail of match.athletes){
-                            if(athlete._id==matchDetail._id._id.toString()){
+                        for(var matchDetail of match.athletes){%>
+                            <%if(athlete._id==matchDetail.athlete._id.toString()){
                                 var resultMatch = (matchDetail.winner)? "ชนะ":"แพ้"
                                 var resultClass = (matchDetail.winner)? "text-success":"text-danger"
                             }else{
-                                var compet = matchDetail._id
+                                var compet = matchDetail.athlete
                             }
                         }%>
                         <tr>
                             <td class="<%= resultClass%>"><%= resultMatch%></td>
-                            <td><%= judgement(match.resultType)%></td>
-                            <td>ยก <%= match.resultRound%> <%= convertSecondsToMin(match.resultClock)%></td>
+                            <td><%= judgement(match.ResultType)%></td>
+                            <td>ยก <%= match.ResultRound%> <%= convertSecondsToMin(match.ResultClock)%></td>
                             <%let competImg = (compet.user.img)? compet.user.img:"avartar.png"%>
                             <td class="d-flex">
                                 <img width="50px" height="50px" src="/images/profile/<%= competImg%>" alt="">

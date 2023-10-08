@@ -1,8 +1,8 @@
 const User = require("../models/User");
 const Team = require("../models/Team");
-const Athlete = require("../models/AthleteOat");
-const Match = require("../models/MatchesOat");
-const Event = require("../models/EventOat");
+const Athlete = require("../models/Athletes");
+const Match = require("../models/Matches");
+const Event = require("../models/Events");
 const bcrypt = require("bcrypt")
 
 const teamPage = (req, res) => {

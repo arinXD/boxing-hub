@@ -170,7 +170,7 @@
                         <span class="badge bg-advertising rounded-pill ms-auto"></span>
                       </div>
                       <div class="row">
-                        <form action="/eventIndex/updateEvent" method="post" onsubmit="return validateSelection();">
+                        <form action="/event/updateEvent" method="post" onsubmit="return validateSelection();">
                           <div class="col-lg-6 col-md-6 col-6">
                             <div class="mb-3">
                               <label for="exampleInputEmail1" class="form-label text-dark">รหัสตารางการแข่งขัน (ID)
@@ -247,8 +247,10 @@
                                 <% let athleteInArray1 = athleteArrayObject[index0]; %>
                                 <% let athleteInArray2 = athleteArrayObject[index1]; %>
 
-                                <input type="text" value="<%=athleteInArray1._id._id%>" class="form-control text-dark" name="athleteId1<%=i%>" readonly style="display: none;">
-                                <input type="text" value="<%=athleteInArray2._id._id%>" class="form-control text-dark" name="athleteId2<%=i%>" readonly style="display: none;">
+                                <input type="text" value="<%=athleteInArray1.athlete._id%>" class="form-control text-dark" name="athleteId1<%=i%>" readonly style="display: none;">
+                                <input type="text" value="<%=athleteInArray2.athlete._id%>" class="form-control text-dark" name="athleteId2<%=i%>" readonly style="display: none;">
+                                <input type="text" value="<%=athleteInArray1._id%>" class="form-control text-dark" name="athleteId11<%=i%>" readonly style="display: none;">
+                                <input type="text" value="<%=athleteInArray2._id%>" class="form-control text-dark" name="athleteId22<%=i%>" readonly style="display: none;">
 
                                 <label for="firstselector" class="mb-2 mt-3"> นักกีฬาที่เข้าร่วม: </label>
                                 <div class="d-flex">
@@ -256,13 +258,13 @@
                                   <select class="form-select w-25 text-dark" name="firstselector<%= i+1 %>">
                                     <option selected hidden>เลือกนักกีฬา</option>
 
-                                    <% let getWeightClass = athleteInArray1._id.weightClass %>
+                                    <% let getWeightClass = athleteInArray1.athlete.weightClass %>
                                     <% if (!usedWeightClasses.includes(getWeightClass)) { %>
                                     <optgroup label="<%= getWeightClass %>">
                                       <% usedWeightClasses.push(getWeightClass); %>
-                                      <% if (athleteInArray1._id.weightClass === getWeightClass) { %>
-                                      <option value="<%= athleteInArray1._id._id %>" selected>
-                                        <%= athleteInArray1._id.aka %>
+                                      <% if (athleteInArray1.athlete.weightClass === getWeightClass) { %>
+                                      <option value="<%= athleteInArray1.athlete._id %>" selected>
+                                        <%= athleteInArray1.athlete.nickname %>
                                       </option>
                                       <% } %>
                                     </optgroup>
@@ -273,13 +275,13 @@
                                   <select class="form-select w-25 text-dark" name="secondselector<%= i+1 %>">
                                     <option selected hidden>เลือกนักกีฬา</option>
 
-                                    <% let getWeightClass2 = athleteInArray2._id.weightClass %>
+                                    <% let getWeightClass2 = athleteInArray2.athlete.weightClass %>
                                     <% if (!usedWeightClasses2.includes(getWeightClass2)) { %>
                                     <optgroup label="<%= getWeightClass2 %>">
                                       <% usedWeightClasses2.push(getWeightClass2); %>
-                                      <% if (athleteInArray2._id.weightClass === getWeightClass2) { %>
-                                      <option value="<%= athleteInArray2._id._id %>" selected>
-                                        <%= athleteInArray2._id.aka %>
+                                      <% if (athleteInArray2.athlete.weightClass === getWeightClass2) { %>
+                                      <option value="<%= athleteInArray2.athlete._id %>" selected>
+                                        <%= athleteInArray2.athlete.nickname %>
                                       </option>
                                       <% } %>
                                     </optgroup>
@@ -312,7 +314,16 @@
                                 <div class="row mt-3">
                                   <div class="col-3">
                                     <label class="mb-2" for="Round">เวลาที่ใช้ไปทั้งหมด: </label>
-                                    <input class="form-control w-75" type="text" name="ResultClock<%= i+1 %>" value="<%= match.ResultClock %>" placeholder="โปรดกรอกเป็นรูปแบบ 0.00 เช่น 3.41 ">
+                                    <% 
+                                      const convertSecondsToMinutesAndSeconds = (totalSeconds)=>{
+                                        const minutes = Math.floor(totalSeconds / 60);
+                                        const seconds = totalSeconds % 60;
+                                        return { minutes, seconds };
+                                      }
+                                      const totalSeconds = match.ResultClock;
+                                      const { minutes, seconds } = convertSecondsToMinutesAndSeconds(totalSeconds);
+                                    %>
+                                    <input class="form-control w-75" type="text" name="ResultClock<%= i+1 %>" value="<%=minutes%>.<%=seconds%>" placeholder="0.01 - 9.00">
                                   </div>
 
                                 </div>
@@ -320,23 +331,23 @@
                                   <label class="mb-2" for="Round">นักกีฬาที่ชนะการแข่งขัน: </label>
                                   <div class="col-5">
                                     <div class="input-group">
-                                      <% if (athleteInArray1.Winner == true){ %>
-                                      <input type="text" class="form-control" value="<%=athleteInArray1._id.aka%>" readonly>
+                                      <% if (athleteInArray1.winner == true){ %>
+                                      <input type="text" class="form-control" value="<%=athleteInArray1.athlete.nickname%>" readonly>
 
-                                      <%} else if (athleteInArray2.Winner == true){ %>
-                                      <input type="text" class="form-control" value="<%=athleteInArray2._id.aka%>" readonly>
+                                      <%} else if (athleteInArray2.winner == true){ %>
+                                      <input type="text" class="form-control" value="<%=athleteInArray2.athlete.nickname%>" readonly>
 
-                                      <% }else if (athleteInArray1.Winner == false && athleteInArray2.Winner == false) { %>
+                                      <% }else if (athleteInArray1.winner == false && athleteInArray2.winner == false) { %>
                                       <input type="text" class="form-control" value="นักกีฬาที่ชนะยังไม่ถูกเลือก" readonly>
                                       <% } %>
 
-                                      <% if (match.resultType == "overwhelming score") {%>
+                                      <% if (match.ResultType == "overwhelming score") {%>
                                       <input type="text" class="form-control" value="ชนะคะแนนเอกฉันท์">
-                                      <%} else if (match.resultType == "majority votes") {%>
+                                      <%} else if (match.ResultType == "majority votes") {%>
                                       <input type="text" class="form-control" value="ชนะคะแนนไม่เอกฉันท์">
-                                      <%} else if (match.resultType == "knockouts") {%>
+                                      <%} else if (match.ResultType == "knockouts") {%>
                                       <input type="text" class="form-control" value="ชนะน็อคเอาท์">
-                                      <%} else if (match.resultType == "technical knockout") {%>
+                                      <%} else if (match.ResultType == "technical knockout") {%>
                                       <input type="text" class="form-control" value="ชนะ TKO">
                                       <%} else  {%>
                                       <input type="text" class="form-control" value="ยังไม่มีผลการตัดสิน">
@@ -351,8 +362,8 @@
                                     <div class="input-group prepend mb-3">
                                       <select class="form-select" name="getWinner<%= i+1 %>">
                                         <option selected hidden>เลือกนักกีฬาที่ชนะ</option>
-                                        <option value="<%=athleteInArray1._id._id%>"><%=athleteInArray1._id.aka%></option>
-                                        <option value="<%=athleteInArray2._id._id%>"><%=athleteInArray2._id.aka%></option>
+                                        <option value="<%=athleteInArray1.athlete._id%>"><%=athleteInArray1.athlete.nickname%></option>
+                                        <option value="<%=athleteInArray2.athlete._id%>"><%=athleteInArray2.athlete.nickname%></option>
                                       </select>
 
                                       <select class="form-select" name="getResultType<%= i+1 %>">

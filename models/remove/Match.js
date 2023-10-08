@@ -1,7 +1,10 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema;
+// const mongoose = require('mongoose')
+// const Schema = mongoose.Schema;
 
 const matchSchma = new Schema({
+    order: {
+        type: Number
+    },
     WeightClass: {
         type: String,
         default: "Catchweight"
@@ -22,9 +25,6 @@ const matchSchma = new Schema({
         type: Number,
         default: 0
     },
-    order: {
-        type: Number
-    },
     resultType:{
         type: String,
         default: "ยังไม่มีผลการตัดสิน"
@@ -42,6 +42,6 @@ const matchSchma = new Schema({
     ]
 }, { timestamps: true });
 
-const Match = mongoose.model('matches', matchSchma)
+// const Match = mongoose.model('matches', matchSchma)
 
-module.exports = Match
+// module.exports = Match

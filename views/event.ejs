@@ -146,7 +146,7 @@
       <div class="row">
 
         <div class="col-12 text-center">
-          <h2 class="mb-4 text-black">จัดการตารางการแข่งขัน</h2>
+          <h2 class="mb-4 text-black">ตารางการแข่งขัน</h2>
         </div>
 
       </div>
@@ -158,19 +158,6 @@
           <li class="nav-item eventLink bg-danger" role="presentation">
             <button class="nav-link eventLink bg-danger" id="design-tab" data-bs-toggle="tab" data-bs-target="#design-tab-pane" type="button" role="tab" aria-controls="design-tab-pane" aria-selected="true">ตาราง</button>
           </li>
-
-          <li class="nav-item eventLink" role="presentation">
-            <button class="nav-link eventLink bg-danger" id="marketing-tab" data-bs-toggle="tab" data-bs-target="#marketing-tab-pane" type="button" role="tab" aria-controls="marketing-tab-pane" aria-selected="false">เพิ่มตาราง</button>
-          </li>
-
-          <li class="nav-item eventLink" role="presentation">
-            <button class="nav-link eventLink bg-danger" id="finance-tab" data-bs-toggle="tab" data-bs-target="#finance-tab-pane" type="button" role="tab" aria-controls="finance-tab-pane" aria-selected="false">แก้ไขตาราง</button>
-          </li>
-
-          <li class="nav-item eventLink" role="presentation">
-            <button class="nav-link eventLink bg-danger" id="music-tab" data-bs-toggle="tab" data-bs-target="#music-tab-pane" type="button" role="tab" aria-controls="music-tab-pane" aria-selected="false">ลบตาราง</button>
-          </li>
-
         </ul>
       </div>
     </div>
@@ -239,7 +226,7 @@
                           <span class="badge bg-advertising rounded-pill ms-auto"></span>
                         </div>
                         <div class="row">
-                          <form action="/event" method="post" onsubmit="return validateSelection();">
+                          <form action="/eventIndex" method="post" onsubmit="return validateSelection();">
                             <div class="col-lg-6 col-md-6 col-6">
 
                               <div class="mb-3">
@@ -307,7 +294,7 @@
                                         <% athletes.forEach(innerBoxer => { %>
                                         <% if (innerBoxer.weightClass === getWeightClass) { %>
                                         <option value="<%=innerBoxer._id %>"><%=
-                                                        innerBoxer.nickname %>
+                                                        innerBoxer.aka %>
                                         </option>
                                         <% } %>
                                         <% }); %>
@@ -330,7 +317,7 @@
                                         <% athletes.forEach(innerBoxer=> { %>
                                         <% if (innerBoxer.weightClass===getWeightClass2) { %>
                                         <option value="<%= innerBoxer._id %>">
-                                          <%= innerBoxer.nickname %>
+                                          <%= innerBoxer.aka %>
                                         </option>
                                         <% } %>
                                         <% }); %>
@@ -398,7 +385,7 @@
                         จบไปแล้ว</p>
                       <% } %>
 
-                      <a href="/event/edit/<%= event._id %>" class="btn btn-warning">แก้ไขตาราง</a>
+                      <a href="/eventIndex/edit/<%= event._id %>" class="btn btn-warning">แก้ไขตาราง</a>
                     </div>
                   </div>
                   <% }) %>
@@ -444,7 +431,7 @@
                         จบไปแล้ว</p>
                       <% } %>
 
-                      <a class="btn-delete btn btn-danger" href="/event/delete/<%= event._id %>" onclick="return confirmDelete(this);">
+                      <a class="btn-delete btn btn-danger" href="/eventIndex/delete/<%= event._id %>" onclick="return confirmDelete(this);">
                         ลบตาราง
                       </a>
                     </div>

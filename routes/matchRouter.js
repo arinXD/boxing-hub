@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
-const Match = require("../models/MatchesOat");
-const Event = require("../models/EventOat");
-const Athlete = require("../models/AthleteOat");
+const Match = require("../models/Matches");
+const Event = require("../models/Events");
+const Athlete = require("../models/Athletes");
 
 router.get("/", async (req, res)=>{
     await Match.find()
@@ -46,11 +46,11 @@ router.post('/insert', async (req, res, next) => {
         winnerId: winnerId,
         athletes: [
             {
-                _id: winnerId,
+                athlete: winnerId,
                 winner:true
             },
             {
-                _id: loserId,
+                athlete: loserId,
                 winner:false
             },
         ],

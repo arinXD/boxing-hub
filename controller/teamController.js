@@ -1,5 +1,5 @@
 const Team = require("../models/Team")
-const Athlete = require("../models/AthleteOat")
+const Athlete = require("../models/Athletes")
 
 const teamPage = async function (req, res, next) {
     try {
