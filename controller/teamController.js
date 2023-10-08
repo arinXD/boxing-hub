@@ -1,5 +1,5 @@
 const Team = require("../models/Team")
-const Athlete = require("../models/AthleteOat")
+const Athlete = require("../models/Athletes")
 
 const teamPage = async function (req, res, next) {
     try {
@@ -12,14 +12,6 @@ const teamPage = async function (req, res, next) {
 }
 const teamInfo = async function (req, res, next) {
     try {
-
-        Athlete.find()
-        .then((result) => {
-            console.log(result)
-        })
-        .catch((err) => {
-            console.log(err)
-        })
         const id = req.params.id
         const team = await Team.findOne({_id:id})
         .populate('athletes')
@@ -30,7 +22,9 @@ const teamInfo = async function (req, res, next) {
               model: 'users'
             }
         })
-        return res.render('admin/atheleteEdit2.ejs',{team, athlete: result, id: req.query.id})
+        return res.render('team/teamInfo',{
+            team
+        })
     } catch (err) {
         console.error(err);
         res.status(500).send('Internal Server Error');

@@ -50,7 +50,21 @@
                 </div>
                 <div class="col-lg-6">
                     <label for="weightClass" class="form-label">Weight Class:</label>
-                    <input type="text" class="form-control" id="weightClass" name="weightClass" value="<%= athlete.weightClass %>">
+                    <select class="form-select text-dark weightClass" required name="weightClass">
+                        <option value="" selected hidden>เลือกพิกัดน้ำหนัก</option>
+                        <option class="ath-w-class" value="Super Flyweight">Super Flyweight</option>
+                        <option class="ath-w-class" value="Flyweight">Flyweight</option>
+                        <option class="ath-w-class" value="Middleweight">Middleweight</option>
+                        <option class="ath-w-class" value="Strawweight">Strawweight</option>
+                        <option class="ath-w-class" value="Atomweight">Atomweight</option>
+                        <option class="ath-w-class" value="Featherweight">Featherweight</option>
+                        <option class="ath-w-class" value="Welterweight">Welterweight</option>
+                        <option class="ath-w-class" value="Heavyweight">Heavyweight</option>
+                        <option class="ath-w-class" value="Catchweight">Catchweight</option>
+                        <option class="ath-w-class" value="Bantamweight">Bantamweight</option>
+                        <option class="ath-w-class" value="Lightweight">Lightweight</option>
+                        <option class="ath-w-class" value="Lightweight">Light Heavyweight</option>
+                    </select>
                 </div>
 
                 <div class="col-md-6">
@@ -110,6 +124,14 @@
         </div>
     </div>
 
+    <script>
+        const options = document.querySelectorAll(".ath-w-class")
+        for (const option of options) {
+            if(`<%= athlete.weightClass%>`==option.value){
+                option.selected = true
+            }
+        }
+    </script>
 </body>
 
 

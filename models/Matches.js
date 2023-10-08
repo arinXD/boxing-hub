@@ -6,29 +6,32 @@ const matchSchema = new Schema({
     order:{
         type: Number
     },
-    weightClass:{
+    WeightClass:{
         type: String
     },
-    rounds:{
-        type: Number
+    Description: {
+        type: String,
+        default: "Normal"
     },
-    resultType:String,
-    resultClock:{
+    Rounds: {
+        type: Number,
+        default: 3
+    },
+    ResultClock:{
         type: Number,
         default: null
     },
-    resultRound:{
+    ResultRound:{
         type:Number,
-        default: null
+        default: 0
+    },
+    ResultType:{
+        type: String,
+        default: "ยังไม่มีผลการตัดสิน"
     },
     event:{
         type: mongoose.Schema.ObjectId,
         ref: 'events'
-    },
-    winnerId:{
-        type: mongoose.Schema.ObjectId,
-        ref: 'athletes',
-        default: null
     },
     athletes: [{
         athlete: {
@@ -36,7 +39,8 @@ const matchSchema = new Schema({
             ref: 'athletes'
         },
         winner: {
-            type: Boolean
+            type: Boolean,
+            default: false
         }
     }]
 

@@ -1,4 +1,4 @@
-const Athlete = require("../models/AthleteOat")
+const Athlete = require("../models/Athletes")
 const User = require("../models/User");
 const Team = require("../models/Team");
 const bcrypt = require("bcrypt")
@@ -37,10 +37,6 @@ const findAthlete = async (req, res) => {
     }).populate(['matches', 'user', 'team'])
         .populate({
             path: 'matches',
-            populate: {
-                path: 'winnerId',
-                model: 'athletes'
-            }
         })
         .populate({
             path: 'matches',
@@ -54,7 +50,7 @@ const findAthlete = async (req, res) => {
             populate: {
                 path: 'athletes',
                 populate: {
-                    path: '_id',
+                    path: 'athlete',
                     model: 'athletes'
                 }
             }
@@ -64,7 +60,7 @@ const findAthlete = async (req, res) => {
             populate: {
                 path: 'athletes',
                 populate: {
-                    path: '_id',
+                    path: 'athlete',
                     model: 'athletes',
                     populate: {
                         path: 'user',
@@ -74,6 +70,7 @@ const findAthlete = async (req, res) => {
             }
         })
         .then((athlete) => {
+            // return res.send({athlete})
             return res.render("athlete/athleteProfile", { athlete })
         })
         .catch((err) => {
@@ -88,10 +85,6 @@ const findAthleteJson = async (req, res) => {
     }).populate(['matches', 'user',])
         .populate({
             path: 'matches',
-            populate: {
-                path: 'winnerId',
-                model: 'athletes'
-            }
         })
         .populate({
             path: 'matches',

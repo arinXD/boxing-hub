@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
-const Match = require("../models/MatchesOat");
-const Event = require("../models/EventOat");
-const Athlete = require("../models/AthleteOat");
+const Match = require("../models/Matches");
+const Event = require("../models/Events");
+const Athlete = require("../models/Athletes");
 
 router.get("/", async (req, res)=>{
     await Match.find()
@@ -29,6 +29,11 @@ router.post('/insert', async (req, res, next) => {
     const loserId = '6521b365be956fd19f3e3ad8'
 
     const resultType = "majorityVotes"
+    "1.25".split(".")
+    ([0]*60) + [1]
+
+
+
 
     const newMatch = new Match({
         order: 1,
@@ -41,11 +46,11 @@ router.post('/insert', async (req, res, next) => {
         winnerId: winnerId,
         athletes: [
             {
-                _id: winnerId,
+                athlete: winnerId,
                 winner:true
             },
             {
-                _id: loserId,
+                athlete: loserId,
                 winner:false
             },
         ],

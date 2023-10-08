@@ -1,5 +1,13 @@
 const mongoose = require('mongoose')
 
+function formatDate(date) {
+    return date.toISOString();
+  }
+  
+  function parseDate(date) {
+    return new Date(date);
+  }
+
 const Schema = mongoose.Schema;
 const userSchema = new Schema({
     username:{
@@ -48,6 +56,10 @@ const userSchema = new Schema({
     amphoe:String,
     tambon:String,
     address:String,
+    deleted_at:{
+        type: Date,
+        default: null,
+    },
 }, {timestamps : true})
 
 const User = mongoose.model('users', userSchema)

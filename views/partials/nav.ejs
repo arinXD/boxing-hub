@@ -31,7 +31,7 @@ const img = (userProfile)? userProfile:"avartar.png"
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link click-scroll" href="#">ตารางการแข่งขัน</a>
+                    <a class="nav-link click-scroll" href="/events">ตารางการแข่งขัน</a>
                 </li>
 
                 <li class="nav-item">
@@ -54,12 +54,12 @@ const img = (userProfile)? userProfile:"avartar.png"
                 <%}%>
                 <%if(userRole==2){%>
                     <li class="nav-item">
-                        <a class="nav-link click-scroll text-danger" href="#">รอการยืนยัน</a>
+                        <a class="nav-link click-scroll text-danger" >รอการยืนยัน</a>
                     </li>
                 <%}%>
                 <%if(userRole==3){%>
                     <li class="nav-item">
-                        <a class="nav-link click-scroll text-danger" href="#">ลงทะเบียนเรียบร้อย</a>
+                        <a class="nav-link click-scroll text-danger" >ลงทะเบียนเสร็จ</a>
                     </li>
                 <%}%>
                 
@@ -103,6 +103,14 @@ const img = (userProfile)? userProfile:"avartar.png"
                             </div>
                         <%}
                     %>
+                    <%if(userRole==3){%>
+                        <div class="toggle-setting ">
+                            <div class="font-bg">
+                                <i class="bi bi-person-fill-check"></i>
+                            </div>
+                            <span>ดูข้อมูลการลงทะเบียน</span>
+                        </div>
+                    <%}%>
                     <div class="toggle-setting toggle-profile-setting">
                         <div class="font-bg">
                             <i class="bi bi-gear-fill"></i>

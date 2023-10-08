@@ -10,12 +10,10 @@ const fetch = require("node-fetch");
 const fs = require('fs');
 
 
-const addAthlete = require('./models/AthleteOat')
-const addEvent = require('./models/Event')
-// const addMatch = require('./models/Match')
+const addAthlete = require('./models/Athletes')
 const addTeam = require('./models/Team')
 
-const addMatch = require('./models/EventOat')
+const addMatch = require('./models/Events')
 
 
 
@@ -27,6 +25,7 @@ const athleteRouter = require('./routes/athleteRouterOat');
 const profileRouter = require('./routes/profileRouter');
 const teamRouter = require('./routes/TeamRouterTae');
 const eventRouter = require('./routes/eventRouter');
+const eventRouterUser = require('./routes/eventRouterUser');
 const matchRouter = require('./routes/matchRouter');
 
 // Middleware
@@ -87,7 +86,8 @@ app.use('/authen', signInMiddleware.signedIn, authenRouter);
 app.use('/athletes', athleteRouter);
 app.use('/team', teamRouter);
 app.use('/profile', signInMiddleware.insignIn, profileRouter)
-app.use('/event', eventRouter)
+app.use('/event', adminMiddleware,eventRouter)
+app.use('/events', eventRouterUser)
 app.use('/match', matchRouter)
 
 
