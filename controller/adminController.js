@@ -25,8 +25,8 @@ const teamInfo = async (req, res) => {
     req.flash("addToTeam", '')
     req.flash("delAth", '')
     const team = await Team.findOne({
-        _id: req.params.id
-    })
+            _id: req.params.id
+        })
         .populate('athletes')
         .populate({
             path: 'athletes',
@@ -45,10 +45,10 @@ const addAthleteToTeam = async (req, res) => {
     const aid = req.body.athlete
     const teamId = req.body.teamId
     await Team.findOne({
-        athletes: {
-            $in: [aid]
-        }
-    })
+            athletes: {
+                $in: [aid]
+            }
+        })
         .then(async (result) => {
             if (result) {
                 return res.send({
@@ -57,22 +57,22 @@ const addAthleteToTeam = async (req, res) => {
             } else {
                 Athlete.findByIdAndUpdate(
                     aid, {
-                    team: teamId
-                }, {
-                    new: true
-                }).then((result) => {
+                        team: teamId
+                    }, {
+                        new: true
+                    }).then((result) => {
                     console.log("update team to athlete");
                 }).catch((err) => {
                     console.error(err);
                 })
                 await Team.findByIdAndUpdate(
                     teamId, {
-                    $push: {
-                        athletes: aid
+                        $push: {
+                            athletes: aid
+                        }
+                    }, {
+                        new: true
                     }
-                }, {
-                    new: true
-                }
                 ).then((result) => {
                     req.flash("addToTeam", true)
                     return res.redirect(`/admin/team/${teamId}`);
@@ -88,21 +88,34 @@ const addAthleteToTeam = async (req, res) => {
 
 const indexAdmin = async (req, res) => {
     const users = await User.find()
-    return res.render('admin/index', { users })
+    return res.render('admin/index', {
+        users
+    })
 }
 const getAddAdmin = async (req, res) => {
     const teams = await Team.find();
-    res.render('admin/athleteAdminAdd.ejs', { teams });
+    res.render('admin/athleteAdminAdd.ejs', {
+        teams
+    });
 }
 
 const RegisterAthleteByAdmin = async (req, res) => {
     try {
-        const { nickname, weight, height, reach, bday, country, weightClass, username,
+        const {
+            nickname,
+            weight,
+            height,
+            reach,
+            bday,
+            country,
+            weightClass,
+            username,
             fname,
             lname,
             email,
             password,
-            confirm } = req.body;
+            confirm
+        } = req.body;
 
         // Convert email to lowercase
         const lowercaseEmail = email.toLowerCase();
@@ -116,7 +129,9 @@ const RegisterAthleteByAdmin = async (req, res) => {
         const selectedTeamValue = req.body.team;
         let teamId = null;
 
-        Team.findOne({ _id: selectedTeamValue })
+        Team.findOne({
+                _id: selectedTeamValue
+            })
             .then((result) => {
                 if (result) {
                     teamId = result._id;
@@ -163,11 +178,15 @@ const RegisterAthleteByAdmin = async (req, res) => {
                 const aid = savedAthlete._id;
 
                 // Update the team with the athlete's ID
-                return Team.findByIdAndUpdate(
-                    { _id: teamId },
-                    { $push: { athletes: aid } },
-                    { new: true }
-                );
+                return Team.findByIdAndUpdate({
+                    _id: teamId
+                }, {
+                    $push: {
+                        athletes: aid
+                    }
+                }, {
+                    new: true
+                });
             })
             .then((result) => {
                 console.log("Team updated:", result);
@@ -183,14 +202,18 @@ const RegisterAthleteByAdmin = async (req, res) => {
 
 const AdminConfirmPage = async (req, res) => {
     try {
-        const unconfirmedAthletes = await Athlete.find({ confirmed: false }).populate('user').populate('team');
-        const confirmedAthletes = await Athlete.find({ confirmed: true }).populate('user').populate('team');
+        const unconfirmedAthletes = await Athlete.find({
+            confirmed: false
+        }).populate('user').populate('team');
+        const confirmedAthletes = await Athlete.find({
+            confirmed: true
+        }).populate('user').populate('team');
         const status = req.flash('confirm')
         req.flash('confirm', '')
         res.render('admin/athleteConfirm', {
             athletesData: unconfirmedAthletes,
-            status
-            ,athletes: confirmedAthletes
+            status,
+            athletes: confirmedAthletes
         });
 
         // return res.send(unconfirmedAthletes)
@@ -207,7 +230,10 @@ const AdminConfirmInfo = async (req, res) => {
             return res.status(404).send('Athlete not found');
         }
         const formattedBday = athlete.bday.toISOString().substr(0, 10);
-        res.render('admin/atheleteInfo.ejs', { athlete, formattedBday });
+        res.render('admin/atheleteInfo.ejs', {
+            athlete,
+            formattedBday
+        });
     } catch (error) {
         console.error('Error fetching athlete:', error);
         res.status(500).send('An error occurred');
@@ -220,9 +246,11 @@ const AdminConfirm = async (req, res) => {
 
         // Find the athlete by ID and update the "confirmed" field to true
         const updatedAthlete = await Athlete.findByIdAndUpdate(
-            athleteId,
-            { confirmed: true },
-            { new: true }
+            athleteId, {
+                confirmed: true
+            }, {
+                new: true
+            }
         );
 
         if (!updatedAthlete) {
@@ -231,9 +259,12 @@ const AdminConfirm = async (req, res) => {
 
         const userId = updatedAthlete.user;
         const updatedUser = await User.findByIdAndUpdate(
-            userId,
-            { role: 3, roleteam: 1 },
-            { new: true }
+            userId, {
+                role: 3,
+                roleteam: 1
+            }, {
+                new: true
+            }
         );
 
         console.log('Updated athlete:', updatedAthlete);
@@ -261,14 +292,20 @@ const AdminCancel = async (req, res) => {
         const userId = deletedAthlete.user;
         const teamId = deletedAthlete.team;
         await Team.findByIdAndUpdate(
-            teamId,
-            { $pull: { athletes: id } },
-            { new: true }
+            teamId, {
+                $pull: {
+                    athletes: id
+                }
+            }, {
+                new: true
+            }
         );
         await User.findByIdAndUpdate(
-            userId,
-            { role: 0 },
-            { new: true }
+            userId, {
+                role: 0
+            }, {
+                new: true
+            }
         );
 
         // Delete the athlete
@@ -287,7 +324,10 @@ const AdminGetEditPage = async (req, res) => {
     // const id = req.query.id;
     Athlete.find().populate('user')
         .then((result) => {
-            res.render('admin/atheleteEdit.ejs', { athlete: result, id: req.query.id })
+            res.render('admin/atheleteEdit.ejs', {
+                athlete: result,
+                id: req.query.id
+            })
         })
         .catch((err) => {
             console.log(err)
@@ -301,7 +341,11 @@ const AdminGetEdit = async (req, res) => {
         }
         const formattedBday = athlete.bday.toISOString().substr(0, 10);
         const teams = await Team.find();
-        res.render('admin/atheleteEdit2.ejs', { athlete, formattedBday, teams });
+        res.render('admin/atheleteEdit2.ejs', {
+            athlete,
+            formattedBday,
+            teams
+        });
         console.log('athlete.team:', athlete.team);
 
     } catch (error) {
@@ -312,7 +356,28 @@ const AdminGetEdit = async (req, res) => {
 const AdminUpdateEdit = async (req, res) => {
     // console.log(req.body);
     try {
-        const { _id, nickname, weight, height, reach, bday, country, weightClass, wins, losses, draw, knockouts, knockoutsLosses, technicalKnockouts, technicalKnockoutsLosses, overwhelmingScore, overwhelmingScoreLosses, majorityVotes, majorityVotesLosses, team } = req.body;
+        const {
+            _id,
+            nickname,
+            weight,
+            height,
+            reach,
+            bday,
+            country,
+            weightClass,
+            wins,
+            losses,
+            draw,
+            knockouts,
+            knockoutsLosses,
+            technicalKnockouts,
+            technicalKnockoutsLosses,
+            overwhelmingScore,
+            overwhelmingScoreLosses,
+            majorityVotes,
+            majorityVotesLosses,
+            team
+        } = req.body;
 
         // Find the previous team of the athlete
         const previousAthlete = await Athlete.findById(_id);
@@ -324,9 +389,29 @@ const AdminUpdateEdit = async (req, res) => {
 
         // Update the athlete's information
         const updatedAthlete = await Athlete.findByIdAndUpdate(
-            _id,
-            { nickname, weight, height, reach, bday, country, weightClass, wins, losses, draw, knockouts, knockoutsLosses, technicalKnockouts, technicalKnockoutsLosses, overwhelmingScore, overwhelmingScoreLosses, majorityVotes, majorityVotesLosses, team },
-            { new: true }
+            _id, {
+                nickname,
+                weight,
+                height,
+                reach,
+                bday,
+                country,
+                weightClass,
+                wins,
+                losses,
+                draw,
+                knockouts,
+                knockoutsLosses,
+                technicalKnockouts,
+                technicalKnockoutsLosses,
+                overwhelmingScore,
+                overwhelmingScoreLosses,
+                majorityVotes,
+                majorityVotesLosses,
+                team
+            }, {
+                new: true
+            }
         );
 
         if (!updatedAthlete) {
@@ -336,9 +421,14 @@ const AdminUpdateEdit = async (req, res) => {
         // If the athlete's team has changed, remove the athlete's ID from the previous team
         if (previousTeamId !== team) {
             const previousTeam = await Team.findByIdAndUpdate(
-                previousTeamId,
-                { $pull: { athletes: _id } }, // Remove the athlete's ID from the previous team's athletes array
-                { new: true }
+                previousTeamId, {
+                    $pull: {
+                        athletes: _id
+                    }
+                }, // Remove the athlete's ID from the previous team's athletes array
+                {
+                    new: true
+                }
             );
 
             if (!previousTeam) {
@@ -348,9 +438,14 @@ const AdminUpdateEdit = async (req, res) => {
 
         // Update the new team by adding the athlete's ID
         const updatedTeam = await Team.findByIdAndUpdate(
-            team,
-            { $addToSet: { athletes: _id } }, // Add the athlete's ID to the new team's athletes array
-            { new: true }
+            team, {
+                $addToSet: {
+                    athletes: _id
+                }
+            }, // Add the athlete's ID to the new team's athletes array
+            {
+                new: true
+            }
         );
 
         if (!updatedTeam) {
@@ -382,14 +477,20 @@ const DeleteAthletes = async (req, res) => {
         const userId = deletedAthlete.user;
         const teamId = deletedAthlete.team;
         await Team.findByIdAndUpdate(
-            teamId,
-            { $pull: { athletes: id } },
-            { new: true }
+            teamId, {
+                $pull: {
+                    athletes: id
+                }
+            }, {
+                new: true
+            }
         );
         await User.findByIdAndUpdate(
-            userId,
-            { role: 0 },
-            { new: true }
+            userId, {
+                role: 0
+            }, {
+                new: true
+            }
         );
 
         // Delete the athlete
@@ -407,10 +508,10 @@ const insertTeam = async (req, res) => {
     const getTeamname = req.body.teamname
     const desc = req.body.desc
     new Team({
-        teamname: getTeamname,
-        desc: desc,
-        athletes: []
-    }).save()
+            teamname: getTeamname,
+            desc: desc,
+            athletes: []
+        }).save()
         .then((result) => {
             req.flash('crudStatus', 'เพิ่มข้อมูลทีมสำเร็จ')
             res.redirect("/admin/team")
@@ -420,7 +521,9 @@ const insertTeam = async (req, res) => {
 }
 const updateTeamPage = (req, res) => {
     const updated = req.flash('updated')
-    Team.findOne({ _id: req.params.id })
+    Team.findOne({
+            _id: req.params.id
+        })
         .then((result) => {
             return res.render("admin/team/updateTeam", {
                 team: result,
@@ -438,9 +541,13 @@ const updateTeam = async (req, res) => {
     if (req.file) {
         let logo = `${req.file.filename}`
         await Team.findByIdAndUpdate(
-            tid,
-            { teamname, desc, logo },
-            { new: true }
+            tid, {
+                teamname,
+                desc,
+                logo
+            }, {
+                new: true
+            }
         ).then((team) => {
             req.flash("updated", team)
             return res.redirect(`/admin/team/update/${tid}`)
@@ -449,9 +556,12 @@ const updateTeam = async (req, res) => {
         })
     } else {
         await Team.findByIdAndUpdate(
-            tid,
-            { teamname, desc },
-            { new: true }
+            tid, {
+                teamname,
+                desc
+            }, {
+                new: true
+            }
         ).then((team) => {
             req.flash("updated", team)
             return res.redirect(`/admin/team/update/${tid}`)
@@ -464,14 +574,18 @@ const updateTeam = async (req, res) => {
 
 const deleteTeam = (req, res) => {
     const id = req.params.id
-    Team.findOne({ _id: id })
+    Team.findOne({
+            _id: id
+        })
         .then((team) => {
             for (const ath of team.athletes) {
                 Athlete.findByIdAndUpdate(
-                    ath._id,
-                    { team: null },
-                    { new: true }
-                )
+                        ath._id, {
+                            team: null
+                        }, {
+                            new: true
+                        }
+                    )
                     .then((re) => {
                         console.log(re.team);
                     })
@@ -496,15 +610,21 @@ const deleteAthleteFromTeam = (req, res) => {
     const tid = req.params.tid
     const aid = req.params.aid
     Team.findByIdAndUpdate(
-        tid,
-        { $pull: { athletes: aid } },
-        { new: true }
+        tid, {
+            $pull: {
+                athletes: aid
+            }
+        }, {
+            new: true
+        }
 
     ).then(() => {
         Athlete.findByIdAndUpdate(
-            aid,
-            { team: null },
-            { new: true }
+            aid, {
+                team: null
+            }, {
+                new: true
+            }
         ).then((re) => {
             req.flash('delAth', re.nickname)
             res.redirect(`/admin/team/${tid}`)
@@ -516,11 +636,17 @@ const deleteAthleteFromTeam = (req, res) => {
     })
 }
 const updateUserPage = async (req, res) => {
-    const user = await User.findOne({ _id: req.params.uid })
-    return res.render('admin/user/update_user', { user })
+    const user = await User.findOne({
+        _id: req.params.uid
+    })
+    return res.render('admin/user/update_user', {
+        user
+    })
 }
 const adminPage = async (req, res) => {
-    const users = await User.find({deleted_at:null})
+    const users = await User.find({
+        deleted_at: null
+    })
     const teams = await Team.find()
     const athletes = await Athlete.find()
     const matches = await Match.find()
@@ -537,20 +663,34 @@ const adminPage = async (req, res) => {
     })
 }
 const updateUser = async (req, res) => {
-    const { userId, username, fname, lname, isAdmin, removeAdmin } = req.body
+    const {
+        userId,
+        username,
+        fname,
+        lname,
+        isAdmin,
+        removeAdmin
+    } = req.body
     let role
     if (isAdmin) {
         role = 1
     }
     if (removeAdmin) {
-        const findAthlete = await Athlete.findOne({ user: userId })
+        const findAthlete = await Athlete.findOne({
+            user: userId
+        })
         role = (findAthlete) ? 3 : 0
         // return res.send({role})
     }
     await User.findByIdAndUpdate(
-        userId,
-        { username, fname, lname, role },
-        { new: true }
+        userId, {
+            username,
+            fname,
+            lname,
+            role
+        }, {
+            new: true
+        }
     ).then((re) => {
         req.flash('crudAdmin', `แก้ไขข้อมูลผู้ใช้ของ ${re.fname} ${re.lname} เรียบร้อย`)
         res.redirect(`/admin`)
@@ -560,20 +700,22 @@ const updateUser = async (req, res) => {
 }
 const deleteUser = async (req, res) => {
     try {
-        const user = await User.findOne({ _id: req.params.uid })
+        const user = await User.findOne({
+            _id: req.params.uid
+        })
         const date = new Date();
         const timestamp = date.getTime();
         const oldEmail = user.email
         if (user) {
-                await User.findByIdAndUpdate(
-                    user._id,
-                    {
-                        email: `deleted_${timestamp}_${oldEmail}`,
-                        deleted_at: date
-                    },
-                    { new: true }
-                )
-            }
+            await User.findByIdAndUpdate(
+                user._id, {
+                    email: `deleted_${timestamp}_${oldEmail}`,
+                    deleted_at: date
+                }, {
+                    new: true
+                }
+            )
+        }
         // const athlete = await Athlete.findOne({ user: user._id })
         // if (athlete.team) {
         //     await Team.findByIdAndUpdate(
@@ -607,19 +749,20 @@ const deleteUser = async (req, res) => {
         return res.redirect('/admin')
     } catch (err) {
         console.error(err);
-        return res.status(500).json({ error: 'Internal server error.' })
+        return res.status(500).json({
+            error: 'Internal server error.'
+        })
     }
 }
 const checkAthlete = (req, res) => {
     const uid = req.params.uid
-    Athlete.findOne({ user: uid })
+    Athlete.findOne({
+            user: uid,
+            confirmed: true
+        })
         .populate(['matches', 'user', 'team'])
         .populate({
             path: 'matches',
-            populate: {
-                path: 'winnerId',
-                model: 'athletes'
-            }
         })
         .populate({
             path: 'matches',
@@ -633,7 +776,7 @@ const checkAthlete = (req, res) => {
             populate: {
                 path: 'athletes',
                 populate: {
-                    path: '_id',
+                    path: 'athlete',
                     model: 'athletes'
                 }
             }
@@ -643,7 +786,7 @@ const checkAthlete = (req, res) => {
             populate: {
                 path: 'athletes',
                 populate: {
-                    path: '_id',
+                    path: 'athlete',
                     model: 'athletes',
                     populate: {
                         path: 'user',
@@ -653,10 +796,14 @@ const checkAthlete = (req, res) => {
             }
         })
         .then((athlete) => {
-            return res.render("athlete/athleteProfile", { athlete })
+            return res.render("athlete/athleteProfile", {
+                athlete
+            })
         })
         .catch((err) => {
-            return res.json({ message: "something error" })
+            return res.json({
+                message: err.message
+            })
         })
 }
 module.exports = {

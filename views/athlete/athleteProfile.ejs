@@ -580,8 +580,11 @@
                         totalRound += match.ResultRound
                         totalTime += (((match.ResultRound)-1)*3)*60+match.ResultClock
                         
-                        
+                        var count = 0
                         for(var matchDetail of match.athletes){%>
+                            <% if(!matchDetail.winner){
+                                count++
+                            } %>
                             <%if(athlete._id==matchDetail.athlete._id.toString()){
                                 var resultMatch = (matchDetail.winner)? "ชนะ":"แพ้"
                                 var resultClass = (matchDetail.winner)? "text-success":"text-danger"
@@ -590,8 +593,13 @@
                             }
                         }%>
                         <tr>
-                            <td class="<%= resultClass%>"><%= resultMatch%></td>
-                            <td><%= judgement(match.ResultType)%></td>
+                            <% if(count==2){%>
+                                <td class="text-secondary">ไม่มีผลการตัดสิน</td>
+                                <td>ไม่มีผลการตัดสิน</td>
+                            <%}else{%>
+                                <td class="<%= resultClass%>"><%= resultMatch%></td>
+                                <td><%= judgement(match.ResultType)%></td>
+                            <%} %>
                             <td>ยก <%= match.ResultRound%> <%= convertSecondsToMin(match.ResultClock)%></td>
                             <%let competImg = (compet.user.img)? compet.user.img:"avartar.png"%>
                             <td class="d-flex">

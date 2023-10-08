@@ -313,8 +313,8 @@ const updateEvent = async (req, res) => {
                     winner: false,
                     _id: getIdAthlete2
                 }];
-                var winnerId = Athlete1
-                var loserId = Athlete2
+                var winnerId = getIdAthlete1
+                var loserId = getIdAthlete2
                 // 1
                 if(ResultType=="knockouts"){
                     // win
@@ -435,8 +435,8 @@ const updateEvent = async (req, res) => {
                     winner: true,
                     _id: getIdAthlete2
                 }];
-                var winnerId = Athlete2
-                var loserId = Athlete1
+                var winnerId = getIdAthlete2
+                var loserId = getIdAthlete1
                 
                 if(ResultType=="knockouts"){
                     // win
