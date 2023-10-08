@@ -4,6 +4,8 @@ const Athlete = require("../models/AthleteOat");
 const Match = require("../models/MatchesOat");
 const Event = require("../models/EventOat");
 
+const bcrypt = require("bcrypt")
+
 const teamPage = (req, res) => {
     const crudStatus = req.flash('crudStatus')
     req.flash('crudStatus', '')
@@ -183,11 +185,13 @@ const RegisterAthleteByAdmin = async (req, res) => {
 const AdminConfirmPage = async (req, res) => {
     try {
         const unconfirmedAthletes = await Athlete.find({ confirmed: false }).populate('user').populate('team');
-        const nullAthletes = await Athlete.find({ confirmed: null }).populate('user').populate('team');
-
+        const confirmedAthletes = await Athlete.find({ confirmed: true }).populate('user').populate('team');
+        const status = req.flash('confirm')
+        req.flash('confirm', '')
         res.render('admin/athleteConfirm', {
             athletesData: unconfirmedAthletes,
-            status: req.flash('confirm'), athletesNull: nullAthletes
+            status
+            ,athletes: confirmedAthletes
         });
 
         // return res.send(unconfirmedAthletes)
@@ -235,7 +239,7 @@ const AdminConfirm = async (req, res) => {
 
         console.log('Updated athlete:', updatedAthlete);
         console.log('Updated user:', updatedUser);
-
+        req.flash('confirm', true)
         res.redirect('/admin/confirm');
     } catch (error) {
         console.error(error);
@@ -282,7 +286,7 @@ const AdminCancel = async (req, res) => {
 
 const AdminGetEditPage = async (req, res) => {
     // const id = req.query.id;
-    Athlete.find()
+    Athlete.find().populate('user')
         .then((result) => {
             res.render('admin/atheleteEdit.ejs', { athlete: result, id: req.query.id })
         })

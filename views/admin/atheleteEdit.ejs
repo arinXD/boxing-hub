@@ -1,93 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <%- include("../partials/header.ejs")%>
-    <style>
-        .athlete-contain{
-            padding: 1em 5em;
-        }
-        .athlete-list{
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            align-items: center;
-            place-items: center;
-            
-        }.athlete-item{
-            width: fit-content;
-            text-align: center;
-        }
-        .athlete-item img{
-            display: block;
-            object-fit: cover;
-            width: 13em;
-            height: 15em;
-            cursor: pointer;
-        }
-    </style>
+        <style>
+            .athlete-contain {
+                padding: 1em 5em;
+            }
+
+            .athlete-list {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                align-items: center;
+                place-items: center;
+
+            }
+
+            .athlete-item {
+                width: fit-content;
+                text-align: center;
+            }
+
+            .athlete-item img {
+                display: block;
+                object-fit: cover;
+                width: 13em;
+                height: 15em;
+                cursor: pointer;
+            }
+
+        </style>
 </head>
+
 <body>
     <%- include("../partials/nav.ejs")%>
-    <div class="container mt-5">
-        <div class="d-flex align-items-center justify-content-between mb-3">
-            <h1 class="">จัดการ Athletes</h1>
-            <div>
-                <a class="btn btn-primary w-100 px-5"href="/admin/adminAdd">เพิ่ม</a>
+        <div class="container mt-5">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h1 class="">จัดการ Athletes</h1>
+                <div>
+                    <a class="btn btn-primary w-100 px-5" href="/admin/adminAdd">เพิ่ม</a>
+                </div>
             </div>
-        </div>
-        <div class="athlete-list ">
 
-        <%if(athlete.length==0){%>
-            <p>ไม่มีข้อมูลนักกีฬา</p>
-        <%}else{
-            athlete.forEach(athlete => {%>
-                <% if (athlete.confirmed) { %>
-                    <%
-                    let athleteImg = (athlete.user.img)? athlete.user.img:"avartar.png"
-                    %>
-                <div class="athlete-item my-4">
-                    <a href="/admin/editAthletes/<%=athlete._id%>"> <img id="<%=athlete._id%>" class="athlete" src="/images/profile/<%= athleteImg%>"></a>
-                    <h4 class="mt-2"><%= athlete.nickname%></h4>
-                    <p class="mt-1"><%= athlete.country%></p>
-                    <div class="d-grid gap-2 col-12 mx-auto">
-                        <a class="btn btn-danger" href="/admin/deleteAthletes/<%=athlete._id%>" onclick="return confirm('Are you sure you want to delete this Athlete?')">delete</a>
-
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <table class="table table-image">
+                            <thead>
+                                <tr>
+                                    <th scope="col">No</th>
+                                    <th scope="col">Photo</th>
+                                    <th scope="col">AKA</th>
+                                    <th scope="col">WeightClass</th>
+                                    <th scope="col" class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% let index = 1; %>
+                                <% if (athlete.length==0) { %>
+                                    <tr>
+                                        <th class="text-center" scope="row" colspan="5">ไม่มีข้อมูลนักกีฬา
+                                        </th>
+                                    </tr>
+                                    <% } else { %>
+                                        <% athlete.forEach(athlete=> { %>
+                                            <% if (athlete.confirmed) { %>
+                                                <% let athleteImg= (athlete.user.img) ? athlete.user.img: "avartar.png" ;
+                                                    %>
+                                                    <tr>
+                                                        <th scope="row" class="align-middle"><%= index %></th>
+                                                        <td style="width: 10%;">
+                                                            <a href="/admin/editAthletes/<%= athlete._id %>">
+                                                                <img id="<%= athlete._id %>"
+                                                                    class="img-fluid"
+                                                                    src="/images/profile/<%= athleteImg %>"
+                                                                    style="width: 70%;">
+                                                            </a>
+                                                        </td>
+                                                        <td class="align-middle w-25">
+                                                            <%= athlete.nickname %>
+                                                        </td>
+                                                        <td class="align-middle">
+                                                            <%= athlete.weightClass %>
+                                                        </td>
+                                                        <td class="align-middle">
+                                                            <div class="d-grid gap-2 col-12 mx-auto w-50">
+                                                                <a class="btn btn-danger"
+                                                                    href="/admin/deleteAthletes/<%= athlete._id %>"
+                                                                    onclick="return confirm('Are you sure you want to delete this Athlete?')">delete</a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <% index++; %>
+                                                    <% } %>
+                                                        <% }) %>
+                                                            <% } %>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <% } %>
-            <%})
-        }%>
+            </div>
+
         </div>
 
-    </div>
 
-
-    <script>
-        let athlete = document.querySelectorAll('.athlete')
-        console.log(athlete);
-        athlete.forEach(e => {
-            e.addEventListener('click', ()=>{
-                window.location.href = `/athletes/info/?id=${e.id}`
-            })
-        });
-
-        document.getElementById('deleteButton').addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent the default behavior of the link
-          
-            Swal.fire({
-              title: 'Are you sure you want to delete this Athlete?',
-              icon: 'warning',
-              showCancelButton: true,
-              confirmButtonText: 'Yes, delete it!',
-              cancelButtonText: 'No, cancel',
-            }).then((result) => {
-              if (result.isConfirmed) {
-                // Perform the delete operation here
-                Swal.fire('Deleted!', 'The athlete has been deleted.', 'success');
-              } else if (result.dismiss === Swal.DismissReason.cancel) {
-                Swal.fire('Cancelled', 'The athlete deletion was cancelled.', 'info');
-              }
+        <script>
+            let athlete = document.querySelectorAll('.athlete')
+            console.log(athlete);
+            athlete.forEach(e => {
+                e.addEventListener('click', () => {
+                    window.location.href = `/athletes/info/?id=${e.id}`
+                })
             });
-          });
-    </script>
+
+            document.getElementById('deleteButton').addEventListener('click', function (event) {
+                event.preventDefault(); // Prevent the default behavior of the link
+
+                Swal.fire({
+                    title: 'Are you sure you want to delete this Athlete?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'No, cancel',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Perform the delete operation here
+                        Swal.fire('Deleted!', 'The athlete has been deleted.', 'success');
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        Swal.fire('Cancelled', 'The athlete deletion was cancelled.', 'info');
+                    }
+                });
+            });
+        </script>
 </body>
+
 </html>
