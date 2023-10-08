@@ -12,6 +12,14 @@ const athleteSchema = new Schema({
     height:{
         type: Number,
     },
+    wins:{
+        type:Number,
+        default:0
+    },
+    losses:  {
+        type:Number,
+        default:0
+    },
     country:{type:String},
     weightClass:{type:String},
     profileImg:{type:String},

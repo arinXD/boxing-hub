@@ -1,17 +1,8 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
-// "FighterId": 140000013,
-//             "FirstName": "Donald",
-//             "LastName": "Cerrone",
-//             "PreFightWins": 58,
-//             "PreFightLosses": 21,
-//             "PreFightDraws": 0,
-//             "PreFightNoContests": 0,
-//             "Winner": false,
-//             "Moneyline": 389,
-//             "Active": true
 const eventScheme = new Schema({
+    
     eventName:{
         type: String
     },
@@ -37,8 +28,6 @@ const eventScheme = new Schema({
             ref: 'matches'
         }
     ]
-
-    
 
 }, {timestamps: true})
 
