@@ -3,164 +3,220 @@
 
 <head>
     <%- include("../partials/header.ejs")%>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <style>
-        *{
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body{
-            background-image: linear-gradient(15deg, #181D31 0%, #272829 100%) !important;
-        }
-        .manage.container{
-            padding: 2em 3em;
-            background-color: white !important;
-            box-shadow: rgba(153, 153, 153, 0.2) 0px 2px 5px 0px !important;
-            border-radius: 10px;
-        }
-        ul.admin-manage{
-            list-style-type: none;
-            margin: 0 ;
-            padding: 0 ;
-            gap: .5em;
-            width: fit-content;
-            width: 30%;
-        }
-        ul.admin-manage li{
-            height: fit-content;
-            display: block;
-            margin-bottom: 1em;
-        }
-        ul.admin-manage li:last-child{
-            margin-bottom: 0;
-        }
-        ul.admin-manage li a{
-            display: flex;
-            align-items: center;
-            padding: .5em;
-            background-color: #f7f7f7;
-            border-radius: 10px;
-            border: 1px solid #e6e6e6;
-            box-shadow: rgba(153, 153, 153, 0.2) 0px 2px 5px 0px !important;
-        }
-        ul.admin-manage li a{
-            text-decoration: none;
-        }
-        ul.admin-manage li p{
-            display: inline-block;
-            text-align: center;
-            margin: 0;
-            color: black;
-        }
-        ul.admin-manage li a div{
-            width: 45px;
-            height: 45px;
-            padding: .5em;
-            border-radius: 50%;
-            display: inline-block;
-            background-color: #dfdfdf;
-            position: relative;
-            margin-right: 1em;
-        }
-        ul.admin-manage li i{
-            color: black;
-            font-size: 1.3em;
-            display: inline-block;
-            width: 100%;
-            height: auto;
-            margin: 0 auto .1em;
-            border-radius: 50%;
-        }
-        ul.admin-manage li i::before{
-            position: absolute;
-            top: 50%;  
-            left: 50%; 
-            transform: translate(-50%, -50%);
-        }
-        table{
-            color: black;
-        }
-        tr{
-            border: 1px solid #dee2e6 !important;
-        }
-    </style>
-    <% 
-        const formatID = (id)=>{
-            const str = id.toString()
-            return str.substring(0, 5) + '...';
-        }
-    %>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <!-- Data Table CSS -->
+        <link rel='stylesheet' href='https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css'>
+        <!-- Font Awesome CSS -->
+        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css'>
+        <script src='https://code.jquery.com/jquery-3.7.0.js'></script>
+        <!-- data table -->
+        <script src='https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js'></script>
+        <script src='https://cdn.datatables.net/responsive/2.1.0/js/dataTables.responsive.min.js'></script>
+        <script src='https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js'></script>
+        <!-- css -->
+        <link rel="stylesheet" href="/css/index_admin.css">
+        <!-- alert -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <style>
+            .dataTables_filter {
+                float: right;
+            }
+
+            .table-hover>tbody>tr:hover {
+                background-color: #ccffff;
+            }
+
+            thead {
+                background: #ddd;
+            }
+
+            .highlight {
+                background: #ffff99;
+            }
+
+        </style>
+        <%
+            const userArr = []
+            for(const user of users){
+                if(user._id==signedIn) continue;
+                userArr.push(user)
+            }
+        %>
+        <script>
+            window.onload = ()=>{
+                let crudAdmin = `<%= crudAdmin%>`
+                if(crudAdmin){
+                    Swal.fire(
+                        `แก้ไขสำเร็จ`,
+                        `${crudAdmin}`,
+                        'success'
+                    )
+                    crudAdmin = null
+                }
+            }
+        </script>
 </head>
 
 <body>
     <%- include("../partials/nav.ejs")%>
-    <div class="manage container my-4">
-        <h3>แอดมิน <%= userName%></h3>
-        <div class="d-flex mt-4 gap-5">
-            <ul class="admin-manage" style="grid-template-columns: repeat(1, 1fr);">
-                <li>
-                    <a href="/admin">
-                        <div>
-                            <i class="bi bi-calendar2-week-fill"></i>
-                        </div>
-                        <p>จัดการข้อมูลการแข่งขัน</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="/admin">
-                        <div>
-                            <i class="bi bi-person-fill-gear"></i>
-                        </div>
-                        <p>จัดการข้อมูลนักกีฬา</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="/admin/team">
-                        <div>
-                            <i class="bi bi-people-fill"></i>
-                        </div>
-                        <p>จัดการข้อมูลทีม</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="/admin/">
-                        <div>
-                            <i class="bi bi-newspaper"></i>
-                        </div>
-                        <p>จัดการข้อมูลข่าว</p>
-                    </a>
-                </li>
-            </ul>
-            <table class="w-75 table table-striped">
-                <thead>
-                    <tr>
-                        <th>ไอดี</th>
-                        <th>username</th>
-                        <th>ชื่อ-สกุล</th>
-                        <th>ประเภทผู้ใช้</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <%for(const user of users){
-                        if(user.role==1) continue;
-                    %>
-                        <tr>
-                            <td><%= formatID(user._id) %></td>
-                            <td><%= user.username %></td>
-                            <td><%= `${user.fname} ${user.lname}` %></td>
-                            <td><%= (user.role==0)?'ผู้ใช้':(user.role==3)?"นักกีฬา":"นักกีฬา (รอการยืนยัน)" %></td>
-                        </tr>
-                    <%}%>
-                </tbody>
-            </table>
+        <div class="manage container my-4">
+            <div class="d-flex flex-column mt-4 gap-5">
+                <h3 class="mb-0">แอดมิน <%= userName%></h3>
+                <ul class="admin-manage">
+                    <li>
+                        <a href="/admin">
+                            <div>
+                                <i class="bi bi-calendar2-week-fill"></i>
+                            </div>
+                            <p>จัดการตารางการแข่งขัน</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin">
+                            <div>
+                                <i class="bi bi-person-fill-gear"></i>
+                            </div>
+                            <p>จัดการข้อมูลนักกีฬา</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/team">
+                            <div>
+                                <i class="bi bi-people-fill"></i>
+                            </div>
+                            <p>จัดการข้อมูลทีม</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/">
+                            <div>
+                                <i class="bi bi-newspaper"></i>
+                            </div>
+                            <p>จัดการข้อมูลข่าว</p>
+                        </a>
+                    </li>
+                </ul>
+                <div>
+                    <table class="table table-bordered table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <th class="text-center">อีเวนท์</th>
+                                <th class="text-center">แมชท์</th>
+                                <th class="text-center">ทีม</th>
+                                <th class="text-center">นักกีฬา</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <td class="w-25 text-center"><%= (events.length > 0) ? `${events.length} อีเวนท์` : 'ไม่มีอีเวนท์' %></td>
+                            <td class="w-25 text-center"><%= (matches.length > 0) ? `${matches.length} แมชท์` : 'ไม่มีแมชท์' %></td>
+                            <td class="w-25 text-center"><%= (teams.length > 0) ? `${teams.length} ทีม` : 'ไม่มีทีม' %></td>
+                            <td class="w-25 text-center"><%= (athletes.length > 0) ? `${athletes.length} คน` : 'ไม่มีนักกีฬา' %></td>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <h4 class="mb-4">ข้อมูลผู้ใช้มีทั้งหมด <%= (userArr.length).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') %> แถว</h4>
+                    <table id="userTable" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ลำดับที่</th>
+                                <th>ประเภทผู้ใช้</th>
+                                <th>ชื่อ-สกุล</th>
+                                <th>ชื่อผู้ใช้</th>
+                                <th>จัดการ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%if(userArr.length==0){%>
+                                <tr>
+                                    <td colspan="5" class="text-center">
+                                        No data available in table
+                                    </td>
+                                    <td class="d-none"></td>
+                                    <td class="d-none"></td>
+                                    <td class="d-none"></td>
+                                    <td class="d-none"></td>
+                                </tr>
+                            <%}else{%>
+                                <%for(const [i, user] of userArr.entries()){%>
+                                    <tr>
+                                        <td>
+                                            <%= i+1%>
+                                        </td>
+                                        <td>
+                                            <%= (user.role==0)?'ผู้ใช้':(user.role==3)?"นักกีฬา":(user.role==2)?"นักกีฬา (รอการยืนยัน)":"แอดมิน" %>
+                                        </td>
+                                        <td>
+                                            <%= `${user.fname} ${user.lname}` %>
+                                        </td>
+                                        <td>
+                                            <%= user.username %>
+                                        </td>
+                                        <td class="d-grid gap-3" style="grid-template-columns: repeat(3, 1fr);">
+                                            <% if(user.role==3){ %>             
+                                                <a class="btn btn-outline-primary" href="/admin/check/athlete/<%= user._id %>">ดูข้อมูลการชก</a>
+                                            <% }else{%>
+                                                <button class="btn btn-outline-secondary" disabled>ไม่มีข้อมูลการชก</button>
+                                            <%} %>
+                                            <a class="btn btn-warning text-decoration-none" href="/admin/user/update/<%= user._id%>">แก้ไขข้อมูล</a>
+                                            <button id="<%= user._id%>" class="btn btn-danger btn-delete" <%= (user.role == 1) ? 'disabled="disabled"' : '' %>>ลบข้อมูล</button>
+                                        </td>
+                                    </tr>
+                                <%}%>
+                            <%}%>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <script>
-        document.querySelector(".toggle-admin-setting").classList.add('toggle-active')
-    </script>
+
+        <script>
+            document.querySelector(".toggle-admin-setting").classList.add('toggle-active')
+            const btnDelete = document.querySelectorAll(".btn-delete")
+            btnDelete.forEach(e=>{
+                e.addEventListener('click', (event)=>{
+                    const eid = event.target.id
+                    Swal.fire({
+                        title: 'ต้องการลบข้อมูลผู้ใช้หรือไม่?',
+                        text: "ข้อมูลที่เกี่ยวข้องกับผู้ใช้คนนี้จะถูกลบ",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#15803d',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete!'
+                        })
+                        .then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = `/admin/user/delete/${eid}`
+                            }
+                    })
+                })
+            })
+            $(document).ready(function () {
+                $('#userTable').DataTable({
+                    "columnDefs": [
+                        { "orderable": false, "targets": 4 }
+                    ],
+                    language: {
+                        'paginate': {
+                            'previous': '<span class="fa fa-chevron-left"></span>',
+                            'next': '<span class="fa fa-chevron-right"></span>'
+                        },
+
+                        "lengthMenu": 'แสดงข้อมูล <select class="form-control input-sm">' +
+                            '<option value="10">10</option>' +
+                            '<option value="20">20</option>' +
+                            '<option value="30">30</option>' +
+                            '<option value="40">40</option>' +
+                            '<option value="50">50</option>' +
+                            '<option value="-1">ทั้งหมด</option>' +
+                            '</select> แถว'
+                    }
+                })
+            })
+        </script>
 </body>
 
 </html>

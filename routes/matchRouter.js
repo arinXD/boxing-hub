@@ -25,8 +25,8 @@ router.get("/", async (req, res)=>{
 
 router.post('/insert', async (req, res, next) => {
     const eventId = '65100bd4e16335524977beae'
-    const winnerId = '6519244508411f4196b8709e'
-    const loserId = '651a6cfe26782e58b25af25e'
+    const winnerId = '6521a2ff048a91d68791f0f1'
+    const loserId = '6521b365be956fd19f3e3ad8'
 
     const resultType = "majorityVotes"
 

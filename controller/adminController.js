@@ -1,9 +1,8 @@
 const User = require("../models/User");
 const Team = require("../models/Team");
 const Athlete = require("../models/AthleteOat");
-const sharp = require('sharp');
-const fs = require('fs');
-const path = require('path');
+const Match = require("../models/MatchesOat");
+const Event = require("../models/EventOat");
 
 const teamPage = (req, res) => {
     const crudStatus = req.flash('crudStatus')
@@ -198,6 +197,138 @@ const deleteAthleteFromTeam = (req, res)=>{
         console.error(err)
     })
 }
+const updateUserPage = async (req, res)=>{
+    const user = await User.findOne({_id:req.params.uid})
+    return res.render('admin/user/update_user', {user})
+}
+const adminPage = async (req, res) => {
+    const users = await User.find()
+    const teams = await Team.find()
+    const athletes = await Athlete.find()
+    const matches = await Match.find()
+    const events = await Event.find()
+    let crudAdmin = req.flash('crudAdmin')
+    req.flash('crudAdmin', '')
+    return res.render('admin/index', { 
+        users,
+        teams,
+        athletes,
+        matches,
+        events,
+        crudAdmin:crudAdmin.at(0)
+    })
+}
+const updateUser = async (req, res)=>{
+    const { userId, username, fname, lname, isAdmin, removeAdmin} = req.body
+    let role
+    if(isAdmin){
+        role = 1
+    }
+    if(removeAdmin){
+        const findAthlete = await Athlete.findOne({user:userId})
+        role = (findAthlete)? 3:0
+        // return res.send({role})
+    }
+    await User.findByIdAndUpdate(
+        userId,
+        { username, fname, lname, role },
+        { new: true }
+    ).then((re)=>{
+        req.flash('crudAdmin', `แก้ไขข้อมูลผู้ใช้ของ ${re.fname} ${re.lname} เรียบร้อย`)
+        res.redirect(`/admin`)
+    }).catch((err)=>{
+        console.error(err);
+    })
+}
+const deleteUser = async (req, res)=>{
+    try{
+        const user = await User.findOne({_id:req.params.uid})
+        const athlete = await Athlete.findOne({user:user._id})
+        if(athlete.team){
+            await Team.findByIdAndUpdate(
+                athlete.team,
+                { $pull: { athletes: athlete._id } },
+                { new: true }
+            )
+        }
+        if((athlete.matches).length>0){
+            for (var match of athlete.matches) {
+                const matchFind =  await Match.findOne({_id:match})
+                for (const ath of matchFind.athletes) {
+                    Athlete.findByIdAndUpdate(
+                        ath,
+                        { $pull: { matches: match } },
+                        { new: true }
+                    )
+                }
+                await Event.findByIdAndUpdate(
+                    matchFind.event,
+                    { $pull: { matches: matchFind._id } },
+                    { new: true }
+                )
+                await Match.findByIdAndDelete(match)
+            }
+        }
+        if(athlete){
+            await Athlete.findByIdAndDelete(athlete._id)
+            await User.findByIdAndDelete(athlete.user._id)
+        }
+        return res.redirect('/admin')
+    }catch(err){
+        console.error(err);
+        return res.redirect('/admin')
+    }
+    
+}
+const checkAthlete = (req, res)=>{
+    const uid = req.params.uid
+    Athlete.findOne({user:uid})
+    .populate(['matches', 'user', 'team'])
+    .populate({
+        path: 'matches',
+        populate: {
+          path: 'winnerId', 
+          model: 'athletes'
+        }
+    })
+    .populate({
+        path: 'matches',
+        populate: {
+          path: 'event', 
+          model: 'events'
+        }
+    })
+    .populate({
+        path: 'matches',
+        populate: {
+          path: 'athletes',
+          populate: {
+            path:'_id',
+            model: 'athletes'
+          }
+        }
+    })
+    .populate({
+        path: 'matches',
+        populate: {
+          path: 'athletes',
+          populate: {
+            path:'_id',
+            model: 'athletes',
+            populate: {
+                path: 'user',
+                model: 'users'  
+              }
+          }
+        }
+    })
+    .then((athlete)=>{
+        return res.render("athlete/athleteProfile",{athlete})
+    })
+    .catch((err)=>{
+        return res.json({message:"something error"})
+    })
+}
 module.exports = {
     teamPage,
     teamInfo,
@@ -207,4 +338,9 @@ module.exports = {
     updateTeam,
     deleteTeam,
     deleteAthleteFromTeam,
+    updateUserPage,
+    updateUser,
+    adminPage,
+    deleteUser,
+    checkAthlete,
 }

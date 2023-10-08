@@ -4,51 +4,51 @@
     <%- include("../partials/header.ejs")%>
     <%
     const callAge=(bday)=>{
-        const birthDate = new Date(bday);
-        const currentDate = new Date();
-        const ageInMilliseconds = currentDate - birthDate;
-        const age = Math.floor(ageInMilliseconds / (1000 * 60 * 60 * 24 * 365.25));
+        const birthDate = new Date(bday)
+        const currentDate = new Date()
+        const ageInMilliseconds = currentDate - birthDate
+        const age = Math.floor(ageInMilliseconds / (1000 * 60 * 60 * 24 * 365.25))
         return age
     }
     const convertSecondsToMin = (seconds) => {
-        const minutes = Math.floor(seconds / 60);
-        const remainingSeconds = seconds % 60;
-        const formattedTime = `(${minutes}:${remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds})`;
-        return formattedTime;
+        const minutes = Math.floor(seconds / 60)
+        const remainingSeconds = seconds % 60
+        const formattedTime = `(${minutes}:${remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds})`
+        return formattedTime
     }
     const convertSecondsToTime = (seconds) => {
-        const hours = Math.floor(seconds / 3600);
-        const minutes = Math.floor((seconds % 3600) / 60);
-        const remainingSeconds = seconds % 60;
-        let formattedTime = '';
+        const hours = Math.floor(seconds / 3600)
+        const minutes = Math.floor((seconds % 3600) / 60)
+        const remainingSeconds = seconds % 60
+        let formattedTime = ''
     
         if (hours > 0) {
-            formattedTime += `${hours} ชั่วโมง}`;
+            formattedTime += `${hours} ชั่วโมง}`
         }
         if (minutes > 0) {
             if (formattedTime.length > 0) {
-            formattedTime += `${hours > 0 ? ' ' : ''}${minutes < 10 ? '0' + minutes : minutes} นาที`;
+            formattedTime += `${hours > 0 ? ' ' : ''}${minutes < 10 ? '0' + minutes : minutes} นาที`
             } else {
-            formattedTime += `${minutes} นาที`;
+            formattedTime += `${minutes} นาที`
             }
         }
         if (remainingSeconds > 0) {
             if (formattedTime.length > 0) {
-            formattedTime += `${minutes > 0 ? ' ' : ''}${remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds} วินาที`;
+            formattedTime += `${minutes > 0 ? ' ' : ''}${remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds} วินาที`
             } else {
-            formattedTime += `${remainingSeconds} วินาที`;
+            formattedTime += `${remainingSeconds} วินาที`
             }
         }
-        return formattedTime.trim();
+        return formattedTime.trim()
     }
     
     const formatDate = (inputDate)=>{
-        const date = new Date(inputDate);
-        const options = { year: 'numeric', month: 'short', day: 'numeric' };
-        return date.toLocaleDateString('en-US', options);
+        const date = new Date(inputDate)
+        const options = { year: 'numeric', month: 'short', day: 'numeric' }
+        return date.toLocaleDateString('en-US', options)
     }
     const capitalize = (string)=>{
-        return string.charAt(0).toUpperCase() + string.slice(1);
+        return string.toUpperCase()
     }
 
     const judgement = (txt)=>{
@@ -72,7 +72,7 @@
     %>
     <script>
         window.onload = ()=>{
-            const overAll = document.getElementById('over-all');
+            const overAll = document.getElementById('over-all')
             new Chart(overAll, {
                 type: 'pie',
                 data: {
@@ -87,7 +87,7 @@
                     backgroundColor: [
 
                     '#8C0000',
-                    '#19191E;',
+                    '#19191E',
                     '#FFAF00'
 
                     ],
@@ -160,15 +160,15 @@
                     text: "Chart.js Bar Chart"
                 },
             }
-                
-            let ctx = document.getElementById("canvas").getContext("2d");
+            
+            let ctx = document.getElementById("canvas").getContext("2d")
             window.myBar = new Chart(ctx, {
                 type: "bar",
                 data: barChartData,
                 options: chartOptions
-            });
+            })
             const createDoughnut = (dom, score)=>{
-                ctx = dom.getContext('2d');
+                ctx = dom.getContext('2d')
                 let doughnutChart = new Chart(ctx, {
                     type: 'doughnut',
                     data: {
@@ -224,12 +224,6 @@
         body{
             background-image: linear-gradient(15deg, #181D31 0%, #272829 100%) !important;
         }
-        ol li a{
-            color: #C70039;
-        }
-        ol li a:hover{
-            color: #750021;
-        }
         .ath.container{
             background-color: white;
             padding: 2em 3em;
@@ -249,9 +243,8 @@
         }
         .athlete-info h1{
             border-bottom: 1px solid #dddddd;
-            font-size: 2em;
+            font-size: 2.5em;
             padding-bottom: 1.5rem;
-            padding-top: 1em;
         }
         .athlete-info p{
             margin: 0;
@@ -343,15 +336,10 @@
         .dashboard{
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            /* display: flex;
-            justify-content: space-between;
-            flex-direction: column;
-            align-items: start; */
             gap: 4em;
         }
         .dashboard>div{
             box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px !important;
-            /* border: 1px solid black; */
             padding: 2em;
             height: fit-content;
             border-radius: 6px;
@@ -360,16 +348,12 @@
         .dashboard>div:nth-of-type(3){
             padding: 0;
             margin: auto 0;
-            /* height: auto; */
             box-shadow: none !important;
         }
-        .dashboard>div:nth-of-type(3):hover,
-        .dashboard>div:nth-of-type(4):hover{
+        .dashboard>div:nth-of-type(3):hover{
             transform: scale(1.05);
         }
         .css-shadow{
-            /* box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px !important; */
-            /* padding: .5em; */
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             place-items: center;
@@ -438,7 +422,7 @@
         </div>
         <img class="athlete-img" src="/images/profile/<%= athlete.user.img%>" alt="<%= athlete.nickname%>">
         <div class="athlete-info ">
-            <h1><%= athlete.user.fname%> “<%= capitalize(athlete.nickname)%>“ <%= athlete.user.lname%> </h1>
+            <h1 class="h1"><%= capitalize(athlete.nickname)%> <br> <%= athlete.user.fname%> <%= athlete.user.lname%> </h1>
             <div class="mt-4 athlete-detail">
                 <div class="detail-item">
                     <label>พิกัดน้ำหนัก</label>
@@ -511,7 +495,7 @@
                         </div>
                         <div>
                             <span>อัตราการชนะ</span>
-                            <% const winrate = (athlete.wins&&athlete.losses)?(athlete.wins/(athlete.wins+athlete.losses))*100:0 %>
+                            <% const winrate = (athlete.wins>=0&&athlete.losses>=0)?(athlete.wins/(athlete.wins+athlete.losses))*100:0 %>
                             <span><%= winrate%> %</span>       
                         </div>
                         <div>

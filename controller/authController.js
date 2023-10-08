@@ -96,15 +96,19 @@ const signUp = async (req, res) => {
         email
     }
 
-    if (password != confirm) {
-        req.flash('errorMesssage', ["Password doesn't match"])
+    if(!email) errmes.push("กรุณากรอกอีเมล")
+    if(!fname || !lname) errmes.push("กรุณากรอกชื่อจริงและนามสกุล")
+    if(!username) errmes.push("กรุณากรอกชื่อผู้ใช้")
+    if (password.length<6) errmes.push("รหัสผ่านของคุณต้องมากกว่า 6 ตัวอักษร")
+    if (password != confirm) errmes.push("รหัสผ่านของคุณไม่ตรงกัน")
+    if(errmes.length>0){
+        req.flash('errorMesssage', errmes)
         req.flash('data', data)
         return res.redirect('signup')
     }
-
     const hashPass = await bcrypt.hash(password, 10)
-
     const newUser = new User({
+
         username,
         fname,
         lname,
@@ -122,11 +126,11 @@ const signUp = async (req, res) => {
         .catch((err) => {
             console.log(err)
             if (err.code == 11000) {
-                errmes.push("This email already exists")
+                errmes.push("อีเมลนี้ถูกใช้งานไปแล้ว")
             }
-            if (err.errors) {
-                Object.keys(err.errors).map(key => errmes.push(err.errors[key].message))
-            }
+            // if (err.errors) {
+            //     Object.keys(err.errors).map(key => errmes.push(err.errors[key].message))
+            // }
             req.flash('errorMesssage', errmes)
             req.flash('data', data)
             return res.redirect('signup')

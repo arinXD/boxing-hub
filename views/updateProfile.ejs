@@ -7,12 +7,6 @@
         body{
             background-image: linear-gradient(15deg, #181D31 0%, #272829 100%) !important;
         }
-        ol li a{
-            color: #C70039;
-        }
-        ol li a:hover{
-            color: #750021;
-        }
         .profile.container{
             background-color: white;
             box-shadow: rgba(153, 153, 153, 0.2) 0px 2px 5px 0px !important;
@@ -45,6 +39,16 @@
         }
         .profile-manage {
             top: 25%;
+        }
+        #submit-update{
+            background-color: #1e3a8a;
+        }
+        #submit-update:hover{
+            background-color: #172554;
+        }
+        #submit-update:active{
+            background-color: #172554 !important;
+            transform: scale(.95);
         }
     </style>
 
@@ -129,14 +133,6 @@
                 }
             })
 
-            if (`<%= user.job%>`) {
-                for (const option of selectJob.children) {
-                    if (`<%= user.job%>`==option.value) {
-                        option.setAttribute('selected', 'selected')
-                    }       
-                }
-            }
-
             const updateForm = document.forms['update-profile']
             const submitUpdate = document.querySelector("#submit-update")
             submitUpdate.addEventListener('click', function(event) {
@@ -215,11 +211,11 @@
                 </div>
             </div>
             <div class="card profile-information">
-                <div class="card-body">
+                <div class="card-body p-4">
                     <form name="update-profile" action="/profile/update" method="post">
                         <div class="row">
                             <div class="col-sm-3">
-                                <h6 class="mb-0">User Name</h6>
+                                <h6 class="mb-0">ชื่อผู้ใช้</h6>
                             </div>
                             <div class="col-sm-9 text-secondary form-input">
                                 <input required type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" name="username" value="<%= user.username%>">
@@ -227,7 +223,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-3">
-                                <h6 class="mb-0">First Name</h6>
+                                <h6 class="mb-0">ชื่อจริง</h6>
                             </div>
                             <div class="col-sm-9 text-secondary form-input">
                                 <input required type="text" class="form-control" aria-label="First Name" aria-describedby="basic-addon1" name="fname" value="<%= user.fname%>">
@@ -235,7 +231,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-3">
-                                <h6 class="mb-0">Last Name</h6>
+                                <h6 class="mb-0">นามสกุล</h6>
                             </div>
                             <div class="col-sm-9 text-secondary form-input">
                                 <input required type="text" class="form-control" aria-label="Last Name" aria-describedby="basic-addon1" name="lname" value="<%= user.lname%>">
@@ -243,7 +239,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-3">
-                                <h6 class="mb-0">Phone</h6>
+                                <h6 class="mb-0">โทรศัพท์</h6>
                             </div>
                             <div class="col-sm-9 text-secondary form-input form-group">
                                 <input required type="tel" class="form-control" aria-label="Email" aria-describedby="basic-addon1" name="tel" value="<%= user.tel%>">
@@ -251,21 +247,15 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-3">
-                                <h6 class="mb-0">Job</h6>
+                                <h6 class="mb-0">อาชีพ</h6>
                             </div>
-                            <div class="col-sm-9 form-input form-group">
-                                <select required class="form-control" name="job" id="select-job">
-                                    <option value="" hidden>Select Job</option>
-                                    <option value="student">Student</option>
-                                    <option value="programmer">Programmer</option>
-                                    <option value="software tester">Software Tester</option>
-                                    <option value="data engineering">Data Engineering</option>
-                                </select>
+                            <div class="col-sm-9 text-secondary form-input form-group">
+                                <input required type="text" class="form-control" aria-label="Email" aria-describedby="basic-addon1" name="job" value="<%= user.job%>">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-3">
-                                <h6 class="mb-0">Province</h6>
+                                <h6 class="mb-0">จังหวัด</h6>
                             </div>
                             <div class="col-sm-9 text-secondary form-input form-group">
                                 <select required name="province" id="select-province" class="form-control">
@@ -275,7 +265,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-3">
-                                <h6 class="mb-0">Amphoe</h6>
+                                <h6 class="mb-0">อำเภอ</h6>
                             </div>
                             <div class="col-sm-9 text-secondary form-input form-group">
                                <select required name="amphoe" id="select-amphoe" class="form-control">
@@ -285,7 +275,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-3">
-                                <h6 class="mb-0">Tambons</h6>
+                                <h6 class="mb-0">ตำบล</h6>
                             </div>
                             <div class="col-sm-9 text-secondary form-input form-group">
                                <select required name="tambon" id="select-tambon" class="form-control">
@@ -295,7 +285,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-3">
-                                <h6 class="mb-0">Address</h6>
+                                <h6 class="mb-0">ที่อยู่</h6>
                             </div>
                             <div class="col-sm-9 text-secondary form-input form-group">
                                 <textarea required class="form-control" name="address" cols="36" rows="5"><%= user.address%></textarea>
@@ -303,7 +293,7 @@
                         </div>
                     </form>
                     <div class="mt-3 d-flex justify-content-end">
-                        <button class="border btn btn-primary px-5 py-2" id="submit-update">ตกลง</button>
+                        <button class="border btn px-5 py-2" id="submit-update">ตกลง</button>
                     </div>
                 </div>
             </div>
