@@ -129,6 +129,9 @@ nav .toggle-avartar .user-name {
     background-color: #212844;
     cursor: pointer;
 }
+.toggle-active{
+    background-color: #212844 !important;
+}
 
 nav ul li a:hover, nav ul li:hover{
     color: #F49D1A;

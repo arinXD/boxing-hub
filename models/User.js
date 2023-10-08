@@ -1,10 +1,18 @@
 const mongoose = require('mongoose')
 
+function formatDate(date) {
+    return date.toISOString();
+  }
+  
+  function parseDate(date) {
+    return new Date(date);
+  }
+
 const Schema = mongoose.Schema;
 const userSchema = new Schema({
     username:{
         type: String,
-        required: [true, "Please provide username"],
+        required: [true, "กรุณากรอกชื่อผู้ใช้"],
     },
     job:{
         type:String,
@@ -12,19 +20,21 @@ const userSchema = new Schema({
     ,
     fname:{
         type: String,
+        required: [true, "กรุณากรอกชื่อจริง"]
     },
     lname:{
         type: String,
+        required: [true, "กรุณากรอกนามสกุล"]
     },
     email:{
         type: String,
-        required: [true, "Please provide email"],
-        unique: [true, "This email already exists"],
+        required: [true, "กรุณากรอกอีเมล"],
+        unique: [true, "อีเมลนี้ถูกใช้งานไปแล้ว"],
         dropDups: true
     },
     password:{
         type: String,
-        required: [true, "Please provide password"]
+        required: [true, "กรุณากรอกรหัสผ่าน"]
     },
     tel:{
         type: String,
@@ -32,13 +42,9 @@ const userSchema = new Schema({
     },
     img:{
         type: String,
-        default: null
+        default: 'avartar.png'
     },
     role:{
-        type: Number,
-        default: 0
-    },
-    roleteam:{
         type: Number,
         default: 0
     },
@@ -50,6 +56,10 @@ const userSchema = new Schema({
     amphoe:String,
     tambon:String,
     address:String,
+    deleted_at:{
+        type: Date,
+        default: null,
+    },
 }, {timestamps : true})
 
 const User = mongoose.model('users', userSchema)

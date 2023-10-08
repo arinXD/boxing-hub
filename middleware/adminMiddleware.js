@@ -13,7 +13,6 @@ const admin = async (req, res, next) => {
     }else{
         return res.redirect("/")
     }
-    // next()
 }
 
 module.exports = admin

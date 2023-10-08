@@ -3,13 +3,16 @@ const User = require("../models/User");
 
 const signInPage = (req, res, next) => {
     const emailData = req.flash("email")[0]
+    const errs = req.flash("errorMessage")
+    req.flash("email",'')
+    req.flash("errorMessage",'')
     let email = ""
     console.log(emailData)
     if (emailData) {
         email = emailData.email
     }
     return res.render('signin', {
-        errs: req.flash("errorMessage"),
+        errs,
         email
     })
 }
@@ -24,7 +27,7 @@ const signIn = async (req, res) => {
         return res.redirect('/authen/signin')
     }
     await User.findOne({
-        email: email
+        email: email.toLowerCase()
     }).then((result) => {
         if (result) {
             bcrypt.compare(password, result.password)
@@ -34,7 +37,10 @@ const signIn = async (req, res) => {
                         req.session.role = result.role
                         req.session.userName = result.username
                         req.session.userProfile = result.img
-                        res.redirect('/')
+                        if(result.role==1){
+                            return res.redirect('/admin')
+                        }
+                        return res.redirect('/')
                     } else {
                         req.flash("errorMessage", "Incorrect password")
                         req.flash('email', {
@@ -55,6 +61,9 @@ const signIn = async (req, res) => {
 
 const signUpPage = (req, res, next) => {
     let data = req.flash('data')[0]
+    const errs = req.flash("errorMesssage")
+    req.flash("data",'')
+    req.flash("errorMesssage",'')
     let fname = ""
     let lname = ""
     let email = ""
@@ -65,7 +74,7 @@ const signUpPage = (req, res, next) => {
         email = data.email
     }
     res.render('signup', {
-        errs: req.flash("errorMesssage"),
+        errs,
         fname,
         lname,
         email,
@@ -87,15 +96,19 @@ const signUp = async (req, res) => {
         email
     }
 
-    if (password != confirm) {
-        req.flash('errorMesssage', ["Password doesn't match"])
+    if(!email) errmes.push("กรุณากรอกอีเมล")
+    if(!fname || !lname) errmes.push("กรุณากรอกชื่อจริงและนามสกุล")
+    if(!username) errmes.push("กรุณากรอกชื่อผู้ใช้")
+    if (password.length<6) errmes.push("รหัสผ่านของคุณต้องมากกว่า 6 ตัวอักษร")
+    if (password != confirm) errmes.push("รหัสผ่านของคุณไม่ตรงกัน")
+    if(errmes.length>0){
+        req.flash('errorMesssage', errmes)
         req.flash('data', data)
         return res.redirect('signup')
     }
-
     const hashPass = await bcrypt.hash(password, 10)
-
     const newUser = new User({
+
         username,
         fname,
         lname,
@@ -113,11 +126,11 @@ const signUp = async (req, res) => {
         .catch((err) => {
             console.log(err)
             if (err.code == 11000) {
-                errmes.push("This email already exists")
+                errmes.push("อีเมลนี้ถูกใช้งานไปแล้ว")
             }
-            if (err.errors) {
-                Object.keys(err.errors).map(key => errmes.push(err.errors[key].message))
-            }
+            // if (err.errors) {
+            //     Object.keys(err.errors).map(key => errmes.push(err.errors[key].message))
+            // }
             req.flash('errorMesssage', errmes)
             req.flash('data', data)
             return res.redirect('signup')

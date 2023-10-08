@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("../../partials/header.ejs")%>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        @keyframes modal-pop-up {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+        body{
+            background-image: linear-gradient(15deg, #181D31 0%, #272829 100%) !important;
+        }
+        /* ol li a{
+            color: #C70039;
+        }
+        ol li a:hover{
+            color: #750021;
+        } */
+        .team.container{
+            background-color: white;
+            box-shadow: rgba(153, 153, 153, 0.2) 0px 2px 5px 0px !important;
+            padding: 2em 3em;
+            border-radius: 10px;
+            position: relative;
+        }
+        .card{
+            width: 100%;
+        }
+        .card img{
+            width: 50%;
+            height: 100px;
+            object-fit: contain;
+            mix-blend-mode: multiply;
+            margin: 0 auto;
+            
+        }
+        .card-body{
+            padding: 1.5em;
+        }
+        .card-body h5{
+            margin-bottom: 1em;
+            font-size: 1.75em;
+        }
+        #btnOpenForm{
+            position: absolute;
+            right: 2em;
+        }
+        #form-modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .modal-content{
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30% !important;
+            position: relative;
+            animation: modal-pop-up 0.3s ease forwards;
+        }
+        .close {
+            position: absolute;
+            font-size: 1.5em;
+            font-weight: bold;
+            cursor: pointer;
+            top: 5px;
+            right: 15px;
+            display: block;
+        }
+        .close:hover {
+            color: red;
+        }
+        .more-option{
+            background-color: #242526;
+            width: fit-content;
+            padding: .75em;
+            border-radius: 6px;
+            position: absolute;
+            right: 0%;
+            display: none !important;
+            z-index: 3;
+            animation: modal-pop-up 0.1s ease forwards;
+        }
+        .more-option a{
+            padding: .5em .75em;
+            display: flex;
+            align-items: center;
+            background-color: #242526;
+            color: white;
+        }
+        .more-option a:hover{
+            background-color: #3A3B3C;
+            color: white;
+        }
+        .more-option div {
+            border-radius: 40px;
+            background-color: #4E4F50;
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            padding: 1em;
+            margin-right: 1.5em;
+            position: relative;
+        }
+        .more-option div i{
+            color: white;
+        }
+        .more-option div i::before{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .team-card{
+            position: relative;
+        }
+        .manage-team{
+            width: fit-content;
+            /* border: 1px solid black; */
+            display: flex;
+            gap: 1em;
+            margin-left: auto;
+            right: 0;
+            padding: .5em;
+        }
+        .manage-team a{
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+        }
+        .circle{
+            border-radius: 40px;
+            background-color: #76767659;
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            padding: 1em;
+            position: relative;
+            cursor: pointer;
+            z-index: 1;
+            
+        }
+        .circle .bi{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #242526;
+            transition: all .5s ease 0s;
+        }
+        .circle:active{
+            transform: scale(.9);
+        }
+    </style>
+    <script>
+    const confirmDelete = (clicked_id)=>{
+        Swal.fire({
+            title: 'ต้องการลบหรือไม่?',
+            text: "ข้อมูลของทีมนี้จะหายไป!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#0369a1',
+            cancelButtonColor: '#b91c1c',
+            confirmButtonText: 'Yes'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = `/admin/team/delete/${clicked_id}`
+            }
+        })
+    }
+    window.onload = ()=>{
+        const crudStatus = '<%= crudStatus %>';
+
+        if (crudStatus) {
+            Swal.fire(
+                'สำเร็จ!',
+                crudStatus,
+                'success'
+            );
+            crudStatus = null
+        }
+    }
+    </script>
+</head>
+<body>
+    <%- include("../../partials/nav.ejs")%>
+    <div class="team container my-4">
+        <button class="btn text-white" style="background-color: #1e3a8a;" id="btnOpenForm" onclick="openForm()"><i class="bi bi-plus-circle me-2"></i>เพิ่มทีมใหม่</button>
+        <h3 class="mb-3">จัดการข้อมูลทีม</h3>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="/admin" class="text-decoration-none">จัดการข้อมูลเว็บไซต์</a></li>
+            <li class="breadcrumb-item active" aria-current="page">จัดการข้อมูลทีม</li>
+        </ol>
+        <%if(teams.length==0){%>
+            <h2>There's no teams</h2>
+        <%}%>
+        <div class="d-grid gap-5" style="grid-template-columns: repeat(4, 1fr);">
+            <%for (const [i,team] of teams.entries()){%>
+                <div class="card team-card">
+                    <div class="manage-team">
+                        <a href="/admin/team/update/<%= team.id%>"><div class="circle"><i class="bi bi-pencil-fill"></i></div></a>
+                        <a id="<%= team.id%>" onclick="return confirmDelete(this.id)"><div class="circle"><i class="bi bi-trash3"></i></div></a>
+                    </div>
+                    <img src="/images/teams/<%= team.logo%>" class="card-img-top mb-0" alt="<%= team.teamname%>">
+                    <div class="card-body">
+                      <h6 class="card-title mb-3"><%= team.teamname%></h6>
+                      <a href="/admin/team/<%= team.id%>" style="background-color: #1e293b;" class="text-white btn d-block">ดูข้อมูลทีม</a>
+                    </div>
+                </div>
+            <%}%>
+        </div>
+
+        <div  id="form-modal" class="modal">
+            <div class="modal-content p-3">
+                <span class="close" onclick="closeModal()"><i class="bi bi-x-square"></i></span>
+                <form name="insert-team" class="w-100" action="/admin/team/insert" method="post">
+                    <div class="mb-2">
+                    <label class="form-label">ชื่อทีม</label>
+                    <input type="text" name="teamname" class="form-control" required>
+                    <div class="mb-2">
+                        <label class="form-label">รายละเอียดทีม</label>
+                        <textarea class="form-control" name="desc" rows="3" required></textarea>
+                    </div>
+                    </div>
+                    <div class="text-end mt-3">
+                        <button type="submit" style="background-color: #1e3a8a;" class="btn text-white">ตกลง</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+    </div>
+    <script>
+        const openForm = ()=>{
+            const modal = document.querySelector('#form-modal')
+            modal.style.display = 'block'
+            modal.querySelector('.modal-content').classList.add('modal-pop-up')
+        }
+        const closeModal = ()=>{
+            document.forms['insert-team'].reset()
+            const modal = document.querySelector('#form-modal')
+            modal.style.display = 'none'
+            modal.querySelector('.modal-content').classList.remove('modal-pop-up')
+        }
+
+        const circleMore = document.querySelectorAll(".circle")
+        circleMore.forEach(e => {
+            e.addEventListener('click',()=>{
+                setTimeout(()=>{
+                    if(e.className.includes('popup')){
+                        e.classList.toggle('popup')
+                        e.classList.remove('d-flex')
+                        console.log(popup);
+                        return
+                    }else{
+                        let number = e.classList[1].split('-')[1]
+                        let manageDiv = document.querySelector(`.more-option-${number}`)
+                        manageDiv.classList.add("d-flex", 'popup')
+                    }
+                }, 50)
+            })
+            
+        });
+        document.addEventListener('click', (event) => {
+            const popup = document.querySelectorAll(".popup")
+            popup.forEach(e => {
+                e.classList.remove('popup')
+                e.classList.remove('d-flex')
+            });
+        });
+        window.onclick = async (event)=>{
+            var modal = document.querySelector('#form-modal')
+            if (event.target == modal) {
+                closeModal()
+            }
+        }
+    </script>
+</body>
+</html>
+

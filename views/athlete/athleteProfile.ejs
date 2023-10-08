@@ -4,52 +4,53 @@
     <%- include("../partials/header.ejs")%>
     <%
     const callAge=(bday)=>{
-        const birthDate = new Date(bday);
-        const currentDate = new Date();
-        const ageInMilliseconds = currentDate - birthDate;
-        const age = Math.floor(ageInMilliseconds / (1000 * 60 * 60 * 24 * 365.25));
+        const birthDate = new Date(bday)
+        const currentDate = new Date()
+        const ageInMilliseconds = currentDate - birthDate
+        const age = Math.floor(ageInMilliseconds / (1000 * 60 * 60 * 24 * 365.25))
         return age
     }
     const convertSecondsToMin = (seconds) => {
-        const minutes = Math.floor(seconds / 60);
-        const remainingSeconds = seconds % 60;
-        const formattedTime = `(${minutes}:${remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds})`;
-        return formattedTime;
+        const minutes = Math.floor(seconds / 60)
+        const remainingSeconds = seconds % 60
+        const formattedTime = `(${minutes}:${remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds})`
+        return formattedTime
     }
     const convertSecondsToTime = (seconds) => {
-        const hours = Math.floor(seconds / 3600);
-        const minutes = Math.floor((seconds % 3600) / 60);
-        const remainingSeconds = seconds % 60;
-        let formattedTime = '';
+        const hours = Math.floor(seconds / 3600)
+        const minutes = Math.floor((seconds % 3600) / 60)
+        const remainingSeconds = seconds % 60
+        let formattedTime = ''
     
         if (hours > 0) {
-            formattedTime += `${hours} ชั่วโมง}`;
+            formattedTime += `${hours} ชั่วโมง}`
         }
         if (minutes > 0) {
             if (formattedTime.length > 0) {
-            formattedTime += `${hours > 0 ? ' ' : ''}${minutes < 10 ? '0' + minutes : minutes} นาที`;
+            formattedTime += `${hours > 0 ? ' ' : ''}${minutes < 10 ? '0' + minutes : minutes} นาที`
             } else {
-            formattedTime += `${minutes} นาที`;
+            formattedTime += `${minutes} นาที`
             }
         }
         if (remainingSeconds > 0) {
             if (formattedTime.length > 0) {
-            formattedTime += `${minutes > 0 ? ' ' : ''}${remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds} วินาที`;
+            formattedTime += `${minutes > 0 ? ' ' : ''}${remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds} วินาที`
             } else {
-            formattedTime += `${remainingSeconds} วินาที`;
+            formattedTime += `${remainingSeconds} วินาที`
             }
         }
-        return formattedTime.trim();
+        return formattedTime.trim()
     }
     
     const formatDate = (inputDate)=>{
-        const date = new Date(inputDate);
-        const options = { year: 'numeric', month: 'short', day: 'numeric' };
-        return date.toLocaleDateString('en-US', options);
+        const date = new Date(inputDate)
+        const options = { year: 'numeric', month: 'short', day: 'numeric' }
+        return date.toLocaleDateString('en-US', options)
     }
     const capitalize = (string)=>{
-        return string.charAt(0).toUpperCase() + string.slice(1);
+        return string.toUpperCase()
     }
+
     const judgement = (txt)=>{
         const data = {
             "knockouts":"น็อกเอาท์",
@@ -59,18 +60,19 @@
         }
         return data[txt]
     }
+
     var totalRound = 0
     var totalTime = 0
     var totalMatch = 0
     for(let match of athlete.matches){
         totalMatch++
-        totalRound += match.resultRound
-        totalTime += (((match.resultRound)-1)*3)*60+match.resultClock
+        totalRound += match.ResultRound
+        totalTime += (((match.EesultRound)-1)*3)*60+match.EesultClock
     }
     %>
     <script>
         window.onload = ()=>{
-            const overAll = document.getElementById('over-all');
+            const overAll = document.getElementById('over-all')
             new Chart(overAll, {
                 type: 'pie',
                 data: {
@@ -83,9 +85,11 @@
                     label: `สถิติ <%= athlete.nickname%>`,
                     data: [`<%= athlete.wins%>`, `<%= athlete.losses%>`, `<%= athlete.draws%>`],
                     backgroundColor: [
+
                     '#8C0000',
-                    '#19191E;',
+                    '#19191E',
                     '#FFAF00'
+
                     ],
                     hoverOffset: 4
                 }]
@@ -156,15 +160,15 @@
                     text: "Chart.js Bar Chart"
                 },
             }
-                
-            let ctx = document.getElementById("canvas").getContext("2d");
+            
+            let ctx = document.getElementById("canvas").getContext("2d")
             window.myBar = new Chart(ctx, {
                 type: "bar",
                 data: barChartData,
                 options: chartOptions
-            });
+            })
             const createDoughnut = (dom, score)=>{
-                ctx = dom.getContext('2d');
+                ctx = dom.getContext('2d')
                 let doughnutChart = new Chart(ctx, {
                     type: 'doughnut',
                     data: {
@@ -215,11 +219,15 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
         *{
-            font-family: 'Kanit', sans-serif;
             box-sizing: border-box;
         }
         body{
-            background-color: #222946;
+            background-image: linear-gradient(15deg, #181D31 0%, #272829 100%) !important;
+        }
+        .ath.container{
+            background-color: white;
+            padding: 2em 3em;
+            border-radius: 10px;
         }
         .athlete-img{
             display: block;
@@ -235,9 +243,8 @@
         }
         .athlete-info h1{
             border-bottom: 1px solid #dddddd;
-            font-size: 2em;
+            font-size: 2.5em;
             padding-bottom: 1.5rem;
-            padding-top: 1em;
         }
         .athlete-info p{
             margin: 0;
@@ -245,7 +252,6 @@
         .athlete-hero{
             background-color: #19191E;
             display: flex;
-            margin-bottom: 4rem;
             column-gap: .2em;
             align-items: end;
             justify-content: space-around;
@@ -274,7 +280,7 @@
         }
         .score .rate{
             display: flex;
-            justify-content: space-between;
+            justify-content: space-around;
             margin-bottom: 1.5em;
         }
         .score .rate > hr{
@@ -288,7 +294,7 @@
             justify-content: center;
             padding: 0 3em;
         }
-        .score .rate div:nth-of-type(2){
+        .score .rate div{
             border-left: 1px solid rgba(250,251,253,.15);
             border-right: 1px solid rgba(250,251,253,.15);
         }
@@ -330,15 +336,10 @@
         .dashboard{
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            /* display: flex;
-            justify-content: space-between;
-            flex-direction: column;
-            align-items: start; */
             gap: 4em;
         }
         .dashboard>div{
             box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px !important;
-            /* border: 1px solid black; */
             padding: 2em;
             height: fit-content;
             border-radius: 6px;
@@ -347,16 +348,12 @@
         .dashboard>div:nth-of-type(3){
             padding: 0;
             margin: auto 0;
-            /* height: auto; */
             box-shadow: none !important;
         }
-        .dashboard>div:nth-of-type(3):hover,
-        .dashboard>div:nth-of-type(4):hover{
+        .dashboard>div:nth-of-type(3):hover{
             transform: scale(1.05);
         }
         .css-shadow{
-            /* box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px !important; */
-            /* padding: .5em; */
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             place-items: center;
@@ -409,7 +406,7 @@
 </head>
 <body>
    <%- include("../partials/nav.ejs")%>
-   <div class="athlete-hero">
+   <div class="athlete-hero mb-2">
         <div class="score">
             <div class="rate">
                 <div>
@@ -418,14 +415,14 @@
                 <div>
                     <span class="score-count loss"><%= athlete.losses%></span><span>แพ้</span>
                 </div>
-                <div>
+                <!-- <div>
                     <span class="score-count draw"><%= athlete.draws%></span><span>เสมอ</span>
-                </div>
+                </div> -->
             </div>
         </div>
         <img class="athlete-img" src="/images/profile/<%= athlete.user.img%>" alt="<%= athlete.nickname%>">
         <div class="athlete-info ">
-            <h1><%= athlete.user.fname%> “<%= capitalize(athlete.nickname)%>“ <%= athlete.user.lname%> </h1>
+            <h1 class="h1"><%= capitalize(athlete.nickname)%> <br> <%= athlete.user.fname%> <%= athlete.user.lname%> </h1>
             <div class="mt-4 athlete-detail">
                 <div class="detail-item">
                     <label>พิกัดน้ำหนัก</label>
@@ -445,18 +442,23 @@
                 </div>
                 <div class="detail-item">
                     <label>ประเทศ</label>
-                    <p><span><%= athlete.country%></p>
+                    <p><%= athlete.country%></p>
                 </div>
                 <div class="detail-item">
                     <label>ทีม</label>
-                    <p><span><%= athlete.team%></p>
+                    <% const teamName = (athlete.team)? athlete.team.teamname:"ไม่มีทีม" %>
+                    <p><%= teamName%></p>
                 </div>
             </div>
         </div>
     </div>
-    <div class="container my-5">
+    <div class="ath container my-4">
+        <ol class="breadcrumb d-flex" style="margin-bottom: 2em;">
+            <li class="breadcrumb-item"><a href="/" class="text-decoration-none">หน้าหลัก</a></li>
+            <li class="breadcrumb-item"><a href="/athletes" class="text-decoration-none">นักกีฬา</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><%= athlete.nickname%></li>
+        </ol>
         <div class="dashboard">
-            <!-- <div class="w-100 d-flex flex-row gap-5"> -->
                 <div class="stat w-100">
                     <div class="stat-item d-flex gap-1 mt-0">
                         <div class="w-50 py-2 text-white" style="background-color: rgb(0, 104, 5);">ชนะ</div>
@@ -483,6 +485,7 @@
                         <div><%= athlete.majorityVotesLosses%></div>
                     </div>
                 </div>
+                
                 <div class="w-100" style="margin: 0 auto;">
                     <h2 class="text-center" style="margin-bottom: 1em;">ข้อมูลการแข่งขัน</h2>
                     <div class="percent">
@@ -491,62 +494,66 @@
                             <span>จำนวนการทั้งหมด</span> <span><%= totalRound%> ยก</span>
                         </div>
                         <div>
-                            <span>อัตราการชนะ</span><span><%= (athlete.wins/(athlete.wins+athlete.losses))*100%>%</span>       
+                            <span>อัตราการชนะ</span>
+                            <% const winrate = (athlete.wins>=0&&athlete.losses>0)?(athlete.wins/(athlete.wins+athlete.losses))*100:0 %>
+                            <span><%= winrate%> %</span>       
                         </div>
                         <div>
-                            <span>เวลาการแข่งขันทั้งหมด</span><span><%= convertSecondsToTime(totalTime)%></span>
+                            <span>เวลาการแข่งขันทั้งหมด</span>
+                            <span><%= (totalTime)? convertSecondsToTime(totalTime):"0 นาที"%></span>
                         </div>
                         <div>
-                            <span>เวลาเฉลี่ย/ยก</span><span><%= ((totalTime/60)/totalRound).toFixed(3)%> นาที</span>
+                            <span>เวลาเฉลี่ย/ยก</span>
+                            <% const roundRate = (totalTime&&totalRound)?((totalTime/60)/totalRound).toFixed(3):'0' %>
+                            <span><%= roundRate%> นาที</span>
                         </div>
                     </div>
                 </div>
-            <!-- </div> -->
-            <!-- <div class="w-100 d-flex flex-row gap-5"> -->
-                <div class="w-100" style="display: flex; align-items: center;">
-                    <canvas id="over-all"></canvas>
-                </div>
-                <div class="w-100">
-                    <canvas id="canvas" width="550px"></canvas>
-                    <div class="css-shadow">
-                        <div class="doughChart">
-                            <h2>อัตราการชนะ</h2>
-                            <div class="canvas-wrap">
-                                <h3><%= (athlete.wins/(athlete.wins+athlete.losses))*100%>%</h3>
-                                <canvas id="doughnutTotalWinRate"></canvas>
+                <%if(totalRound){%>
+                    <div class="w-100" style="display: flex; align-items: center;">
+                        <canvas id="over-all"></canvas>
+                    </div>
+                    <div class="w-100">
+                        <canvas id="canvas" width="550px"></canvas>
+                        <div class="css-shadow">
+                            <div class="doughChart">
+                                <h2>อัตราการชนะ</h2>
+                                <div class="canvas-wrap">
+                                    <h3><%= (athlete.wins/(athlete.wins+athlete.losses))*100%>%</h3>
+                                    <canvas id="doughnutTotalWinRate"></canvas>
+                                </div>
                             </div>
-                        </div>
-                        <div class="doughChart">
-                            <h2>ชนะน็อกเอาต์</h2>
-                            <div class="canvas-wrap">
-                                <h3><%= (athlete.knockouts/totalMatch)*100%>%</h3>
-                                <canvas id="doughnutKnockouts"></canvas>
+                            <div class="doughChart">
+                                <h2>ชนะน็อกเอาต์</h2>
+                                <div class="canvas-wrap">
+                                    <h3><%= (athlete.knockouts/totalMatch)*100%>%</h3>
+                                    <canvas id="doughnutKnockouts"></canvas>
+                                </div>
                             </div>
-                        </div>
-                        <div class="doughChart">
-                            <h2>ชนะทีเคโอ</h2>
-                            <div class="canvas-wrap">
-                                <h3><%= (athlete.technicalKnockouts/totalMatch)*100%>%</h3>
-                                <canvas id="doughnutTko"></canvas>
+                            <div class="doughChart">
+                                <h2>ชนะทีเคโอ</h2>
+                                <div class="canvas-wrap">
+                                    <h3><%= (athlete.technicalKnockouts/totalMatch)*100%>%</h3>
+                                    <canvas id="doughnutTko"></canvas>
+                                </div>
                             </div>
-                        </div>
-                        <div class="doughChart">
-                            <h2>ชนะคะแนนเอกฉันท์</h2>
-                            <div class="canvas-wrap">
-                                <h3><%= (athlete.overwhelmingScore/totalMatch)*100%>%</h3>
-                                <canvas id="doughnutScore"></canvas>
+                            <div class="doughChart">
+                                <h2>ชนะคะแนนเอกฉันท์</h2>
+                                <div class="canvas-wrap">
+                                    <h3><%= (athlete.overwhelmingScore/totalMatch)*100%>%</h3>
+                                    <canvas id="doughnutScore"></canvas>
+                                </div>
                             </div>
-                        </div>
-                        <div class="doughChart">
-                            <h2>ชนะคะแนนเสียงข้างมาก</h2>
-                            <div class="canvas-wrap">
-                                <h3><%= (athlete.majorityVotes/totalMatch)*100%>%</h3>
-                                <canvas id="doughnutMajor"></canvas>
+                            <div class="doughChart">
+                                <h2>ชนะคะแนนไม่เอกฉันท์</h2>
+                                <div class="canvas-wrap">
+                                    <h3><%= (athlete.majorityVotes/totalMatch)*100%>%</h3>
+                                    <canvas id="doughnutMajor"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            <!-- </div> -->
+                <%}%>
         </div>
         <div style="margin: 5em 0;">
             <h2 class="text-center mb-5">ผลการแข่งขัน</h2>
@@ -561,29 +568,31 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <%
+                    <%if(athlete.matches.length==0){%>
+                        <tr><td class="text-center" colspan="5">ไม่มีข้อมูลการแข่งขัน</td></tr>
+                    <%}
                         var totalRound = 0
                         var totalTime = 0
                         var totalMatch = 0
                     %>
                     <%for(let match of athlete.matches.sort()){
                         totalMatch++
-                        totalRound += match.resultRound
-                        totalTime += (((match.resultRound)-1)*3)*60+match.resultClock
+                        totalRound += match.ResultRound
+                        totalTime += (((match.ResultRound)-1)*3)*60+match.ResultClock
                         
                         
-                        for(var matchDetail of match.athletes){
-                            if(athlete._id==matchDetail._id._id.toString()){
+                        for(var matchDetail of match.athletes){%>
+                            <%if(athlete._id==matchDetail.athlete._id.toString()){
                                 var resultMatch = (matchDetail.winner)? "ชนะ":"แพ้"
                                 var resultClass = (matchDetail.winner)? "text-success":"text-danger"
                             }else{
-                                var compet = matchDetail._id
+                                var compet = matchDetail.athlete
                             }
                         }%>
                         <tr>
                             <td class="<%= resultClass%>"><%= resultMatch%></td>
-                            <td><%= judgement(match.resultType)%></td>
-                            <td>ยก <%= match.resultRound%> <%= convertSecondsToMin(match.resultClock)%></td>
+                            <td><%= judgement(match.ResultType)%></td>
+                            <td>ยก <%= match.ResultRound%> <%= convertSecondsToMin(match.ResultClock)%></td>
                             <%let competImg = (compet.user.img)? compet.user.img:"avartar.png"%>
                             <td class="d-flex">
                                 <img width="50px" height="50px" src="/images/profile/<%= competImg%>" alt="">

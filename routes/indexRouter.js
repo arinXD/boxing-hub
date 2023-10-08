@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const User = require("../models/User");
-const Event = require("../models/Event");
+const Event = require("../models/Events");
 /* GET home page. */
 router.get('/', async (req, res, next) => {
     var getEvent = await Event.find().populate("matches").populate({
@@ -9,13 +9,12 @@ router.get('/', async (req, res, next) => {
         populate: {
           path: 'athletes',
           populate: {
-            path: '_id',
+            path: 'athlete',
             model: 'athletes',
           }
         }
       });
     res.render('index', {mytitle: 'Hello',getEvent});
-    // return res.json(getEvent);
 })
 
 

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("../../partials/header.ejs")%>
+    <style>
+        body{
+            background-image: linear-gradient(15deg, #181D31 0%, #272829 100%) !important;
+        }
+        .update.container{
+            background-color: white;
+            box-shadow: rgba(153, 153, 153, 0.2) 0px 2px 5px 0px !important;
+            padding: 2em 3em;
+            border-radius: 10px;
+            position: relative;
+            width: 50%;
+        }
+        .team-logo{
+            width: 100px;
+            height: auto;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        window.onload = ()=>{
+            if(`<%= updated%>`){
+                Swal.fire(
+                    'สำเร็จ!',
+                    'อัพเดตข้อมูลสำเร็จ',
+                    'success'
+                ).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "/admin/team"
+                }})
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <%- include("../../partials/nav.ejs")%>
+    <div class="update container my-2">
+        <img src="/images/teams/<%= team.logo%>" class="team-logo" alt="<%= team.teamname%>">
+        <form name="update-team" class="w-100" action="/admin/team/update" method="post" enctype="multipart/form-data">
+            <div class="mb-2">
+                <input type="text" name="tid" class="form-control" value="<%= team._id%>" readonly hidden>
+            </div>
+            <div class="mb-2">
+                <label class="form-label">ชื่อทีม</label>
+                <input type="text" name="teamname" class="form-control" value="<%= team.teamname%>">
+            </div>
+            <div class="mb-2">
+                <label class="form-label">รายละเอียดทีม</label>
+                <textarea class="form-control" name="desc" rows="5"><%= team.desc%></textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">โลโก้</label>
+                <input class="form-control" type="file" name="teamLogo">
+            </div>
+            <div style="width: fit-content;margin-left: auto;">
+                <a href="/admin/team" type="button" class="btn text-white px-3" style="display: inline-block; background-color: #7f1d1d;">ยกเลิก</a>
+                <button type="submit" style="background-color: #1e3a8a; display: inline-block;" class="px-4 btn text-white">ตกลง</button>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

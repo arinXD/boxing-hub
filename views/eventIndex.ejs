@@ -146,7 +146,7 @@
       <div class="row">
 
         <div class="col-12 text-center">
-          <h2 class="mb-4 text-black">ตารางการแข่งขัน</h2>
+          <h2 class="mb-4 text-black">จัดการตารางการแข่งขัน</h2>
         </div>
 
       </div>
@@ -215,10 +215,14 @@
                         จบไปแล้ว</p>
                       <% } %>
 
-                      <a href="#" class="btn btn-primary">รายละเอียด</a>
+                      <a href="/event/showDetail/<%= event._id%>" class="btn btn-primary">รายละเอียด</a>
                     </div>
                   </div>
                   <% }) %>
+                  <% } else {%>
+                    <div class="shadow-lg p-3">
+                      <p class="text-center text-secondary m-0">ยังไม่มีตารางการแข่งขัน</p>
+                    </div>
                   <% } %>
                 </div>
               </div>
@@ -239,7 +243,7 @@
                           <span class="badge bg-advertising rounded-pill ms-auto"></span>
                         </div>
                         <div class="row">
-                          <form action="/eventIndex" method="post" onsubmit="return validateSelection();">
+                          <form action="/event" method="post" onsubmit="return validateSelection();">
                             <div class="col-lg-6 col-md-6 col-6">
 
                               <div class="mb-3">
@@ -307,7 +311,7 @@
                                         <% athletes.forEach(innerBoxer => { %>
                                         <% if (innerBoxer.weightClass === getWeightClass) { %>
                                         <option value="<%=innerBoxer._id %>"><%=
-                                                        innerBoxer.aka %>
+                                                        innerBoxer.nickname %>
                                         </option>
                                         <% } %>
                                         <% }); %>
@@ -330,7 +334,7 @@
                                         <% athletes.forEach(innerBoxer=> { %>
                                         <% if (innerBoxer.weightClass===getWeightClass2) { %>
                                         <option value="<%= innerBoxer._id %>">
-                                          <%= innerBoxer.aka %>
+                                          <%= innerBoxer.nickname %>
                                         </option>
                                         <% } %>
                                         <% }); %>
@@ -398,7 +402,7 @@
                         จบไปแล้ว</p>
                       <% } %>
 
-                      <a href="/eventIndex/edit/<%= event._id %>" class="btn btn-warning">แก้ไขตาราง</a>
+                      <a href="/event/edit/<%= event._id %>" class="btn btn-warning">แก้ไขตาราง</a>
                     </div>
                   </div>
                   <% }) %>
@@ -444,7 +448,7 @@
                         จบไปแล้ว</p>
                       <% } %>
 
-                      <a class="btn-delete btn btn-danger" href="/eventIndex/delete/<%= event._id %>" onclick="return confirmDelete(this);">
+                      <a class="btn-delete btn btn-danger" href="/event/delete/<%= event._id %>" onclick="return confirmDelete(this);">
                         ลบตาราง
                       </a>
                     </div>

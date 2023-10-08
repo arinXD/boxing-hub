@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Info</title>
+    <!-- Include Bootstrap 5 CSS from the correct URL -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <style>
+        body{
+            background-color: #EAEBEF !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Apply the 'container' class to your content -->
+    <%- include("../partials/nav.ejs")%>
+        <div class="container-lg " class="">
+            <div class="border mt-5 p-5 rounded w-75 " style="margin: 0 auto; background-color: white !important;">
+                <h1 class="mb-5">Athlete Information</h1>
+                <div class="row g-3">
+                    <div class="col-lg-6">
+                        <label for="aka" class="form-label">AKA (Athlete's Nickname):</label>
+                        <input type="text" class="form-control" id="nickname" name="nickname" value="<%= athlete.nickname %>"
+                            readonly>
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="weight" class="form-label">Weight:</label>
+                        <input type="number" class="form-control" id="weight" name="weight"
+                            value="<%= athlete.weight %>" readonly>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <label for="height" class="form-label">Height:</label>
+                        <input type="number" class="form-control" id="height" name="height"
+                            value="<%= athlete.height %>" readonly>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <label for="reach" class="form-label">Reach:</label>
+                        <input type="number" class="form-control" id="reach" name="reach" value="<%= athlete.reach %>"
+                            readonly>
+                    </div>
+                    <div class="col-lg-5">
+                        <label for="bday" class="form-label">Dday:</label>
+                        <input type="date" class="form-control" id="bday" name="bday" value="<%= formattedBday %>"
+                            readonly>
+                    </div>
+                    <div class="col-lg-4">
+                        <label for="country" class="form-label">Country:</label>
+                        <input type="text" class="form-control" id="country" name="country"
+                            value="<%= athlete.country %>" readonly>
+                    </div>
+
+                    <div class="col-12 pt-3 ">
+                        <form method="POST" class="d-grid gap-2 col-12 mx-auto"
+                            action="confirmAthlete/<%= athlete._id %>"><button type="submit"
+                                class="btn btn-primary fw-bold">Confirm</button></form>
+
+                                <div class="d-grid gap-2 col-12 mx-auto mt-3">
+                                    <a class="btn btn-danger fw-bold" href="/admin/cancelAthlete/<%=athlete._id%>" onclick="return confirm('Are you sure you want to delete this Athlete?')">Delete</a>
+                                </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+</body>
+
+</html>
