@@ -70,6 +70,7 @@
                 <div class="col-md-6">
                     <label for="inputState" class="form-label">Team:</label>
                     <select class="form-select" name="team" id="team">
+                        <option value="">เลือกทีม</option>
                         <% for (const item of teams) { %>
                             <option value="<%= item._id %>"<% if (String(athlete.team) === String(item._id)) { %> selected <% } %>><%= item.teamname %></option>
                         <% } %>

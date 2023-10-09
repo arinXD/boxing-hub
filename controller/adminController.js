@@ -322,7 +322,7 @@ const AdminCancel = async (req, res) => {
 
 const AdminGetEditPage = async (req, res) => {
     // const id = req.query.id;
-    Athlete.find().populate('user')
+    Athlete.find().populate('user').populate('team')
         .then((result) => {
             res.render('admin/atheleteEdit.ejs', {
                 athlete: result,
@@ -386,35 +386,57 @@ const AdminUpdateEdit = async (req, res) => {
 
         const previousTeamId = previousAthlete.team;
 
-        // Update the athlete's information
-        const updatedAthlete = await Athlete.findByIdAndUpdate(
-            aid, {
-                nickname,
-                weight,
-                height,
-                reach,
-                bday,
-                country,
-                weightClass,
-                wins,
-                losses,
-                draw,
-                knockouts,
-                knockoutsLosses,
-                technicalKnockouts,
-                technicalKnockoutsLosses,
-                overwhelmingScore,
-                overwhelmingScoreLosses,
-                majorityVotes,
-                majorityVotesLosses,
-                team
-            }, {
-                new: true
-            }
-        );
-
-        if (!updatedAthlete) {
-            return res.status(404).send('Athlete not found');
+        if(team){
+            const updatedAthlete = await Athlete.findByIdAndUpdate(
+                aid, {
+                    nickname,
+                    weight,
+                    height,
+                    reach,
+                    bday,
+                    country,
+                    weightClass,
+                    wins,
+                    losses,
+                    draw,
+                    knockouts,
+                    knockoutsLosses,
+                    technicalKnockouts,
+                    technicalKnockoutsLosses,
+                    overwhelmingScore,
+                    overwhelmingScoreLosses,
+                    majorityVotes,
+                    majorityVotesLosses,
+                    team
+                }, {
+                    new: true
+                }
+            );
+        }else{
+            const updatedAthlete = await Athlete.findByIdAndUpdate(
+                aid, {
+                    nickname,
+                    weight,
+                    height,
+                    reach,
+                    bday,
+                    country,
+                    weightClass,
+                    wins,
+                    losses,
+                    draw,
+                    knockouts,
+                    knockoutsLosses,
+                    technicalKnockouts,
+                    technicalKnockoutsLosses,
+                    overwhelmingScore,
+                    overwhelmingScoreLosses,
+                    majorityVotes,
+                    majorityVotesLosses,
+                }, {
+                    new: true
+                }
+            );
         }
 
         // If the athlete's team has changed, remove the athlete's ID from the previous team
@@ -429,30 +451,26 @@ const AdminUpdateEdit = async (req, res) => {
                     new: true
                 }
             );
-
-            if (!previousTeam) {
-                return res.status(404).send('Previous team not found');
-            }
         }
 
         // Update the new team by adding the athlete's ID
-        const updatedTeam = await Team.findByIdAndUpdate(
-            team, {
-                $addToSet: {
-                    athletes: aid
+        if(team){
+            const updatedTeam = await Team.findByIdAndUpdate(
+                team, {
+                    $addToSet: {
+                        athletes: aid
+                    }
+                }, // Add the athlete's ID to the new team's athletes array
+                {
+                    new: true
                 }
-            }, // Add the athlete's ID to the new team's athletes array
-            {
-                new: true
+            );
+            if (!updatedTeam) {
+                return res.status(404).send('Team not found');
             }
-        );
-
-        if (!updatedTeam) {
-            return res.status(404).send('Team not found');
         }
 
-        // console.log('Athlete updated:', updatedAthlete);
-        // console.log('Team updated:', updatedTeam);
+
         res.redirect('/admin/editAthlete');
     } catch (error) {
         console.error('Error updating Athlete:', error);
