@@ -196,51 +196,39 @@ const RegisterAthlete = async (req, res) => {
         const { nickname, weight, height, reach, bday, country, weightClass } = req.body;
         const userId = req.session.userId;
         let selectedTeamValue = req.body.team;
-
-        const hasTeamCheckbox = req.body['has-team'];
         let teamId = null;
 
-        // Fetch the team's _id from the database using the selectedTeamValue
         if (selectedTeamValue) {
-            const team = Team.findOne({ _id: selectedTeamValue })
-                .then(async (result) => {
-                    if (!result) {
-                        // Handle the case where the team was not found
+            Team.findOne({ _id: selectedTeamValue })
+                .then(async (team) => {
+                    if (!team) {
                         console.error('Team not found');
                         return res.status(404).send('Team not found');
                     }
-
-                    if (hasTeamCheckbox && !selectedTeamValue) {
-
-                        console.error('Team not selected');
-                        return res.status(400).send('Team not selected');
-                    }
-
-                    // If the checkbox is checked and a team is selected, fetch the team's _id
-                    if (hasTeamCheckbox && selectedTeamValue) {
-                        const result = await Team.findOne({ _id: selectedTeamValue });
-
-                        if (!result) {
-                            // Handle the case where the team was not found
-                            console.error('Team not found');
-                            return res.status(404).send('Team not found');
-                        }
-
-                        teamId = result._id;
-                    }
-
-                    if (!updatedTeam) {
-                        console.error('Team not found during update');
-                        return res.status(404).send('Team not found during update');
-                    }
-
-                    console.log('Updated Team:', updatedTeam);
-                    req.session.role = updatedUser.role
-                    res.redirect('/');
+                    const athlete = new Athlete({
+                        nickname,
+                        weight,
+                        height,
+                        reach,
+                        bday,
+                        country,
+                        weightClass,
+                        user: userId,
+                        team: team._id,
+                        confirmed: false
+                    });
+                    await athlete.save()
                 })
                 .catch((err) => {
                     console.error(err);
                 });
+                const updatedUser = await User.findByIdAndUpdate(
+                    userId,
+                    { role: 2 },
+                    { new: true }
+                )
+                req.session.role = updatedUser.role
+                res.redirect('/');
         } else {
             const athlete = new Athlete({
                 nickname,
@@ -260,21 +248,6 @@ const RegisterAthlete = async (req, res) => {
                 { role: 2 },
                 { new: true }
             )
-            if (teamId) {
-                const updatedTeam = await Team.findByIdAndUpdate(
-                    teamId,
-                    { $push: { athletes: athleteResult._id } },
-                    { new: true }
-                );
-
-                if (!updatedTeam) {
-                    // Handle the case where the team was not found during update
-                    console.error('Team not found during update');
-                    return res.status(404).send('Team not found during update');
-                }
-
-                console.log('Updated Team:', updatedTeam);
-            }
             req.session.role = updatedUser.role
             res.redirect('/');
         }

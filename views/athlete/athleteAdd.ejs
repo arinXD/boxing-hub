@@ -23,29 +23,29 @@
                 <form method="POST" action="/athletes/AddAthlete" class="row g-3">
                     <div class="col-lg-6">
                         <label for="aka" class="form-label">AKA (Athlete's Nickname):</label>
-                        <input type="text" class="form-control" id="nickname" name="nickname">
+                        <input type="text" class="form-control" id="nickname" name="nickname" required>
                     </div>
                     <div class="col-lg-3">
                         <label for="weight" class="form-label">Weight:</label>
-                        <input type="number" class="form-control" id="weight" name="weight">
+                        <input type="number" class="form-control" id="weight" name="weight" required>
                     </div>
 
                     <div class="col-lg-3">
                         <label for="height" class="form-label">Height:</label>
-                        <input type="number" class="form-control" id="height" name="height">
+                        <input type="number" class="form-control" id="height" name="height" required>
                     </div>
 
                     <div class="col-lg-3">
                         <label for="reach" class="form-label">Reach:</label>
-                        <input type="number" class="form-control" id="reach" name="reach">
+                        <input type="number" class="form-control" id="reach" name="reach" required>
                     </div>
                     <div class="col-lg-5">
                         <label for="bday" class="form-label">Dday:</label>
-                        <input type="date" class="form-control" id="bday" name="bday">
+                        <input type="date" class="form-control" id="bday" name="bday"required >
                     </div>
                     <div class="col-lg-4">
                         <label for="country" class="form-label">Country:</label>
-                        <input type="text" class="form-control" id="country" name="country">
+                        <input type="text" class="form-control" id="country" name="country" required>
                     </div>
                     <div class="col-lg-6">
                         <label for="weightClass" class="form-label">พิกัดน้ำหนัก:</label>
@@ -90,8 +90,10 @@
             isTeam.addEventListener('click', () => {
                 if (team.disabled) {
                     team.disabled = false
+                    team.required = true
                 } else {
                     team.disabled = true
+                    team.required = false
                 }
             })
 
