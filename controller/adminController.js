@@ -378,16 +378,15 @@ const AdminUpdateEdit = async (req, res) => {
             team,
         } = req.body;
 
-        // Find the previous team of the athlete
         const previousAthlete = await Athlete.findById(aid);
         if (!previousAthlete) {
             return res.status(404).send('Athlete not found');
         }
 
         const previousTeamId = previousAthlete.team;
-
+        var updatedAthlete
         if(team){
-            const updatedAthlete = await Athlete.findByIdAndUpdate(
+            updatedAthlete = await Athlete.findByIdAndUpdate(
                 aid, {
                     nickname,
                     weight,
@@ -413,7 +412,7 @@ const AdminUpdateEdit = async (req, res) => {
                 }
             );
         }else{
-            const updatedAthlete = await Athlete.findByIdAndUpdate(
+            updatedAthlete = await Athlete.findByIdAndUpdate(
                 aid, {
                     nickname,
                     weight,
@@ -438,29 +437,26 @@ const AdminUpdateEdit = async (req, res) => {
                 }
             );
         }
-
-        // If the athlete's team has changed, remove the athlete's ID from the previous team
         if (previousTeamId !== team) {
             const previousTeam = await Team.findByIdAndUpdate(
                 previousTeamId, {
                     $pull: {
                         athletes: aid
                     }
-                }, // Remove the athlete's ID from the previous team's athletes array
+                },
                 {
                     new: true
                 }
             );
         }
 
-        // Update the new team by adding the athlete's ID
         if(team){
             const updatedTeam = await Team.findByIdAndUpdate(
                 team, {
                     $addToSet: {
                         athletes: aid
                     }
-                }, // Add the athlete's ID to the new team's athletes array
+                },
                 {
                     new: true
                 }
@@ -471,7 +467,7 @@ const AdminUpdateEdit = async (req, res) => {
         }
 
 
-        res.redirect('/admin/editAthlete');
+        res.status(200).redirect('/admin/editAthletes/'+updatedAthlete._id);
     } catch (error) {
         console.error('Error updating Athlete:', error);
         res.status(500).send('An error occurred');

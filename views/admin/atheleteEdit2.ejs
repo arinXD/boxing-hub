@@ -19,7 +19,12 @@
     <%- include("../partials/nav.ejs")%>
     <div class="container-lg " class="">
         <div class="border my-5 p-5 rounded w-75 " style="margin: 0 auto; background-color: white !important;">
-            <h1 class="mb-5">Edit Athlete Information</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item"><a href="/admin" class="text-decoration-none">จัดการข้อมูลเว็บไซต์</a></li>
+                <li class="breadcrumb-item"><a href="/admin/editAthlete" class="text-decoration-none">จัดการข้อมูลนักกีฬา</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><%= athlete.nickname %></li>
+            </ol>
+            <h1 class="mb-4">แก้ไขข้อมูลนักกีฬา</h1>
             <form class="row g-3" method="post" action="/admin/updateAthletes" >
                 <input type="text" class="d-none" id="_id" name="aid" value="<%= athlete._id %>" readonly><br>
                 <div class="col-lg-6">
@@ -76,63 +81,105 @@
                         <% } %>
                     </select>  
                 </div>
+                <div class="my-4 row">
+                    <h3 class="my-3">สถิติการชก</h3>
+                    <!-- <div class="col-lg-6">
+                        <label class="form-label">wins:</label>
+                        <input type="number" class="form-control" min="0" value="<%= athlete.wins %>">
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="form-label">losses:</label>
+                        <input type="number" class="form-control" min="0" value="<%= athlete.losses %>">
+                    </div> -->
+                    <div class="col-lg-6">
+                        <label for="weightClass" class="form-label">knockouts:</label>
+                        <input type="number" class="form-control win-stat" min="0" name="knockouts" value="<%= athlete.knockouts %>">
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="weightClass" class="form-label">knockoutsLosses:</label>
+                        <input type="number" class="form-control loss-stat" min="0" name="knockoutsLosses" value="<%= athlete.knockoutsLosses %>">
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="weightClass" class="form-label">technicalKnockouts:</label>
+                        <input type="number" class="form-control win-stat" min="0" name="technicalKnockouts" value="<%= athlete.technicalKnockouts %>">
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="weightClass" class="form-label">technicalKnockoutsLosses:</label>
+                        <input type="number" class="form-control loss-stat" min="0" name="technicalKnockoutsLosses" value="<%= athlete.technicalKnockoutsLosses %>">
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="weightClass" class="form-label">overwhelmingScore:</label>
+                        <input type="number" class="form-control win-stat" min="0" name="overwhelmingScore" value="<%= athlete.overwhelmingScore %>">
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="weightClass" class="form-label">overwhelmingScoreLosses:</label>
+                        <input type="number" class="form-control loss-stat" min="0" name="overwhelmingScoreLosses" value="<%= athlete.overwhelmingScoreLosses %>">
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="weightClass" class="form-label">majorityVotes:</label>
+                        <input type="number" class="form-control win-stat" min="0" name="majorityVotes" value="<%= athlete.majorityVotes %>">
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="weightClass" class="form-label">majorityVotesLosses:</label>
+                        <input type="number" class="form-control loss-stat" min="0" name="majorityVotesLosses" value="<%= athlete.majorityVotesLosses %>">
+                    </div>
+                    <div class="col-lg-6 my-4">
+                        <label for="country" class="form-label">Total wins:</label>
+                        <input type="number" class="form-control border-0" id="total-wins" name="wins" value="0" readonly style="background-color: #e2e8f0;">
+                    </div>
+                    <div class="col-lg-6 my-4">
+                        <label for="country" class="form-label">Total losses:</label>
+                        <input type="number" class="form-control border-0" id="total-losses" name="losses" value="0" readonly style="background-color: #e2e8f0;">
+                    </div>
+                </div>
+                <div class="row">
 
-                <div class="col-lg-4">
-                    <label for="country" class="form-label">wins:</label>
-                    <input type="number" class="form-control" name="wins" value="<%= athlete.wins %>">
+                    <button type="submit" class="btn btn-primary fw-bold">Confirm</button>
                 </div>
-                <div class="col-lg-4">
-                    <label for="country" class="form-label">losses:</label>
-                    <input type="number" class="form-control" name="losses" value="<%= athlete.losses %>">
-                </div>
-                <div class="col-lg-4">
-                    <label for="country" class="form-label">draws:</label>
-                    <input type="number" class="form-control" name="draws" value="<%= athlete.draws %>">
-                </div>
-                <div class="col-lg-6">
-                    <label for="weightClass" class="form-label">knockouts:</label>
-                    <input type="number" class="form-control" name="knockouts" value="<%= athlete.knockouts %>">
-                </div>
-                <div class="col-lg-6">
-                    <label for="weightClass" class="form-label">knockoutsLosses:</label>
-                    <input type="number" class="form-control" name="knockoutsLosses" value="<%= athlete.knockoutsLosses %>">
-                </div>
-                <div class="col-lg-6">
-                    <label for="weightClass" class="form-label">technicalKnockouts:</label>
-                    <input type="number" class="form-control" name="technicalKnockouts" value="<%= athlete.technicalKnockouts %>">
-                </div>
-                <div class="col-lg-6">
-                    <label for="weightClass" class="form-label">technicalKnockoutsLosses:</label>
-                    <input type="number" class="form-control" name="technicalKnockoutsLosses" value="<%= athlete.technicalKnockoutsLosses %>">
-                </div>
-                <div class="col-lg-6">
-                    <label for="weightClass" class="form-label">overwhelmingScore:</label>
-                    <input type="number" class="form-control" name="overwhelmingScore" value="<%= athlete.overwhelmingScore %>">
-                </div>
-                <div class="col-lg-6">
-                    <label for="weightClass" class="form-label">overwhelmingScoreLosses:</label>
-                    <input type="number" class="form-control" name="overwhelmingScoreLosses" value="<%= athlete.overwhelmingScoreLosses %>">
-                </div>
-                <div class="col-lg-6">
-                    <label for="weightClass" class="form-label">majorityVotes:</label>
-                    <input type="number" class="form-control" name="majorityVotes" value="<%= athlete.majorityVotes %>">
-                </div>
-                <div class="col-lg-6">
-                    <label for="weightClass" class="form-label">majorityVotesLosses:</label>
-                    <input type="number" class="form-control" name="majorityVotesLosses" value="<%= athlete.majorityVotesLosses %>">
-                </div>
-                <button type="submit" class="btn btn-primary fw-bold">Confirm</button>
             </form>
         </div>
     </div>
 
     <script>
+        const initTotalScore = (array, type)=>{
+            array?.forEach(e => {
+                let score = type.value
+                type.value = parseInt(score) + parseInt(e.value)
+                console.log(e.value);
+            });
+            console.log(type.value);
+            
+        }   
+        const sumTotal = (array, type) => {
+            array.forEach(e => {
+                e.addEventListener("input", (event) => {
+                    const value = e.value ? parseInt(e.value) : 0;
+                    type.value = 0
+                    initTotalScore(array, type)
+                });
+            });
+        };
         const options = document.querySelectorAll(".ath-w-class")
         for (const option of options) {
             if(`<%= athlete.weightClass%>`==option.value){
                 option.selected = true
             }
         }
+        window.onload = ()=>{
+            const winInput = document.querySelectorAll(".win-stat")
+            const lossInput = document.querySelectorAll(".loss-stat")
+
+            const totalWin = document.querySelector("#total-wins")
+            const totalLoss = document.querySelector("#total-losses")
+
+            initTotalScore(winInput, totalWin)
+            initTotalScore(lossInput, totalLoss)
+
+            sumTotal(winInput, totalWin)
+            sumTotal(lossInput, totalLoss)
+
+        }
+
     </script>
 </body>
 

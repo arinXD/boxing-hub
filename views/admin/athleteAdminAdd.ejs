@@ -17,7 +17,12 @@
     <%- include("../partials/nav.ejs")%>
         <div class="container-lg" class="">
             <div class="border my-5 p-5 rounded w-75 " style="margin: 0 auto; background-color: white !important;">
-                <h1 class="mb-5">Athlete Information</h1>
+                <ol class="breadcrumb mb-5">
+                    <li class="breadcrumb-item"><a href="/admin" class="text-decoration-none">จัดการข้อมูลเว็บไซต์</a></li>
+                    <li class="breadcrumb-item"><a href="/admin/editAthlete" class="text-decoration-none">จัดการข้อมูลนักกีฬา</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">แบบฟอร์มเพิ่มข้อมูลนักกีฬา</li>
+                </ol>
+                <h1 class="mb-3">ข้อมูลนักกีฬา</h1>
                 <form class="row g-3" method="POST" action="/admin/AdminAddAthlete">
                     <div class="col-lg-6">
                         <label for="aka" class="form-label">AKA (Athlete's Nickname):</label>
@@ -74,8 +79,8 @@
                                 <%} %>
                         </select>
                     </div>
-                    <h1 class="mt-5 mb-3">User Register</h1>
-                    <div class="col-lg-12">
+                    <h1 class="mt-5 mb-3">ข้อมูลผู้ใช้</h1>
+                    <div class="col-lg-12 mt-0">
                         <label for="username" class="form-label">Username:</label>
                         <input type="text" class="form-control" id="username" name="username" required>
                     </div>
@@ -99,7 +104,9 @@
                         <label for="confirm" class="form-label">Confirm Password:</label>
                         <input type="password" class="form-control" id="confirm" name="confirm" required>
                     </div>
-                    <button type="submit" class="btn btn-primary fw-bold">Confirm</button>
+                    <div class="col-lg-12 mt-5">
+                        <button type="submit" class="d-block w-100 btn btn-primary fw-bold">Confirm</button>
+                    </div>
             </div>
         </div>
 

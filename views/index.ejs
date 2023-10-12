@@ -3,133 +3,292 @@
 
 <head>
   <%- include("./partials/header.ejs")%>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <link rel="stylesheet" href="/css/index.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap" rel="stylesheet">
-  <link href="css/bootstrap.min.css" rel="stylesheet">
-  <link href="css/bootstrap-icons.css" rel="stylesheet">
-  <link href="css/templatemo-topic-listing.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap"
+      rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-icons.css" rel="stylesheet">
+    <link href="css/templatemo-topic-listing.css" rel="stylesheet">
+    <style>
+      img {
+        width: 100%;
+      }
+
+      .custom-img img {
+        height: 220px;
+        width: 100%;
+      }
+    </style>
 </head>
 
 <body>
   <%- include("./partials/nav.ejs")%>
-  <section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
-    <div class="container">
-      <div class="row">
+    <section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
+      <div class="container">
+        <div class="row">
 
-        <div class="col-lg-8 col-12 mx-auto">
-          <h1 class="text-white text-center">สมาคมศิลปะการต่อสู้</h1>
+          <div class="col-lg-8 col-12 mx-auto">
+            <h1 class="text-white text-center">สมาคมศิลปะการต่อสู้</h1>
 
-          <h6 class="text-center">ยอดนิยมอันดับ 1 ทั่วโลก</h6>
+            <h6 class="text-center">ยอดนิยมอันดับ 1 ทั่วโลก</h6>
 
-          <form method="get" class="custom-form mt-4 pt-2 mb-lg-0 mb-5" role="search">
-            <div class="input-group input-group-lg">
-              <span class="input-group-text bi-search" id="basic-addon1">
+            <form method="get" class="custom-form mt-4 pt-2 mb-lg-0 mb-5" role="search">
+              <div class="input-group input-group-lg">
+                <span class="input-group-text bi-search" id="basic-addon1">
 
-              </span>
+                </span>
 
-              <input name="keyword" type="search" class="form-control" id="keyword" placeholder="McGregor, The Iroman (รถถัง), Tawanchai ..." aria-label="Search">
+                <input name="keyword" type="search" class="form-control" id="keyword"
+                  placeholder="McGregor, The Iroman (รถถัง), Tawanchai ..." aria-label="Search">
 
-              <button type="submit" class="form-control">ค้นหา</button>
-            </div>
-          </form>
+                <button type="submit" class="form-control">ค้นหา</button>
+              </div>
+            </form>
+          </div>
+
         </div>
-
       </div>
-    </div>
-  </section>
-  <section class="featured-section">
-    <div class="container">
-      <div class="row justify-content-center">
+    </section>
+    <section class="featured-section">
+      <div class="container">
+        <div class="row justify-content-center">
 
-        <% if (getEvent.length > 0) { %>
-        <% getEvent.forEach(event => { %>
-        <% getMatches = event.matches %>
-        <% getMatches.forEach(match => { %>
-        <% getAthletes = match.athletes %>
-        <% getAthleteArray1 = getAthletes[0].athlete %>
-        <% getAthleteArray2 = getAthletes[1].athlete %>
-        <% getWinner1 = getAthletes[0].winner %>
-        <% getWinner2 = getAthletes[1].winner %>
-        <div class="col-lg-6 col-12 mb-4">
-          <div class="custom-block custom-block-overlay" style="background-color: #61677A;">
-            <div class="d-flex flex-column h-100">
+          <% if (getEvent.length> 0) { %>
+            <% getEvent.forEach(event=> { %>
+              <% getMatches=event.matches %>
+                <% getMatches.forEach(match=> { %>
+                  <% getAthletes=match.athletes %>
+                    <% getAthleteArray1=getAthletes[0].athlete %>
+                      <% getAthleteArray2=getAthletes[1].athlete %>
+                        <% getWinner1=getAthletes[0].winner %>
+                          <% getWinner2=getAthletes[1].winner %>
+                            <div class="col-lg-6 col-12 mb-4">
+                              <div class="custom-block custom-block-overlay" style="background-color: #61677A;">
+                                <div class="d-flex flex-column h-100">
 
-              <div class="custom-block-overlay-text d-flex">
-                <div>
-                  <h5 class="text-white mb-2 eventName" style="color: #ff0048 !important;"><%=event.eventName %></h5>
-
-
-                  <p class="text-white" style="margin: 1em 0; font-style: italic; font-weight: bolder;"><%=getAthleteArray1.nickname%><span style="color: #FFBB5C;">VS</span><%=getAthleteArray2.nickname%></p>
-                  <div class="centerDiv">
-                    <div class="detailDiv">
-                      <p class="text-white "><span class="spnDtail" style="color: #ff0048;">Weight: </span> <%=match.WeightClass%> </p>
-                      <p class="text-white "><span class="spnDtail" style="color: #ff0048;">Date: </span> <%=event.eventDate%></p>
-
-                    </div>
-                    <div class="detailDiv" style="margin-left: 1em;">
-                      <p class="text-white "><span class="spnDtail" style="color: #ff0048;">Stadium: </span> <%=event.Location%></p>
-                      <p class="text-white "><span class="spnDtail" style="color: #ff0048;">Time: </span> <%=event.eventTime%></p>
-                    </div>
-                  </div>
-                  <% if (getWinner1 == true) { %>
-                  <p class="text-white"><span class="spnDtail" style="color: #FFBB5C; font-weight: bolder !important;">The Winner IS:</span><span class="TheWinner"> <%=getAthleteArray1.nickname%></span></p>
-                  <% } else if (getWinner2 == true) { %>
-                  <p class="text-white"><span class="spnDtail" style="color: #FFBB5C; font-weight: bolder !important;">The Winner IS:</span><span class="TheWinner"> <%=getAthleteArray2.aka%></span></p>
-                  <% } else if (getWinner1 == false && getWinner2 == false ) { %>
-                  <p class="text-white"><span class="spnDtail" style="color: #FFBB5C; font-weight: bolder !important;">ยังไม่มีผลการตัดสิน</span></p>
-                  <% } %>
-
-                  
+                                  <div class="custom-block-overlay-text d-flex">
+                                    <div>
+                                      <h5 class="text-white mb-2 eventName" style="color: #ff0048 !important;">
+                                        <%=event.eventName %>
+                                      </h5>
 
 
-                </div>
+                                      <p class="text-white"
+                                        style="margin: 1em 0; font-style: italic; font-weight: bolder;">
+                                        <%=getAthleteArray1.nickname%><span style="color: #FFBB5C;">VS</span>
+                                          <%=getAthleteArray2.nickname%>
+                                      </p>
+                                      <div class="centerDiv">
+                                        <div class="detailDiv">
+                                          <p class="text-white "><span class="spnDtail" style="color: #ff0048;">Weight:
+                                            </span>
+                                            <%=match.WeightClass%>
+                                          </p>
+                                          <p class="text-white "><span class="spnDtail" style="color: #ff0048;">Date:
+                                            </span>
+                                            <%=event.eventDate%>
+                                          </p>
 
-                <span class="badge bg-finance rounded-pill ms-auto" style="color: #C70039; background-color: #C70039;"> </span>
+                                        </div>
+                                        <div class="detailDiv" style="margin-left: 1em;">
+                                          <p class="text-white "><span class="spnDtail" style="color: #ff0048;">Stadium:
+                                            </span>
+                                            <%=event.Location%>
+                                          </p>
+                                          <p class="text-white "><span class="spnDtail" style="color: #ff0048;">Time:
+                                            </span>
+                                            <%=event.eventTime%>
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <% if (getWinner1==true) { %>
+                                        <p class="text-white"><span class="spnDtail"
+                                            style="color: #FFBB5C; font-weight: bolder !important;">The
+                                            Winner IS:</span><span class="TheWinner">
+                                            <%=getAthleteArray1.nickname%>
+                                          </span></p>
+                                        <% } else if (getWinner2==true) { %>
+                                          <p class="text-white"><span class="spnDtail"
+                                              style="color: #FFBB5C; font-weight: bolder !important;">The
+                                              Winner IS:</span><span class="TheWinner">
+                                              <%=getAthleteArray2.aka%>
+                                            </span></p>
+                                          <% } else if (getWinner1==false && getWinner2==false ) { %>
+                                            <p class="text-white"><span class="spnDtail"
+                                                style="color: #FFBB5C; font-weight: bolder !important;">ยังไม่มีผลการตัดสิน</span>
+                                            </p>
+                                            <% } %>
 
-              </div>
 
-              <div class="social-share d-flex">
-                <p class="text-white me-4">Share:</p>
 
-                <ul class="social-icon">
-                  <li class="social-icon-item">
-                    <a href="#" class="social-icon-link bi-twitter"></a>
-                  </li>
 
-                  <li class="social-icon-item">
-                    <a href="#" class="social-icon-link bi-facebook"></a>
-                  </li>
+                                    </div>
 
-                  <li class="social-icon-item">
-                    <a href="#" class="social-icon-link bi-pinterest"></a>
-                  </li>
-                </ul>
+                                    <span class="badge bg-finance rounded-pill ms-auto"
+                                      style="color: #C70039; background-color: #C70039;">
+                                    </span>
 
-                <a href="#" class="custom-icon bi-bookmark ms-auto"></a>
-              </div>
+                                  </div>
 
-              <div class="section-overlay"></div>
+                                  <div class="social-share d-flex">
+                                    <p class="text-white me-4">Share:</p>
+
+                                    <ul class="social-icon">
+                                      <li class="social-icon-item">
+                                        <a href="#" class="social-icon-link bi-twitter"></a>
+                                      </li>
+
+                                      <li class="social-icon-item">
+                                        <a href="#" class="social-icon-link bi-facebook"></a>
+                                      </li>
+
+                                      <li class="social-icon-item">
+                                        <a href="#" class="social-icon-link bi-pinterest"></a>
+                                      </li>
+                                    </ul>
+
+                                    <a href="#" class="custom-icon bi-bookmark ms-auto"></a>
+                                  </div>
+
+                                  <div class="section-overlay"></div>
+                                </div>
+                              </div>
+                            </div>
+                            <% }); %>
+                              <% }) %>
+                                <% } %>
+
+        </div>
+      </div>
+    </section>
+    <div class="container my-4">
+      <h3 class="mb-3">ข่าวสาร</h3>
+      <div class="row">
+        <div class="col-md-7"><img style="height: 394px;" src="https://picsum.photos/id/237/640/350" alt="">
+        </div>
+        <div class="col-md-5">
+          <div class="row g-4">
+            <div class="col-md-5">
+              <img src="https://picsum.photos/640/360" alt="">
             </div>
+            <div class="col-md-7">
+              <div class="d-flex justify-content-between">
+                <p>ข่าว</p>
+                <p>10 ต.ค.</p>
+              </div>
+              <p>ความพยายามไม่เคยทรยศใคร “รถถัง” เปิดเคล็ดลับสู่ความสำเร็จ โชว์เงินค่าตัวก้อนโต</p>
+            </div>
+            <div class="col-md-5">
+              <img src="https://picsum.photos/640/360" alt="">
+            </div>
+            <div class="col-md-7">
+              <div class="d-flex justify-content-between">
+                <p>ข่าว</p>
+                <p>10 ต.ค.</p>
+              </div>
+              <p>ความพยายามไม่เคยทรยศใคร “รถถัง” เปิดเคล็ดลับสู่ความสำเร็จ โชว์เงินค่าตัวก้อนโต</p>
+            </div>
+            <div class="col-md-5">
+              <img src="https://picsum.photos/640/360" alt="">
+            </div>
+            <div class="col-md-7">
+              <div class="d-flex justify-content-between">
+                <p>ข่าว</p>
+                <p>10 ต.ค.</p>
+              </div>
+              <p>ความพยายามไม่เคยทรยศใคร “รถถัง” เปิดเคล็ดลับสู่ความสำเร็จ โชว์เงินค่าตัวก้อนโต</p>
+            </div>
+
           </div>
         </div>
-        <% }); %>
-        <% }) %>
-        <% } %>
 
       </div>
     </div>
-  </section>
-  <%- include("./partials/footer.ejs")%>
-  <script src="/js/jquery.min.js"></script>
-  <script src="/js/bootstrap.bundle.min.js"></script>
-  <script src="/js/jquery.sticky.js"></script>
-  <script src="/js/click-scroll.js"></script>
-  <script src="/js/custom.js"></script>
+
+    <div class="container" style="margin-bottom: 25px;">
+      <div class="row custom-img">
+        <div class="col-md-3">
+          <img src="https://picsum.photos/id/214/200/300" alt="">
+          <div class="d-flex justify-content-between">
+            <p>ข่าว</p>
+            <p>10 ต.ค.</p>
+          </div>
+          <p>สรุปผลและประมวลภาพ ONE Fight Night 15: ธานฮ์ vs อิลยา</p>
+        </div>
+        <div class="col-md-3">
+          <img src="https://picsum.photos/id/142/200/300" alt="">
+          <div class="d-flex justify-content-between">
+            <p>ข่าว</p>
+            <p>10 ต.ค.</p>
+          </div>
+          <p>สรุปผลและประมวลภาพ ONE Fight Night 15: ธานฮ์ vs อิลยา</p>
+        </div>
+        <div class="col-md-3">
+          <img src="https://picsum.photos/id/242/200/300" alt="">
+          <div class="d-flex justify-content-between">
+            <p>ข่าว</p>
+            <p>10 ต.ค.</p>
+          </div>
+          <p>สรุปผลและประมวลภาพ ONE Fight Night 15: ธานฮ์ vs อิลยา</p>
+        </div>
+        <div class="col-md-3">
+          <img src="https://picsum.photos/id/442/200/300" alt="">
+          <div class="d-flex justify-content-between">
+            <p>ข่าว</p>
+            <p>10 ต.ค.</p>
+          </div>
+          <p>สรุปผลและประมวลภาพ ONE Fight Night 15: ธานฮ์ vs อิลยา</p>
+
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row custom-img">
+        <div class="col-md-3">
+          <img src="https://picsum.photos/id/214/200/300" alt="">
+          <div class="d-flex justify-content-between">
+            <p>ข่าว</p>
+            <p>10 ต.ค.</p>
+          </div>
+          <p>สรุปผลและประมวลภาพ ONE Fight Night 15: ธานฮ์ vs อิลยา</p>
+        </div>
+        <div class="col-md-3">
+          <img src="https://picsum.photos/id/142/200/300" alt="">
+          <div class="d-flex justify-content-between">
+            <p>ข่าว</p>
+            <p>10 ต.ค.</p>
+          </div>
+          <p>สรุปผลและประมวลภาพ ONE Fight Night 15: ธานฮ์ vs อิลยา</p>
+        </div>
+        <div class="col-md-3">
+          <img src="https://picsum.photos/id/242/200/300" alt="">
+          <div class="d-flex justify-content-between">
+            <p>ข่าว</p>
+            <p>10 ต.ค.</p>
+          </div>
+          <p>สรุปผลและประมวลภาพ ONE Fight Night 15: ธานฮ์ vs อิลยา</p>
+        </div>
+        <div class="col-md-3">
+          <img src="https://picsum.photos/id/442/200/300" alt="">
+          <div class="d-flex justify-content-between">
+            <p>ข่าว</p>
+            <p>10 ต.ค.</p>
+          </div>
+          <p>สรุปผลและประมวลภาพ ONE Fight Night 15: ธานฮ์ vs อิลยา</p>
+        </div>
+      </div>
+    </div>
+    <%- include("./partials/footer.ejs")%>
+      <script src="/js/jquery.min.js"></script>
+      <script src="/js/bootstrap.bundle.min.js"></script>
+      <script src="/js/jquery.sticky.js"></script>
+      <script src="/js/click-scroll.js"></script>
+      <script src="/js/custom.js"></script>
 </body>
 
 </html>

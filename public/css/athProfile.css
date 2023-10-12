@@ -1,0 +1,183 @@
+*{
+    box-sizing: border-box;
+}
+body{
+    background-image: linear-gradient(15deg, #181D31 0%, #272829 100%) !important;
+}
+.ath.container{
+    background-color: white;
+    padding: 2em 3em;
+    border-radius: 10px;
+}
+.athlete-img{
+    display: block;
+    width: 350px;
+    height: 450px;
+    object-fit: cover;
+}
+.athlete-info{
+    width: 500px;
+    height: 450px;
+    padding: 2rem;
+    
+}
+.athlete-info h1{
+    border-bottom: 1px solid #dddddd;
+    font-size: 2.5em;
+    padding-bottom: 1.5rem;
+}
+.athlete-info p{
+    margin: 0;
+}
+.athlete-hero{
+    background-color: #19191E;
+    display: flex;
+    column-gap: .2em;
+    align-items: end;
+    justify-content: space-around;
+    color: white;
+}
+.athlete-detail{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 1em;
+    row-gap: 2em;
+}
+.detail-item label{
+    color: #aaa;
+}
+.detail-item p span{
+    display: inline-block;
+    width: 60px;
+}
+.score{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 500px;
+    padding: 2rem;
+    height: 450px;
+}
+.score .rate{
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 1.5em;
+}
+.score .rate > hr{
+    border: 0.1em solid rgb(214, 214, 214) !important;
+    opacity: 1 !important;
+    margin: 0;
+}
+.score .rate div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 3em;
+}
+.score .rate div{
+    border-left: 1px solid rgba(250,251,253,.15);
+    border-right: 1px solid rgba(250,251,253,.15);
+}
+.score .rate div span{
+    display: block;
+    text-align: center;
+}
+.score .rate div span:nth-of-type(1){
+    border-bottom: 2px solid #d20a0a;
+    font-size: 3em;
+    font-weight: bold;
+    line-height: 86px;
+    margin: 0 auto 20px;
+    min-width: 40px;
+    letter-spacing: 3px;
+    color: #fafbfd;
+}
+.stat .stat-item{
+    display: flex;
+    justify-content: space-between;
+    font-size: 1em;
+    padding: .8em 0;
+    border-bottom: 1px solid #aaaaaa3f;
+}
+.stat .stat-item:first-child{
+    padding: 0;
+    border: 0;
+}
+.stat .stat-item:last-child{
+    margin-bottom: 0;
+}
+.stat .stat-item div{
+    width: 50px;
+    text-align: center;
+}
+.stat .stat-item div:nth-of-type(2){
+    width: 150px;
+}
+.dashboard{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4em;
+}
+.dashboard>div{
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px !important;
+    padding: 2em;
+    height: fit-content;
+    border-radius: 6px;
+    transition: all .3s ease 0s;
+}
+.dashboard>div:nth-of-type(3){
+    padding: 0;
+    margin: auto 0;
+    box-shadow: none !important;
+}
+.dashboard>div:nth-of-type(3):hover{
+    transform: scale(1.05);
+}
+.css-shadow{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    place-items: center;
+    row-gap: 1em;
+    margin-top: 2.5em;
+}
+.doughChart{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    gap: .5em;
+    width: 100px;
+}
+.doughChart h2{
+    font-size: .8em;
+    text-align: center;
+    margin-bottom: 0;
+}
+.canvas-wrap{
+    position: relative;
+}
+.canvas-wrap h3{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    font-size: .8em;
+    margin-top: .4em;
+}
+.percent{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2em;
+}
+.percent div{
+    display: flex;
+    flex-direction: column-reverse;
+}
+.percent div span:nth-of-type(2){
+    font-size: 1.5em;
+    margin-bottom: .3em;
+}
+.percent div span{
+    display: block;
+    text-align: center;
+}
