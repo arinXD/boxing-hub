@@ -80,6 +80,10 @@ app.use("*", (req, res, next) => {
 
 app.use('/', indexRouter);
 
+// dev rout -- uncomment under middleware
+// app.use('/admin', adminRouter); // <-- uncomment me
+
+// demo route
 app.use('/admin', adminMiddleware, adminRouter);
 
 app.use('/authen', signInMiddleware.signedIn, authenRouter);

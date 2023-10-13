@@ -25,33 +25,33 @@
                 <h1 class="mb-3">ข้อมูลนักกีฬา</h1>
                 <form class="row g-3" method="POST" action="/admin/AdminAddAthlete">
                     <div class="col-lg-6">
-                        <label for="aka" class="form-label">AKA (Athlete's Nickname):</label>
+                        <label for="aka" class="form-label">ชื่อนักกีฬา</label>
                         <input type="text" class="form-control" id="nickname" name="nickname" required>
                     </div>
                     <div class="col-lg-3">
-                        <label for="weight" class="form-label">Weight:</label>
+                        <label for="weight" class="form-label">น้ำหนัก</label>
                         <input type="number" class="form-control" id="weight" name="weight" required>
                     </div>
 
                     <div class="col-lg-3">
-                        <label for="height" class="form-label">Height:</label>
+                        <label for="height" class="form-label">ส่วนสูง</label>
                         <input type="number" class="form-control" id="height" name="height" required>
                     </div>
 
                     <div class="col-lg-3">
-                        <label for="reach" class="form-label">Reach:</label>
+                        <label for="reach" class="form-label">ช่วงชก</label>
                         <input type="number" class="form-control" id="reach" name="reach" required>
                     </div>
                     <div class="col-lg-5">
-                        <label for="bday" class="form-label">Dday:</label>
+                        <label for="bday" class="form-label">วันเกิด</label>
                         <input type="date" class="form-control" id="bday" name="bday" required>
                     </div>
                     <div class="col-lg-4">
-                        <label for="country" class="form-label">Country:</label>
+                        <label for="country" class="form-label">ประเทศ</label>
                         <input type="text" class="form-control" id="country" name="country" required>
                     </div>
                     <div class="col-lg-6">
-                        <label for="weightClass" class="form-label">Weight Class:</label>
+                        <label for="weightClass" class="form-label">พิกัดน้ำหนัก</label>
                         <select class="form-select text-dark weightClass" required name="weightClass">
                             <option value="" selected hidden>เลือกพิกัดน้ำหนัก</option>
                             <option value="Super Flyweight">Super Flyweight</option>
@@ -70,8 +70,9 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label for="inputState" class="form-label">Team:</label>
+                        <label for="inputState" class="form-label">ทีม</label>
                         <select class="form-select" name="team" id="team">
+                            <option value="" selected hidden>เลือกทีม</option>
                             <% for (const item of teams) {%>
                                 <option value="<%= item._id %>">
                                     <%=item.teamname%>
@@ -81,31 +82,31 @@
                     </div>
                     <h1 class="mt-5 mb-3">ข้อมูลผู้ใช้</h1>
                     <div class="col-lg-12 mt-0">
-                        <label for="username" class="form-label">Username:</label>
+                        <label for="username" class="form-label">ชื่อผู้ใช้</label>
                         <input type="text" class="form-control" id="username" name="username" required>
                     </div>
                     <div class="col-lg-6">
-                        <label for="fname" class="form-label">Firstname:</label>
+                        <label for="fname" class="form-label">ชื่อจริง</label>
                         <input type="text" class="form-control" id="fname" name="fname" required>
                     </div>
                     <div class="col-lg-6">
-                        <label for="lname" class="form-label">Lastname:</label>
+                        <label for="lname" class="form-label">นามสกุล</label>
                         <input type="text" class="form-control" id="lname" name="lname" required>
                     </div>
                     <div class="col-lg-12">
-                        <label for="email" class="form-label">Email:</label>
+                        <label for="email" class="form-label">อีเมล</label>
                         <input type="email" class="form-control" id="email" name="email" required>
                     </div>
                     <div class="col-lg-12">
-                        <label for="password" class="form-label">Password:</label>
+                        <label for="password" class="form-label">รหัสผ่าน</label>
                         <input type="password" class="form-control" id="password" name="password" required>
                     </div>
                     <div class="col-lg-12">
-                        <label for="confirm" class="form-label">Confirm Password:</label>
+                        <label for="confirm" class="form-label">ยืนยันรหัสผ่าน</label>
                         <input type="password" class="form-control" id="confirm" name="confirm" required>
                     </div>
                     <div class="col-lg-12 mt-5">
-                        <button type="submit" class="d-block w-100 btn btn-primary fw-bold">Confirm</button>
+                        <button type="submit" class="d-block w-100 btn btn-primary fw-bold">ตกลง</button>
                     </div>
             </div>
         </div>

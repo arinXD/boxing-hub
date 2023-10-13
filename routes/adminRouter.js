@@ -18,6 +18,15 @@ const storage = multer.diskStorage({
         return cb(null, `${req.body.tid}.${postFix}`)
     }
 })
+const userStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, '../public/images/profile'))
+    },
+    filename: function (req, file, cb) {
+        const postFix = file.originalname.split(".")[1]
+        return cb(null, `${req.body.uid}.${postFix}`)
+    }
+})
 const fileFilter = (req, file, cb) => {
   const allowedFileTypes = ['image/jpeg', 'image/png', 'image/jpg',];
 
@@ -29,6 +38,7 @@ const fileFilter = (req, file, cb) => {
 };
 
 const upload = multer({storage, fileFilter})
+const uploadAth = multer({storage:userStorage, fileFilter})
 // ---- ทดสอบเพิ่มผู้ใช้แบบเยอะๆ
 router.get("/add/users/random", async (req, res)=>{
     try{
@@ -84,7 +94,7 @@ router.get("/cancelAthlete/:_id", adminController.AdminCancel)
 
 router.get("/editAthlete", adminController.AdminGetEditPage)
 router.get("/editAthletes/:_id", adminController.AdminGetEdit)
-router.post("/updateAthletes", adminController.AdminUpdateEdit)
+router.post("/updateAthletes", uploadAth.single('ath_profile'), adminController.AdminUpdateEdit)
 
 //-------------------------------------------------------------------------------------
 

@@ -6,6 +6,7 @@
     <%- include("../partials/header.ejs")%>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Info</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         <style>
@@ -13,6 +14,31 @@
                 background-color: #EAEBEF !important;
             }
         </style>
+
+    <script>
+        window.onload = ()=>{
+            console.log(`s= <%= status%>`);
+            if(`<%= status%>`){
+                Swal.fire(
+                    'สำเร็จ!',
+                    'แก้ไขข้อมูลนักกีฬาเรียบร้อย',
+                    'success'
+                )
+            }
+
+            const winInput = document.querySelectorAll(".win-stat")
+            const lossInput = document.querySelectorAll(".loss-stat")
+
+            const totalWin = document.querySelector("#total-wins")
+            const totalLoss = document.querySelector("#total-losses")
+
+            initTotalScore(winInput, totalWin)
+            initTotalScore(lossInput, totalLoss)
+
+            sumTotal(winInput, totalWin)
+            sumTotal(lossInput, totalLoss)
+        }
+    </script>
 </head>
 
 <body>
@@ -25,36 +51,46 @@
                 <li class="breadcrumb-item active" aria-current="page"><%= athlete.nickname %></li>
             </ol>
             <h1 class="mb-4">แก้ไขข้อมูลนักกีฬา</h1>
-            <form class="row g-3" method="post" action="/admin/updateAthletes" >
+            <form class="row g-3" method="post" action="/admin/updateAthletes" enctype="multipart/form-data">
                 <input type="text" class="d-none" id="_id" name="aid" value="<%= athlete._id %>" readonly><br>
+                <input type="text" class="d-none" name="uid" value="<%= athlete.user._id %>" readonly><br>
+                <div class="d-flex gap-5 col-lg-12">
+                    <div class="w-25">
+                        <img class="d-block w-100" style="height: 100%; object-fit: cover;" src="/images/profile/<%= athlete.user.img%>" alt="<%= athlete.nickname%>">
+                    </div>
+                    <div class="d-flex flex-column w-75">
+                        <div class="w-100 mb-3">
+                            <label for="aka" class="form-label">ชื่อนักกีฬา</label>
+                            <input type="text" class="form-control" id="nickname" name="nickname" value="<%= athlete.nickname %>">
+                        </div>
+                        <div class="d-flex mb-3 gap-3">
+                            <div class="w-50">
+                                <label for="weight" class="form-label">น้ำหนัก</label>
+                                <input type="number" class="form-control" id="weight" name="weight" value="<%= athlete.weight %>">
+                            </div>
+                            <div class="w-50">
+                                <label for="height" class="form-label">ส่วนสูง</label>
+                                <input type="number" class="form-control" id="height" name="height" value="<%= athlete.height %>">
+                            </div>
+                        </div>
+                        <div class="d-flex gap-3">
+                            <div class="w-50">
+                                <label for="reach" class="form-label">ช่วงชก</label>
+                                <input type="number" class="form-control" id="reach" name="reach" value="<%= athlete.reach %>">
+                            </div>
+                            <div class="w-50">
+                                <label for="bday" class="form-label">วันเกิด</label>
+                                <input type="date" class="form-control" id="bday" name="bday" value="<%= formattedBday %>">
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-lg-6">
-                    <label for="aka" class="form-label">AKA (Athlete's Nickname):</label>
-                    <input type="text" class="form-control" id="nickname" name="nickname" value="<%= athlete.nickname %>">
-                </div>
-                <div class="col-lg-3">
-                    <label for="weight" class="form-label">Weight:</label>
-                    <input type="number" class="form-control" id="weight" name="weight" value="<%= athlete.weight %>">
-                </div>
-
-                <div class="col-lg-3">
-                    <label for="height" class="form-label">Height:</label>
-                    <input type="number" class="form-control" id="height" name="height" value="<%= athlete.height %>">
-                </div>
-
-                <div class="col-lg-3">
-                    <label for="reach" class="form-label">Reach:</label>
-                    <input type="number" class="form-control" id="reach" name="reach" value="<%= athlete.reach %>">
-                </div>
-                <div class="col-lg-5">
-                    <label for="bday" class="form-label">Dday:</label>
-                    <input type="date" class="form-control" id="bday" name="bday" value="<%= formattedBday %>">
-                </div>
-                <div class="col-lg-4">
-                    <label for="country" class="form-label">Country:</label>
+                    <label for="country" class="form-label">ประเทศ</label>
                     <input type="text" class="form-control" id="country" name="country" value="<%= athlete.country %>">
                 </div>
                 <div class="col-lg-6">
-                    <label for="weightClass" class="form-label">Weight Class:</label>
+                    <label for="weightClass" class="form-label">พิกัดน้ำหนัก</label>
                     <select class="form-select text-dark weightClass" required name="weightClass">
                         <option value="" selected hidden>เลือกพิกัดน้ำหนัก</option>
                         <option class="ath-w-class" value="Super Flyweight">Super Flyweight</option>
@@ -73,7 +109,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label for="inputState" class="form-label">Team:</label>
+                    <label for="inputState" class="form-label">ทีม</label>
                     <select class="form-select" name="team" id="team">
                         <option value="">เลือกทีม</option>
                         <% for (const item of teams) { %>
@@ -81,16 +117,14 @@
                         <% } %>
                     </select>  
                 </div>
+
+                <div class="col-md-6">
+                    <label for="bday" class="form-label">รูปนักกีฬา</label>
+                    <input class="form-control" type="file" name="ath_profile" value="">
+                </div>
+                
                 <div class="my-4 row">
                     <h3 class="my-3">สถิติการชก</h3>
-                    <!-- <div class="col-lg-6">
-                        <label class="form-label">wins:</label>
-                        <input type="number" class="form-control" min="0" value="<%= athlete.wins %>">
-                    </div>
-                    <div class="col-lg-6">
-                        <label class="form-label">losses:</label>
-                        <input type="number" class="form-control" min="0" value="<%= athlete.losses %>">
-                    </div> -->
                     <div class="col-lg-6">
                         <label for="weightClass" class="form-label">knockouts:</label>
                         <input type="number" class="form-control win-stat" min="0" name="knockouts" value="<%= athlete.knockouts %>">
@@ -133,7 +167,6 @@
                     </div>
                 </div>
                 <div class="row">
-
                     <button type="submit" class="btn btn-primary fw-bold">Confirm</button>
                 </div>
             </form>
@@ -145,10 +178,7 @@
             array?.forEach(e => {
                 let score = type.value
                 type.value = parseInt(score) + parseInt(e.value)
-                console.log(e.value);
             });
-            console.log(type.value);
-            
         }   
         const sumTotal = (array, type) => {
             array.forEach(e => {
@@ -165,21 +195,6 @@
                 option.selected = true
             }
         }
-        window.onload = ()=>{
-            const winInput = document.querySelectorAll(".win-stat")
-            const lossInput = document.querySelectorAll(".loss-stat")
-
-            const totalWin = document.querySelector("#total-wins")
-            const totalLoss = document.querySelector("#total-losses")
-
-            initTotalScore(winInput, totalWin)
-            initTotalScore(lossInput, totalLoss)
-
-            sumTotal(winInput, totalWin)
-            sumTotal(lossInput, totalLoss)
-
-        }
-
     </script>
 </body>
 

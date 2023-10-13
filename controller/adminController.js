@@ -190,11 +190,12 @@ const RegisterAthleteByAdmin = async (req, res) => {
             })
             .then((result) => {
                 console.log("Team updated:", result);
-                res.redirect('/admin/editAthlete');
             })
             .catch((err) => {
                 console.error(err);
             });
+        req.flash('crud', 'เพิ่มข้อมูลนักกีฬาสำเร็จ')
+        res.redirect('/admin/editAthlete');
     } catch (error) {
         console.error(error);
     }
@@ -321,12 +322,14 @@ const AdminCancel = async (req, res) => {
 }
 
 const AdminGetEditPage = async (req, res) => {
-    // const id = req.query.id;
+    const crud = req.flash("crud")
+    req.flash("crud", '')
     Athlete.find().populate('user').populate('team')
         .then((result) => {
             res.render('admin/atheleteEdit.ejs', {
                 athlete: result,
-                id: req.query.id
+                id: req.query.id,
+                crud
             })
         })
         .catch((err) => {
@@ -335,7 +338,9 @@ const AdminGetEditPage = async (req, res) => {
 }
 const AdminGetEdit = async (req, res) => {
     try {
-        const athlete = await Athlete.findById(req.params._id);
+        var status = req.flash("updated")
+        req.flash("updated", '')
+        const athlete = await Athlete.findById(req.params._id).populate('user');
         if (!athlete) {
             return res.status(404).send('Athlete not found');
         }
@@ -344,7 +349,8 @@ const AdminGetEdit = async (req, res) => {
         res.render('admin/atheleteEdit2.ejs', {
             athlete,
             formattedBday,
-            teams
+            teams,
+            status,
         });
         console.log('athlete.team:', athlete.team);
 
@@ -355,6 +361,17 @@ const AdminGetEdit = async (req, res) => {
 }
 const AdminUpdateEdit = async (req, res) => {
     try {
+        if (req.file) {
+            const fileName = req.file.filename
+            const uid = req.body.uid
+            await User.findByIdAndUpdate(
+                uid, {
+                    img:fileName
+                }, {
+                    new: true
+                }
+            );
+        }
         const {
             aid,
             nickname,
@@ -385,7 +402,7 @@ const AdminUpdateEdit = async (req, res) => {
 
         const previousTeamId = previousAthlete.team;
         var updatedAthlete
-        if(team){
+        if (team) {
             updatedAthlete = await Athlete.findByIdAndUpdate(
                 aid, {
                     nickname,
@@ -411,7 +428,7 @@ const AdminUpdateEdit = async (req, res) => {
                     new: true
                 }
             );
-        }else{
+        } else {
             updatedAthlete = await Athlete.findByIdAndUpdate(
                 aid, {
                     nickname,
@@ -443,21 +460,19 @@ const AdminUpdateEdit = async (req, res) => {
                     $pull: {
                         athletes: aid
                     }
-                },
-                {
+                }, {
                     new: true
                 }
             );
         }
 
-        if(team){
+        if (team) {
             const updatedTeam = await Team.findByIdAndUpdate(
                 team, {
                     $addToSet: {
                         athletes: aid
                     }
-                },
-                {
+                }, {
                     new: true
                 }
             );
@@ -466,8 +481,8 @@ const AdminUpdateEdit = async (req, res) => {
             }
         }
 
-
-        res.status(200).redirect('/admin/editAthletes/'+updatedAthlete._id);
+        req.flash("updated", true)
+        res.status(200).redirect('/admin/editAthletes/' + updatedAthlete._id);
     } catch (error) {
         console.error('Error updating Athlete:', error);
         res.status(500).send('An error occurred');
@@ -507,10 +522,9 @@ const DeleteAthletes = async (req, res) => {
         );
 
         // Delete the athlete
-        await Athlete.findByIdAndDelete(id);
-
-        console.log('Athlete deleted:', deletedAthlete);
-
+        const ath = await Athlete.findByIdAndDelete(id);
+        const nickname = ath.nickname
+        req.flash("crud", `ลบข้อมูลของ ${nickname} สำเร็จ`)
         res.redirect('/admin/editAthlete');
     } catch (error) {
         console.error('Error deleting Athlete:', error);

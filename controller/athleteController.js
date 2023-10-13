@@ -75,6 +75,7 @@ const findAthlete = async (req, res) => {
         })
         .catch((err) => {
             console.error(err)
+            return res.status(404).send({message:"ไม่พบข้อมูลนักกีฬา"})
         })
 }
 const findAthleteJson = async (req, res) => {

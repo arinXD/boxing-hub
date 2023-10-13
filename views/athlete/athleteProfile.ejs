@@ -177,12 +177,11 @@
                     <h2 class="text-center" style="margin-bottom: 1em;">ข้อมูลการแข่งขัน</h2>
                     <div class="percent">
                         <div>
-                            <!-- (<%= totalTime%>) วินาที -->
                             <span>จำนวนการทั้งหมด</span> <span><%= totalRound%> ยก</span>
                         </div>
                         <div>
                             <span>อัตราการชนะ</span>
-                            <% const winrate = (athlete.wins>0)?(athlete.wins/(athlete.wins+athlete.losses))*100:0 %>
+                            <% const winrate = (athlete.wins>0)?((athlete.wins/(athlete.wins+athlete.losses))*100).toFixed(2):0 %>
                             <span><%= winrate%> %</span>       
                         </div>
                         <div>
