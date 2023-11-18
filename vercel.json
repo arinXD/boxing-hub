@@ -1,0 +1,15 @@
+{
+    "version":1,
+    "builds":[
+        {
+            "src": "app.js",
+            "use": "@now/node"
+        }
+    ],
+    "routes":[
+        {
+            "sec":"/(.*)",
+            "dest": "app.js"
+        }
+    ]
+}
