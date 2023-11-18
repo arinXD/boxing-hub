@@ -1,4 +1,3 @@
-var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -6,16 +5,7 @@ var logger = require('morgan');
 const mongoose = require('mongoose')
 const flash = require('connect-flash')
 const session = require("express-session")
-const fetch = require("node-fetch");
-const fs = require('fs');
-
-
-const addAthlete = require('./models/Athletes')
-const addTeam = require('./models/Team')
-
-const addMatch = require('./models/Events')
-
-
+const cors = require("cors");
 
 // Router
 const indexRouter = require('./routes/indexRouter');
@@ -35,6 +25,10 @@ const adminMiddleware = require("./middleware/adminMiddleware")
 var app = express();
 
 // view engine setup
+app.use(cors({
+    credentials : true,
+    origin:['http://localhost:8000','http://localhost:3000']
+}));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(logger('dev'));
@@ -45,25 +39,23 @@ app.use(express.urlencoded({
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(session({
-    secret: 'tko_project',
+    secret: 'tko',
     saveUninitialized: true,
     resave: true
 }));
 app.use(flash());
 
 
-const url = "mongodb://127.0.0.1:27017/tko";
+const uri = "mongodb+srv://arin:1111@cluster0.hbaluot.mongodb.net/?retryWrites=true&w=majority"
 
-mongoose.connect(url)
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
-        app.listen(3000)
+        app.listen(8000)
         console.log("connect to mongo compass");
     })
     .catch((err) => {
         console.error(err)
     })
-    
-
 
 global.signedIn = null
 global.userRole = null
@@ -81,16 +73,16 @@ app.use("*", (req, res, next) => {
 app.use('/', indexRouter);
 
 // dev rout -- uncomment under middleware
-// app.use('/admin', adminRouter); // <-- uncomment me
+app.use('/admin', adminRouter); // <-- uncomment me
 
 // demo route
-app.use('/admin', adminMiddleware, adminRouter);
+// app.use('/admin', adminMiddleware, adminRouter);
 
 app.use('/authen', signInMiddleware.signedIn, authenRouter);
 app.use('/athletes', athleteRouter);
 app.use('/team', teamRouter);
 app.use('/profile', signInMiddleware.insignIn, profileRouter)
-app.use('/event', adminMiddleware,eventRouter)
+app.use('/event', adminMiddleware, eventRouter)
 app.use('/events', eventRouterUser)
 app.use('/match', matchRouter)
 
@@ -100,98 +92,6 @@ app.get("/signout", (req, res, next) => {
         return res.redirect('/')
     })
 })
-
-
-app.get("/fetch/api", async (req, res) => {
-
-    const url = 'https://api.sportsdata.io/v3/mma/scores/json/Schedule/UFC/2023?key=b3ccef7241c64316a5449c90efb8c1b9';
-
-    fetch(url)
-        .then((res) => res.json())
-        .then((athletesJson) => {
-            const JSONObject = JSON.parse(JSON.stringify(athletesJson))
-            fs.writeFile('./UFCdata/ufcEvents.json', JSON.stringify(JSONObject), (error) => {
-                if (error) throw error;
-            });
-            return res.send("Fetch done!\nJSON file created successfully: Event.csv")
-
-        }).catch((err) => {
-            return res.send(err)
-        })
-})
-
-
-
-app.get('/add-athlete', async (req, res, next) => {
-    try {
-        // สร้าง Athlete โดยใช้ข้อมูล
-        const addAt = new addAthlete({
-            aka: 'The Ironman',
-            weight: 60,
-            height: 165,
-            country: 'Thailand',
-            weightClass: 'Lightweight',
-            profileImg: 'None',
-            user: '650c6e6e73cfb63052996c48',
-        });
-
-        // บันทึกข้อมูล Athlete
-        const result = await addAt.save();
-
-        // ส่งการตอบกลับเป็นข้อความหรือ JSON
-        res.send('เพิ่มข้อมูลนักกีฬาเรียบร้อย');
-        res.send(result);
-    } catch (error) {
-        next(error);
-    }
-});
-
-app.get('/add-match', async (req, res, next) => {
-    try {
-        // สร้าง Athlete โดยใช้ข้อมูล
-        const addMat = new addMatch({
-            WeightClass:'LightWeight',
-            Description: 'Normal',
-            Rounds: 5
-        });
-
-        // บันทึกข้อมูล Athlete
-        const result = await addMat.save();
-
-        // ส่งการตอบกลับเป็นข้อความหรือ JSON
-        res.send('เพ่ิมแมทช์เรียบร้อย');
-        res.send(result);
-    } catch (error) {
-        next(error);
-    }
-});
-
-app.get('/add-event', async (req, res, next) => {
-    try {
-        // สร้าง Athlete โดยใช้ข้อมูล
-        const addEv = new addEvent({
-            eventName:'One Fight Night 22',
-            eventDate: '22/08/2023',
-            eventTime: '19:30',
-            Status:'Active',
-            // matches:[
-            //     {type: mongoose.Schema.ObjectId,
-            //     ref: 'matches'
-            // }
-                
-            // ]
-        });
-
-        // บันทึกข้อมูล Athlete
-        const eventResult = await addEv.save();
-
-        // ส่งการตอบกลับเป็นข้อความหรือ JSON
-        res.send('เพ่ิมแมทช์เรียบร้อย');
-        res.send(result);
-    } catch (error) {
-        next(error);
-    }
-});
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
