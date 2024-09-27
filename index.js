@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 const flash = require('connect-flash')
 const session = require("express-session")
 const cors = require("cors");
+require('dotenv').config();
 
 // Router
 const indexRouter = require('./routes/indexRouter');
@@ -26,8 +27,8 @@ var app = express();
 
 // view engine setup
 app.use(cors({
-    credentials : true,
-    origin:['http://localhost:8000','http://localhost:3000']
+    credentials: true,
+    origin: ['http://localhost:8000', 'http://localhost:3000']
 }));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -45,12 +46,9 @@ app.use(session({
 }));
 app.use(flash());
 
-
-const uri = "mongodb+srv://arin:1111@cluster0.hbaluot.mongodb.net/?retryWrites=true&w=majority"
-
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
-        app.listen(8000)
+        app.listen(8080)
         console.log("connect to mongo compass");
     })
     .catch((err) => {
@@ -73,10 +71,10 @@ app.use("*", (req, res, next) => {
 app.use('/', indexRouter);
 
 // dev rout -- uncomment under middleware
-app.use('/admin', adminRouter); // <-- uncomment me
+// app.use('/admin', adminRouter); // <-- uncomment me
 
 // demo route
-// app.use('/admin', adminMiddleware, adminRouter);
+app.use('/admin', adminMiddleware, adminRouter);
 
 app.use('/authen', signInMiddleware.signedIn, authenRouter);
 app.use('/athletes', athleteRouter);
